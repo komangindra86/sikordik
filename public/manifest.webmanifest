@@ -1,0 +1,16 @@
+{
+    "name": "SIKORDIK RSBM",
+    "short_name": "SIKORDIK",
+    "description": "Sistem Informasi Manajemen Pendidikan Klinis RSBM",
+    "lang": "id",
+    "start_url": "/dashboard",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#f8fafc",
+    "theme_color": "#087565",
+    "icons": [
+        { "src": "/icons/sikordik-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+        { "src": "/icons/sikordik-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+        { "src": "/icons/sikordik.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    ]
+}

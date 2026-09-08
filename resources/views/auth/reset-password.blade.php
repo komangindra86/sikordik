@@ -1,0 +1,3 @@
+<x-layouts.guest title="Reset kata sandi"><form method="POST" action="{{ route('password.update') }}" class="space-y-4">@csrf<input type="hidden" name="token" value="{{ $token }}">
+    <div><label for="email">Email</label><input id="email" name="email" type="email" value="{{ old('email', $email) }}" required></div><div><label for="password">Kata sandi baru</label><input id="password" name="password" type="password" minlength="12" required><p class="mt-1 text-xs text-slate-500">Minimal 12 karakter.</p></div><div><label for="password_confirmation">Konfirmasi kata sandi</label><input id="password_confirmation" name="password_confirmation" type="password" required></div><button class="btn-primary w-full" type="submit">Simpan kata sandi</button>
+</form></x-layouts.guest>

@@ -1,0 +1,3 @@
+<x-layouts.guest title="Lupa kata sandi"><p class="mb-5 text-sm text-slate-600">Masukkan email akun Anda. Tautan reset akan dikirim jika email terdaftar.</p><form method="POST" action="{{ route('password.email') }}" class="space-y-4">@csrf
+    <div><label for="email">Email</label><input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus>@error('email')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror</div><button class="btn-primary w-full" type="submit">Kirim tautan reset</button><a class="block text-center text-sm text-brand-700" href="{{ route('login') }}">Kembali ke halaman masuk</a>
+</form></x-layouts.guest>

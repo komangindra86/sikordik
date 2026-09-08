@@ -1,0 +1,1155 @@
+Anda adalah Senior System Analyst, Software Architect, UI/UX Designer, Laravel Developer, Database Engineer, dan QA Engineer yang ditugaskan membangun aplikasi:
+
+# SISTEM INFORMASI MANAJEMEN PENDIDIKAN KLINIS RSBM
+
+Aplikasi digunakan oleh Tim Koordinasi Pendidikan (Tim Kordik) rumah sakit untuk mengelola penerimaan, penempatan, kegiatan, presensi, logbook, penilaian, survei, dan penyelesaian pendidikan peserta didik yang menjalani stase di rumah sakit.
+
+Baca seluruh instruksi ini sebelum membuat atau mengubah kode. Jadikan dokumen ini sebagai sumber aturan bisnis utama selama pengembangan.
+
+---
+
+# 1. TUJUAN SISTEM
+
+Sistem harus membantu rumah sakit mengelola seluruh proses pendidikan klinis, mulai dari penerimaan surat institusi sampai peserta menyelesaikan stase.
+
+Sistem harus mampu menangani kondisi berikut:
+
+* Peserta datang berdasarkan surat pengantar institusi pendidikan.
+* Satu surat dapat berisi satu atau banyak peserta.
+* Peserta yang pernah mengikuti stase dapat kembali lagi pada waktu berbeda dan KSM berbeda.
+* Peserta lama tidak dibuat ulang.
+* Satu peserta memiliki satu data induk dan satu akun.
+* Setiap kedatangan peserta dicatat sebagai penempatan/stase baru.
+* Riwayat setiap penempatan harus tetap tersimpan.
+* Satu peserta dapat memiliki banyak riwayat penempatan.
+* Penempatan peserta harus melalui persetujuan Tim Kordik setelah berkoordinasi dengan KSM tujuan.
+* Peserta menyusun jadwal bersama pembimbing.
+* Presensi dilakukan per hari dan diverifikasi pembimbing.
+* Rekap akhir presensi wajib disahkan Ketua KSM.
+* Logbook peserta berupa dokumen dari institusi yang diunggah ke sistem.
+* Logbook pembimbing diisi langsung melalui sistem.
+* Penilaian mengikuti formulir masing-masing institusi pendidikan.
+* Nilai dapat dipublikasikan langsung oleh pembimbing tanpa verifikasi Tim Kordik.
+* Setiap peserta wajib mencari satu pasien sebagai narasumber survei kepuasan pasien.
+* Data identitas sensitif pasien tidak boleh disimpan.
+* Peserta dinyatakan selesai setelah semua kewajibannya lengkap.
+* Perubahan penting oleh admin wajib memiliki alasan dan audit log.
+
+---
+
+# 2. TEKNOLOGI
+
+Gunakan:
+
+* Laravel 12.
+* PHP 8.2 atau versi yang kompatibel dengan Laravel 12.
+* MySQL/MariaDB.
+* Tailwind CSS.
+* Blade.
+* Alpine.js jika diperlukan untuk interaksi sederhana.
+* Vite.
+* Laravel Query Builder untuk akses database.
+* Jangan menggunakan Eloquent untuk proses bisnis utama.
+* Autentikasi berbasis session.
+* Aplikasi web responsif dan mobile-first.
+* Progressive Web App (PWA).
+* Bahasa antarmuka: Bahasa Indonesia.
+* Zona waktu: Asia/Makassar.
+* Format tanggal tampilan: DD-MM-YYYY.
+* Penyimpanan file menggunakan Laravel Storage.
+* Ekspor laporan ke Excel dan PDF.
+
+Gunakan JavaScript seperlunya. Jangan membuat frontend SPA jika Blade, Tailwind, dan Alpine.js sudah mencukupi.
+
+---
+
+# 3. PRINSIP PENGEMBANGAN
+
+* Pelajari struktur proyek sebelum mengubah kode.
+* Jangan menghapus fungsi yang sudah berjalan tanpa alasan.
+* Jangan mengubah skema atau file di luar kebutuhan fase aktif.
+* Gunakan migration, seeder, factory bila relevan, service, form request, policy/middleware, dan transaction database.
+* Hindari controller yang terlalu besar.
+* Pisahkan validasi, proses bisnis, otorisasi, dan pembuatan laporan.
+* Gunakan foreign key dan indeks database yang tepat.
+* Gunakan soft delete hanya pada data yang memang perlu dipulihkan.
+* Data transaksi pendidikan tidak boleh dihapus permanen melalui antarmuka biasa.
+* Semua perubahan penting harus masuk audit log.
+* Jangan menyimpan password, token, atau data rahasia di source code.
+* Gunakan environment variable.
+* Cegah duplikasi peserta, penempatan, jadwal, presensi, dan dokumen.
+* Jangan mengarang aturan bisnis di luar dokumen ini.
+* Jika menemukan kebutuhan yang belum jelas dan berpengaruh besar, laporkan sebelum menerapkan asumsi.
+* Selesaikan dan uji satu fase sebelum berpindah ke fase berikutnya.
+
+---
+
+# 4. ROLE DAN CAKUPAN AKSES
+
+Satu pengguna dapat memiliki lebih dari satu role. Hak akses juga dapat dibatasi berdasarkan KSM, institusi, penempatan, atau peserta yang ditugaskan.
+
+## 4.1 Super Admin
+
+* Mengelola konfigurasi sistem.
+* Mengelola akun, role, permission, dan cakupan akses.
+* Melihat audit log.
+* Tidak boleh mengubah nilai tanpa proses koreksi dan audit.
+
+## 4.2 Admin Tim Kordik
+
+* Mengelola surat masuk.
+* Mengelola data peserta.
+* Membuat penempatan baru.
+* Mengelola dokumen administrasi.
+* Mengajukan penerimaan ke KSM.
+* Mengaktifkan akun peserta.
+* Mengubah data administratif.
+* Menangani pengecualian.
+* Melihat seluruh KSM.
+* Melihat nilai untuk pemantauan.
+* Memeriksa syarat penyelesaian.
+* Mengajukan atau memproses penutupan stase sesuai kewenangannya.
+* Membuat laporan keseluruhan.
+
+## 4.3 Tim Kordik/Penanggung Jawab
+
+* Menyetujui penerimaan peserta.
+* Menyetujui penyelesaian stase.
+* Melihat seluruh institusi, peserta, KSM, nilai, dan laporan.
+* Memantau pelaksanaan pendidikan.
+
+## 4.4 Sekretariat KSM
+
+* Mengakses data pada KSM yang ditugaskan.
+* Melihat peserta, penempatan, jadwal, pembimbing, presensi, logbook, dan nilai dalam KSM tersebut.
+* Membantu proses administrasi KSM.
+* Tidak boleh melihat KSM lain kecuali memiliki penugasan tambahan.
+
+## 4.5 Ketua KSM/Koordinator KSM
+
+* Mengakses peserta pada KSM-nya.
+* Mengelola atau menyetujui penugasan pembimbing.
+* Memantau jadwal dan kegiatan.
+* Wajib mengesahkan rekap presensi akhir peserta.
+* Melihat penilaian pada KSM-nya.
+
+## 4.6 Pembimbing/Penguji
+
+Orang yang sama dapat menjadi pembimbing, penguji, atau keduanya berdasarkan penugasan.
+
+Hak akses:
+
+* Melihat peserta yang ditugaskan.
+* Menyetujui jadwal.
+* Memverifikasi presensi harian.
+* Memeriksa logbook peserta.
+* Mengisi presensi/logbook pembimbing.
+* Mengisi penilaian.
+* Menandatangani penilaian.
+* Memublikasikan nilai tanpa verifikasi Tim Kordik.
+* Menanggapi keberatan nilai.
+
+## 4.7 Supervisor
+
+* Memeriksa logbook pembimbing yang menjadi tanggung jawabnya.
+* Memberikan catatan.
+* Menyetujui atau meminta perbaikan.
+* Melakukan pengesahan elektronik.
+
+## 4.8 Peserta Didik
+
+* Melihat dan memperbarui data dirinya sesuai batasan.
+* Melihat riwayat penempatan.
+* Mengunggah dokumen yang diminta.
+* Menyusun jadwal bersama pembimbing.
+* Mengajukan jadwal dan perubahan jadwal.
+* Mengajukan presensi harian.
+* Mengunggah logbook.
+* Melihat status verifikasi.
+* Melihat nilai yang telah dipublikasikan.
+* Mengajukan keberatan nilai.
+* Mengisi survei kepuasan peserta didik.
+* Memenuhi kewajiban survei pasien.
+* Melihat status penyelesaian stase.
+* Mengunduh dokumen yang berhak diakses.
+
+## 4.9 Institusi Pendidikan
+
+Modul ini bukan prioritas awal/MVP, tetapi struktur sistem harus memungkinkan pengembangannya.
+
+Akses masa depan:
+
+* Mengajukan peserta.
+* Mengunggah surat.
+* Melihat status penerimaan.
+* Melihat peserta dari institusinya.
+* Mengunggah formulir penilaian.
+* Mengunduh nilai akhir yang sudah dipublikasikan.
+
+Institusi tidak boleh melihat data institusi lain atau mengubah nilai.
+
+---
+
+# 5. DATA INDUK PESERTA DAN RIWAYAT PENEMPATAN
+
+Pisahkan data induk peserta dengan data penempatan.
+
+## 5.1 Data induk peserta
+
+Disimpan satu kali:
+
+* Nomor identitas internal.
+* NIK jika tersedia.
+* NIM.
+* Nama lengkap.
+* Gelar jika diperlukan.
+* Jenis kelamin.
+* Tempat lahir.
+* Tanggal lahir.
+* Alamat.
+* Email.
+* Nomor HP.
+* Institusi pendidikan.
+* Program studi.
+* Jenjang pendidikan.
+* Jenis peserta.
+* Foto.
+* Kontak darurat.
+* Status akun.
+
+Sebelum membuat peserta baru, sistem harus mencari kemungkinan duplikat berdasarkan:
+
+* NIK.
+* NIM dan institusi.
+* Email.
+* Nama dan tanggal lahir.
+
+Duplikat tidak boleh digabung otomatis. Tampilkan kandidat kepada admin untuk diperiksa.
+
+## 5.2 Penempatan/stase
+
+Buat penempatan baru setiap kali peserta datang ke rumah sakit.
+
+Data minimal:
+
+* Peserta.
+* Surat pengantar.
+* Institusi pengirim saat penempatan.
+* Program studi saat penempatan.
+* Jenis peserta.
+* KSM tujuan.
+* Lokasi/unit.
+* Tanggal mulai.
+* Tanggal selesai.
+* Tanggal selesai aktual.
+* Pembimbing.
+* Penguji.
+* Supervisor.
+* Kelompok jika digunakan.
+* Status penerimaan.
+* Status dokumen.
+* Status kegiatan.
+* Status penyelesaian.
+* Catatan.
+
+Satu peserta dapat mempunyai penempatan tidak terbatas selama tidak terjadi benturan periode yang tidak sah.
+
+---
+
+# 6. SURAT MASUK DAN PENERIMAAN
+
+Alur:
+
+1. Tim Kordik menerima surat pengantar dari institusi.
+2. Admin mencatat nomor, tanggal, perihal, institusi, lampiran, dan file surat.
+3. Admin memasukkan peserta secara manual atau melalui impor Excel.
+4. Sistem mencari peserta lama dan potensi duplikat.
+5. Admin membuat penempatan untuk setiap peserta.
+6. Tim Kordik berkoordinasi dengan KSM.
+7. KSM memberikan jawaban ketersediaan.
+8. Tim Kordik menyetujui atau menolak penerimaan.
+9. Jika diterima, dokumen peserta diperiksa.
+10. Akun baru diaktifkan atau akun lama digunakan kembali.
+
+Status penempatan:
+
+* Draft.
+* Menunggu konfirmasi KSM.
+* Diterima KSM.
+* Ditolak KSM.
+* Menunggu dokumen.
+* Terverifikasi.
+* Dijadwalkan.
+* Sedang stase.
+* Menunggu penyelesaian.
+* Selesai.
+* Dibatalkan.
+
+Semua perubahan status harus mempunyai waktu, pengguna, catatan, dan riwayat.
+
+---
+
+# 7. DOKUMEN PERSYARATAN
+
+Persyaratan harus dinamis dan dapat dikonfigurasi berdasarkan jenis peserta, program studi, institusi, atau KSM.
+
+Persyaratan awal:
+
+## Koas
+
+* Surat pengantar institusi.
+* Ijazah.
+* Sertifikat BHD.
+
+## Residen
+
+* Surat pengantar.
+* Ijazah.
+* Sertifikat BHD.
+* SIP.
+* STR.
+* Sertifikat kompetensi.
+
+## Nonkedokteran
+
+* Surat pengantar.
+* Ijazah.
+
+Setiap dokumen memiliki:
+
+* Jenis dokumen.
+* Nomor dokumen jika ada.
+* Tanggal terbit.
+* Tanggal kedaluwarsa jika ada.
+* File.
+* Status verifikasi.
+* Catatan verifikator.
+* Pengunggah.
+* Waktu unggah.
+* Riwayat versi.
+
+Status:
+
+* Belum diunggah.
+* Menunggu verifikasi.
+* Perlu perbaikan.
+* Terverifikasi.
+* Kedaluwarsa.
+* Dikecualikan.
+
+Pengecualian hanya boleh dilakukan admin dengan alasan, pihak yang menyetujui, dan audit log.
+
+---
+
+# 8. PENUGASAN PEMBIMBING, PENGUJI, DAN SUPERVISOR
+
+* Satu peserta atau kelompok dapat memiliki lebih dari satu pembimbing.
+* Pembimbing dapat sekaligus menjadi penguji.
+* Peran harus dicatat berdasarkan penugasan, bukan hanya role akun.
+* Penugasan memiliki tanggal mulai dan selesai.
+* Pergantian pembimbing dilakukan admin.
+* Pergantian wajib menyimpan alasan, pihak yang meminta, pihak yang menyetujui, data lama, dan data baru.
+* Riwayat pembimbing lama tidak boleh hilang.
+
+---
+
+# 9. JADWAL
+
+Peserta menyusun jadwal selama stase setelah berkoordinasi dengan pembimbing.
+
+Data jadwal:
+
+* Penempatan.
+* Peserta atau kelompok.
+* Tanggal.
+* Jam mulai dan selesai jika diperlukan.
+* Jenis kegiatan.
+* KSM/unit.
+* Lokasi.
+* Pembimbing.
+* Penguji jika ada.
+* Catatan.
+* Status.
+* Riwayat perubahan.
+
+Status:
+
+* Draft.
+* Diajukan.
+* Perlu revisi.
+* Disetujui.
+* Diterbitkan.
+* Dibatalkan.
+* Selesai.
+
+Aturan:
+
+* Peserta membuat draft.
+* Peserta mengajukan jadwal.
+* Pembimbing menyetujui atau meminta revisi.
+* Jadwal yang sudah diterbitkan tidak boleh diubah langsung.
+* Perubahan dilakukan admin atau melalui pengajuan perubahan.
+* Perubahan wajib memiliki alasan dan persetujuan.
+* Sistem harus menyimpan jadwal sebelum dan sesudah perubahan.
+* Perpanjangan stase dilakukan admin dengan alasan dan riwayat.
+* Jadwal tidak boleh berada di luar periode penempatan, kecuali periode telah diperpanjang.
+
+---
+
+# 10. PRESENSI HARIAN PESERTA
+
+Presensi dilakukan satu kali per hari untuk setiap peserta pada hari pendidikan.
+
+Data:
+
+* Penempatan.
+* Peserta.
+* Tanggal.
+* Jam pengajuan.
+* Lokasi/unit.
+* Ringkasan kegiatan.
+* Status kehadiran.
+* Pembimbing verifikator.
+* Waktu verifikasi.
+* Catatan.
+* Status verifikasi.
+* Pengesahan Ketua KSM.
+
+Status kehadiran:
+
+* Hadir.
+* Terlambat.
+* Izin.
+* Sakit.
+* Tidak hadir.
+
+Status verifikasi:
+
+* Draft.
+* Diajukan.
+* Menunggu verifikasi.
+* Terverifikasi.
+* Ditolak.
+* Dikoreksi.
+
+Alur:
+
+1. Peserta mengajukan presensi harian.
+2. Pembimbing memverifikasi.
+3. Jika belum diverifikasi, status tetap “Menunggu verifikasi” dan tidak langsung dianggap tidak hadir.
+4. Sistem memberikan pengingat.
+5. Pada akhir stase, sistem membuat rekap presensi.
+6. Ketua KSM wajib mengesahkan rekap akhir.
+7. Setelah disahkan, rekap dikunci.
+8. Perubahan setelah pengesahan hanya dapat dilakukan admin dengan alasan dan audit log.
+
+Siapkan kemungkinan verifikator pengganti melalui penugasan resmi tanpa menghapus jejak pembimbing awal.
+
+---
+
+# 11. LOGBOOK PESERTA
+
+Logbook peserta berasal dari institusi dan diunggah sebagai dokumen.
+
+Data:
+
+* Penempatan.
+* Jenis logbook.
+* Institusi.
+* File PDF.
+* Versi.
+* Catatan peserta.
+* Pembimbing verifikator.
+* Status.
+* Catatan revisi.
+* Waktu pengajuan.
+* Waktu persetujuan.
+* Pengesahan elektronik.
+* Riwayat file.
+
+Status:
+
+* Draft.
+* Diajukan.
+* Perlu revisi.
+* Disetujui.
+* Ditolak.
+* Dikunci.
+
+Alur:
+
+1. Peserta mengunggah logbook.
+2. Peserta mengajukan verifikasi.
+3. Pembimbing memeriksa.
+4. Pembimbing menyetujui atau meminta revisi.
+5. File versi lama tetap tersimpan.
+6. Setelah disetujui dan penempatan selesai, logbook dikunci.
+
+Batasi jenis file, ukuran, dan akses. Jangan menyimpan identitas atau informasi medis sensitif pasien.
+
+---
+
+# 12. LOGBOOK PEMBIMBING
+
+Logbook pembimbing diisi langsung melalui sistem.
+
+Data:
+
+* Pembimbing.
+* Penempatan/peserta/kelompok.
+* Institusi.
+* KSM.
+* Tanggal.
+* Jenis kegiatan.
+* Lokasi.
+* Jam mulai dan selesai.
+* Durasi.
+* Materi.
+* Catatan.
+* Lampiran.
+* Supervisor.
+* Status verifikasi.
+* Pengesahan elektronik.
+
+Supervisor dapat menyetujui, meminta perbaikan, menolak, dan memberikan catatan.
+
+---
+
+# 13. PENILAIAN
+
+Pola penilaian mengikuti formulir dari masing-masing institusi pendidikan.
+
+Sistem harus fleksibel dan tidak menggunakan satu rumus yang dipaksakan kepada seluruh institusi.
+
+Dukung dua cara:
+
+1. Pembimbing mengisi nilai melalui formulir dinamis.
+2. Pembimbing mengunggah formulir penilaian dari institusi yang sudah diisi dan ditandatangani.
+
+Jenis penilaian dapat mencakup:
+
+* Mini-CEX.
+* DOPS.
+* Responsi.
+* Laporan kasus.
+* Presentasi kasus.
+* OSCE.
+* Sikap/profesionalisme.
+* Ujian akhir.
+* Jenis lain yang dapat dikonfigurasi.
+
+Template dapat dibedakan berdasarkan:
+
+* Institusi.
+* Program studi.
+* Jenis peserta.
+* KSM.
+* Jenis ujian.
+* Periode.
+
+Komponen template dapat memiliki:
+
+* Nama komponen.
+* Deskripsi.
+* Jenis input.
+* Skor minimum dan maksimum.
+* Bobot jika digunakan.
+* Batas lulus.
+* Catatan.
+* Urutan.
+* Status wajib.
+
+Alur:
+
+1. Pembimbing/penguji mengisi nilai.
+2. Pembimbing melakukan pengesahan elektronik.
+3. Pembimbing memublikasikan nilai.
+4. Nilai langsung dapat dilihat peserta.
+5. Nilai tidak memerlukan verifikasi Tim Kordik.
+6. Tim Kordik tetap dapat melihat nilai untuk pemantauan.
+7. Setelah dipublikasikan, nilai tidak boleh diubah langsung.
+
+---
+
+# 14. KEBERATAN DAN PERUBAHAN NILAI
+
+Peserta dapat mengajukan keberatan setelah nilai dipublikasikan.
+
+Data:
+
+* Nilai yang dipermasalahkan.
+* Alasan.
+* Lampiran.
+* Waktu pengajuan.
+* Tanggapan pembimbing.
+* Keputusan.
+* Nilai sebelum perubahan.
+* Nilai sesudah perubahan.
+* Pihak yang melakukan perubahan.
+* Riwayat dan pengesahan elektronik.
+
+Status:
+
+* Diajukan.
+* Sedang ditinjau.
+* Diterima.
+* Ditolak.
+* Selesai.
+
+Nilai lama tidak boleh ditimpa atau dihapus. Semua koreksi harus meninggalkan riwayat.
+
+---
+
+# 15. SURVEI
+
+## 15.1 Survei kepuasan peserta didik
+
+Setiap peserta wajib mengisi survei kepuasan peserta didik untuk setiap penempatan sebelum dinyatakan selesai.
+
+Survei dapat menilai:
+
+* Pelayanan Tim Kordik.
+* Pembimbing.
+* Fasilitas.
+* Jadwal.
+* Lingkungan belajar.
+* Proses pembelajaran.
+* Saran.
+
+## 15.2 Survei kepuasan pasien
+
+* Setiap peserta wajib mencari satu pasien sebagai narasumber.
+* Satu peserta wajib memiliki minimal satu respons survei pasien pada setiap penempatan.
+* Survei dilakukan dengan wawancara.
+* Pada MVP, sistem dapat menyimpan tautan Google Form dan bukti/status penyelesaian.
+* Pengembangan berikutnya dapat memindahkan formulir ke dalam aplikasi.
+* Jangan menyimpan nama lengkap pasien, NIK, nomor rekam medis, diagnosis, atau data medis sensitif.
+* Gunakan kode respons atau token apabila perlu menghubungkan survei dengan kewajiban peserta.
+* Tim Kordik harus dapat melihat status sudah/belum tanpa membuka identitas pasien.
+
+---
+
+# 16. PENYELESAIAN STASE
+
+Peserta dapat dinyatakan selesai apabila:
+
+* Tanggal stase telah berakhir atau diselesaikan secara resmi.
+* Semua administrasi wajib telah diunggah.
+* Dokumen wajib telah diverifikasi.
+* Logbook peserta telah disetujui pembimbing.
+* Presensi harian telah direkap.
+* Rekap presensi telah disahkan Ketua KSM.
+* Penilaian telah diisi dan dipublikasikan.
+* Survei kepuasan peserta telah diisi.
+* Setiap peserta telah memenuhi satu survei pasien.
+* Tidak ada revisi atau kewajiban yang masih tertunda.
+
+Alur:
+
+1. Sistem menampilkan checklist penyelesaian.
+2. Admin memeriksa kelengkapan.
+3. Jika lengkap, penyelesaian diajukan.
+4. Tim Kordik menyetujui.
+5. Status penempatan menjadi “Selesai”.
+6. Data dikunci.
+7. Peserta tetap dapat melihat dan mengunduh data yang diizinkan.
+8. Perubahan setelah penutupan hanya dapat dilakukan admin melalui prosedur pembukaan kembali dengan alasan dan audit log.
+
+Jangan menggunakan status selesai hanya berdasarkan tanggal akhir. Gunakan checklist persyaratan.
+
+---
+
+# 17. PENANGANAN PENGECUALIAN
+
+Admin dapat menjalankan perubahan administratif untuk:
+
+* Dokumen belum lengkap.
+* Pengecualian dokumen.
+* Pergantian pembimbing.
+* Perubahan jadwal.
+* Perubahan KSM/lokasi.
+* Perpanjangan stase.
+* Koreksi data peserta.
+* Pembukaan kembali data yang terkunci.
+
+Setiap perubahan wajib mencatat:
+
+* Jenis perubahan.
+* Alasan.
+* Pihak yang meminta.
+* Pihak yang menyetujui.
+* Admin pelaksana.
+* Waktu.
+* Data sebelum perubahan.
+* Data setelah perubahan.
+* Lampiran pendukung jika ada.
+
+Admin merupakan pelaksana perubahan, bukan pemberi persetujuan untuk semua proses.
+
+---
+
+# 18. TANDA TANGAN/PENGESAHAN ELEKTRONIK
+
+Untuk MVP, gunakan pengesahan elektronik internal berupa:
+
+* Identitas pengguna.
+* Nama dan jabatan.
+* Role saat melakukan pengesahan.
+* Tanggal dan waktu.
+* Nomor dokumen.
+* QR Code verifikasi.
+* Hash dokumen.
+* Audit log.
+* Halaman verifikasi dokumen.
+
+Jangan menggunakan gambar tanda tangan sebagai satu-satunya bukti.
+
+Pengesahan digunakan untuk:
+
+* Verifikasi presensi.
+* Pengesahan rekap presensi Ketua KSM.
+* Verifikasi logbook.
+* Penilaian.
+* Perubahan nilai.
+* Penyelesaian stase.
+
+Siapkan arsitektur agar kelak dapat diintegrasikan dengan PSrE, tetapi integrasi PSrE bukan bagian MVP.
+
+---
+
+# 19. DASHBOARD
+
+## Admin Tim Kordik
+
+* Surat masuk.
+* Pengajuan menunggu konfirmasi KSM.
+* Peserta aktif.
+* Peserta berdasarkan institusi dan KSM.
+* Dokumen belum lengkap.
+* Presensi belum diverifikasi.
+* Rekap belum disahkan Ketua KSM.
+* Logbook menunggu verifikasi.
+* Nilai belum dipublikasikan.
+* Survei belum lengkap.
+* Penempatan menunggu penyelesaian.
+
+## KSM
+
+* Peserta aktif pada KSM.
+* Jadwal hari ini.
+* Pembimbing dan penguji.
+* Presensi harian.
+* Rekap menunggu pengesahan.
+* Logbook.
+* Penilaian.
+* Status penyelesaian peserta.
+
+## Pembimbing
+
+* Jadwal bimbingan.
+* Peserta bimbingan.
+* Presensi menunggu verifikasi.
+* Logbook menunggu pemeriksaan.
+* Penilaian belum selesai.
+* Keberatan nilai.
+* Logbook pembimbing.
+
+## Peserta
+
+* Penempatan aktif.
+* Jadwal.
+* Presensi.
+* Dokumen.
+* Status logbook.
+* Nilai yang telah dipublikasikan.
+* Survei yang belum diisi.
+* Checklist penyelesaian.
+
+---
+
+# 20. LAPORAN
+
+Sediakan filter dan ekspor Excel/PDF untuk:
+
+* Surat masuk.
+* Peserta berdasarkan institusi.
+* Riwayat penempatan peserta.
+* Peserta per KSM dan periode.
+* Kelengkapan dokumen.
+* Presensi harian.
+* Rekap presensi yang disahkan.
+* Kegiatan pembimbing.
+* Logbook peserta.
+* Logbook pembimbing.
+* Nilai.
+* Survei.
+* Status penyelesaian.
+* Peserta aktif dan selesai.
+* Riwayat perubahan/audit.
+
+Setiap laporan harus menghormati batas akses pengguna.
+
+---
+
+# 21. KEAMANAN DAN PRIVASI
+
+Wajib menerapkan:
+
+* Role-based access control.
+* Pembatasan berdasarkan KSM dan penugasan.
+* CSRF protection.
+* Validasi server-side.
+* Prepared statements melalui Query Builder.
+* Hash password.
+* Rate limiting login.
+* Session timeout.
+* Audit log.
+* Riwayat perubahan nilai.
+* Riwayat perubahan jadwal.
+* Riwayat dokumen.
+* Pembatasan jenis dan ukuran file.
+* Nama file acak.
+* File privat dan akses melalui controller yang berwenang.
+* Pencegahan IDOR.
+* HTTPS pada production.
+* Backup database dan file.
+* Penguncian data setelah selesai.
+* Larangan menyimpan identitas atau data medis sensitif pasien.
+* Log aktivitas tidak boleh menyimpan password atau isi file sensitif.
+
+Data pendidikan disimpan aktif sekurang-kurangnya tiga tahun, kemudian dapat diarsipkan. Jangan menghapus otomatis setelah tiga tahun. Penghapusan hanya berdasarkan kebijakan resmi.
+
+---
+
+# 22. STRUKTUR DATA MINIMAL
+
+Rancang database ter-normalisasi. Nama tabel dapat disesuaikan, tetapi minimal mencakup:
+
+* users
+* roles
+* permissions
+* user_roles
+* role_permissions
+* user_scopes
+* institutions
+* education_levels
+* study_programs
+* departments
+* clinical_locations
+* academic_periods
+* participant_types
+* participants
+* participant_accounts
+* incoming_letters
+* incoming_letter_participants
+* placements
+* placement_status_histories
+* document_types
+* document_requirements
+* participant_documents
+* document_versions
+* educators
+* educator_licenses
+* educator_assignments
+* groups
+* group_members
+* schedules
+* schedule_histories
+* attendances
+* attendance_verifications
+* attendance_summaries
+* attendance_summary_approvals
+* participant_logbooks
+* participant_logbook_versions
+* participant_logbook_reviews
+* educator_logbooks
+* educator_logbook_reviews
+* assessment_templates
+* assessment_components
+* assessments
+* assessment_scores
+* assessment_documents
+* assessment_publications
+* grade_appeals
+* grade_histories
+* survey_templates
+* survey_questions
+* survey_assignments
+* survey_responses
+* completion_checklists
+* completion_approvals
+* electronic_approvals
+* notifications
+* file_uploads
+* audit_logs
+
+Jangan membuat semua tabel sekaligus tanpa menyesuaikan fase. Buat migration sesuai kebutuhan fase aktif.
+
+---
+
+# 23. UI/UX
+
+* Mobile-first.
+* Profesional, bersih, dan cocok untuk lingkungan rumah sakit.
+* Navigasi berbeda sesuai role.
+* Sidebar pada desktop dan navigasi yang nyaman pada mobile.
+* Gunakan tabel responsif atau kartu pada layar kecil.
+* Form panjang dibagi menjadi beberapa bagian.
+* Tampilkan status menggunakan badge yang konsisten.
+* Tampilkan timeline untuk riwayat status.
+* Tampilkan checklist untuk kelengkapan dokumen dan penyelesaian.
+* Tampilkan konfirmasi sebelum tindakan penting.
+* Jelaskan alasan ketika tindakan tidak dapat dilakukan.
+* Jangan hanya mengandalkan warna untuk menyampaikan status.
+* Gunakan empty state, loading state, validation error, dan success message yang jelas.
+* Pastikan tombol dan form nyaman digunakan melalui ponsel.
+* Gunakan komponen Blade yang dapat digunakan kembali.
+
+---
+
+# 24. PWA
+
+Sediakan:
+
+* Web app manifest.
+* Ikon aplikasi.
+* Service worker.
+* Halaman offline dasar.
+* Installable PWA.
+* Cache hanya untuk aset statis yang aman.
+* Jangan cache halaman atau dokumen sensitif secara sembarangan.
+* Setelah logout, data sensitif tidak boleh tetap dapat dibuka dari cache.
+
+---
+
+# 25. PENGUJIAN
+
+Setiap fase harus memiliki pengujian relevan, terutama untuk:
+
+* Login.
+* Hak akses.
+* Pembatasan KSM.
+* Pembuatan peserta.
+* Deteksi duplikat.
+* Penempatan berulang.
+* Transisi status.
+* Verifikasi dokumen.
+* Persetujuan jadwal.
+* Satu presensi per hari.
+* Verifikasi presensi.
+* Pengesahan Ketua KSM.
+* Versi logbook.
+* Publikasi nilai tanpa verifikasi Tim Kordik.
+* Keberatan dan perubahan nilai.
+* Syarat survei pasien per peserta.
+* Checklist penyelesaian.
+* Penguncian data.
+* Akses file privat.
+* Audit log.
+
+Gunakan feature test dan unit test sesuai kebutuhan. Jangan hanya menguji kondisi berhasil; uji juga akses ilegal, input salah, duplikasi, dan perubahan data terkunci.
+
+---
+
+# 26. FASE PENGEMBANGAN
+
+## Fase 0 — Audit dan perencanaan
+
+* Periksa kondisi repository.
+* Periksa versi dependency.
+* Susun arsitektur.
+* Susun ERD.
+* Susun matriks hak akses.
+* Susun alur status.
+* Susun daftar asumsi.
+* Susun rencana migration.
+* Jangan mengimplementasikan modul bisnis sebelum hasil analisis dilaporkan.
+
+## Fase 1 — Fondasi
+
+* Instalasi dan konfigurasi.
+* Login/reset password.
+* Role, permission, dan scope KSM.
+* Manajemen pengguna.
+* Audit log.
+* Master institusi.
+* Master program studi dan jenjang.
+* Master KSM dan lokasi.
+* Master jenis peserta.
+* Master pembimbing/penguji/supervisor.
+* Layout dashboard.
+* PWA dasar.
+
+## Fase 2 — Surat, peserta, dan penempatan
+
+* Surat masuk.
+* Data induk peserta.
+* Deteksi duplikat.
+* Impor Excel.
+* Riwayat penempatan.
+* Konfirmasi KSM.
+* Persetujuan Tim Kordik.
+* Dokumen persyaratan.
+* Aktivasi akun peserta.
+* Riwayat status.
+
+## Fase 3 — Penugasan dan jadwal
+
+* Kelompok jika diperlukan.
+* Penugasan pembimbing/penguji/supervisor.
+* Jadwal peserta.
+* Persetujuan pembimbing.
+* Perubahan jadwal.
+* Perpanjangan stase.
+* Notifikasi.
+
+## Fase 4 — Presensi
+
+* Presensi harian peserta.
+* Verifikasi pembimbing.
+* Pengingat.
+* Rekap presensi.
+* Pengesahan wajib Ketua KSM.
+* Penguncian rekap.
+* Laporan presensi.
+
+## Fase 5 — Logbook
+
+* Unggah dan versi logbook peserta.
+* Verifikasi pembimbing.
+* Logbook pembimbing.
+* Verifikasi supervisor.
+* Pengesahan elektronik.
+* Rekap kegiatan.
+
+## Fase 6 — Penilaian
+
+* Template penilaian dinamis.
+* Komponen penilaian.
+* Unggah formulir institusi.
+* Pengisian nilai.
+* Pengesahan pembimbing.
+* Publikasi langsung oleh pembimbing.
+* Tampilan nilai peserta.
+* Keberatan nilai.
+* Riwayat perubahan.
+
+## Fase 7 — Survei dan penyelesaian
+
+* Survei kepuasan peserta.
+* Kewajiban satu survei pasien per peserta per penempatan.
+* Integrasi tautan Google Form pada MVP.
+* Checklist penyelesaian.
+* Pemeriksaan admin.
+* Persetujuan Tim Kordik.
+* Penguncian penempatan.
+* Arsip.
+
+## Fase 8 — Dashboard, laporan, dan hardening
+
+* Dashboard setiap role.
+* Ekspor Excel/PDF.
+* QR verifikasi dokumen.
+* Penyempurnaan audit log.
+* Optimasi query dan indeks.
+* Pengujian keamanan.
+* Backup.
+* Dokumentasi.
+* UAT.
+
+## Fase lanjutan
+
+* Portal institusi pendidikan.
+* Integrasi SIMRS/data pegawai.
+* SSO.
+* WhatsApp/email.
+* Survei pasien internal.
+* Integrasi PSrE.
+* Analitik mutu pendidikan.
+
+---
+
+# 27. PROTOKOL PENGERJAAN CODEX
+
+Pada awal setiap fase:
+
+1. Periksa kondisi repository dan perubahan yang sudah ada.
+2. Jelaskan ruang lingkup fase.
+3. Sebutkan file dan tabel yang akan dibuat atau diubah.
+4. Sebutkan risiko dan asumsi.
+5. Jangan mengubah pekerjaan pengguna yang tidak berhubungan.
+
+Saat implementasi:
+
+1. Kerjakan hanya fase aktif.
+2. Buat migration dan kode secara terstruktur.
+3. Gunakan transaction untuk proses yang mengubah beberapa tabel.
+4. Terapkan otorisasi pada backend, bukan hanya menyembunyikan tombol.
+5. Tambahkan pengujian.
+6. Jalankan formatter dan test.
+7. Periksa kembali UI desktop dan mobile.
+8. Dokumentasikan keputusan penting.
+
+Setelah fase selesai, laporkan:
+
+* Ringkasan hasil.
+* File yang dibuat atau diubah.
+* Migration yang ditambahkan.
+* Test yang dijalankan dan hasilnya.
+* Masalah atau asumsi.
+* Langkah verifikasi manual.
+* Sisa pekerjaan.
+* Rekomendasi fase berikutnya.
+
+Jangan melanjutkan ke fase berikutnya sebelum fase aktif selesai, diuji, dan mendapatkan instruksi berikutnya.
+
+---
+
+# 28. ACCEPTANCE CRITERIA UTAMA
+
+Sistem dianggap memenuhi alur inti apabila:
+
+* Peserta lama dapat kembali tanpa dibuatkan akun baru.
+* Satu peserta dapat mempunyai banyak penempatan.
+* Penempatan memerlukan persetujuan Tim Kordik setelah koordinasi KSM.
+* Dokumen wajib dapat dibedakan menurut jenis peserta.
+* Peserta dapat menyusun jadwal dan pembimbing dapat menyetujuinya.
+* Presensi hanya satu kali per hari per penempatan.
+* Pembimbing dapat memverifikasi presensi.
+* Ketua KSM wajib mengesahkan rekap akhir.
+* Peserta dapat mengunggah logbook beserta revisinya.
+* Pembimbing dapat memverifikasi logbook peserta.
+* Supervisor dapat memverifikasi logbook pembimbing.
+* Penilaian dapat mengikuti format institusi.
+* Pembimbing dapat memublikasikan nilai tanpa verifikasi Tim Kordik.
+* Peserta dapat mengajukan keberatan nilai.
+* Setiap peserta wajib menyelesaikan satu survei pasien per penempatan.
+* Sistem tidak menyimpan data sensitif pasien.
+* Peserta tidak dapat dinyatakan selesai sebelum checklist lengkap.
+* Penyelesaian disetujui Tim Kordik.
+* Data selesai dikunci.
+* Perubahan administratif mempunyai alasan dan audit log.
+* Seluruh akses dibatasi berdasarkan role, KSM, penugasan, dan kepemilikan data.
+
+---
+
+# INSTRUKSI PERTAMA
+
+Mulailah hanya dengan Fase 0.
+
+Periksa repository yang tersedia. Setelah itu, buat laporan kondisi awal yang berisi:
+
+1. Struktur dan kondisi proyek.
+2. Dependency dan versi yang digunakan.
+3. Kekurangan terhadap kebutuhan master prompt.
+4. Usulan arsitektur aplikasi.
+5. ERD awal.
+6. Matriks role dan permission.
+7. Diagram status proses utama.
+8. Rencana migration per fase.
+9. Risiko keamanan dan privasi.
+10. Daftar asumsi atau pertanyaan yang benar-benar menghambat implementasi.
+11. Rencana pengujian.
+12. Urutan pengerjaan Fase 1.
+
+Jangan mulai mengimplementasikan Fase 1 sebelum analisis Fase 0 selesai dan disetujui.
