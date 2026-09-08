@@ -16,6 +16,8 @@
 !/storage/app/public/.gitignore
 /storage/framework/**
 !/storage/framework/.gitignore
+!/storage/framework/**/
+!/storage/framework/**/.gitignore
 /storage/logs/**
 !/storage/logs/.gitignore
 /bootstrap/cache/*.php

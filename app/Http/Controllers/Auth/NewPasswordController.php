@@ -8,6 +8,7 @@ use App\Services\AuditLogger;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -23,12 +24,15 @@ class NewPasswordController extends Controller
 
     public function store(Request $request, AuditLogger $audit): RedirectResponse
     {
-        $request->validate(['token' => ['required'], 'email' => ['required', 'email'], 'password' => ['required', 'confirmed', 'min:12']]);
+        $request->validate(['token' => ['required', 'string'], 'email' => ['required', 'email'], 'password' => ['required', 'string', 'confirmed', 'min:12']]);
 
         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function (User $user, string $password) use ($audit) {
-            $user->forceFill(['password' => Hash::make($password), 'remember_token' => Str::random(60)])->save();
+            DB::transaction(function () use ($user, $password, $audit) {
+                DB::table('users')->where('id', $user->id)->update(['password' => Hash::make($password), 'remember_token' => Str::random(60), 'updated_at' => now()]);
+                DB::table('sessions')->where('user_id', $user->id)->delete();
+                $audit->log('auth.password_reset', 'user', $user->id, 'Kata sandi pengguna direset.');
+            });
             event(new PasswordReset($user));
-            $audit->log('auth.password_reset', 'user', $user->id, 'Kata sandi pengguna direset.');
         });
 
         if ($status !== Password::PASSWORD_RESET) {

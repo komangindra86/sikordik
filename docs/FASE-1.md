@@ -1,5 +1,7 @@
 # Catatan Implementasi Fase 1 — Fondasi
 
+Status 08-09-2026: koreksi fondasi dan gate Fase 2 selesai. Bukti dan batasan ada pada [checkpoint Fase 1](CHECKPOINT-FASE-1.md). Keputusan bisnis berikutnya mengikuti [keputusan Fase 2](KEPUTUSAN-FASE-2.md).
+
 ## Ruang lingkup selesai
 
 - Laravel 12 dan konfigurasi Bahasa Indonesia/zona waktu Asia/Makassar.
@@ -22,7 +24,7 @@ Tabel cache/jobs bawaan Laravel juga dipertahankan untuk kebutuhan framework dan
 ## Keputusan arsitektur
 
 - Model `User` dipakai hanya untuk kontrak autentikasi Laravel. CRUD dan proses aplikasi menggunakan Query Builder.
-- Role sistem berasal dari `config/rbac.php`. Seeder melakukan sinkronisasi idempotent; permission Super Admin bersifat implisit agar akses administrator tidak dapat terputus akibat salah konfigurasi.
+- Role sistem berasal dari `config/rbac.php`. Seeder hanya memasang role/assignment default yang belum ada, tidak menimpa pengaturan role yang sudah diubah petugas. Permission administratif Super Admin bersifat implisit; file klinis Fase 2 memerlukan policy tersendiri yang tidak mengikuti wildcard ini.
 - Role berbasis KSM (`sekretariat-ksm`, `ketua-ksm`) wajib memiliki minimal satu scope KSM.
 - Master data tidak dihapus melalui UI. Status aktif/nonaktif mempertahankan referensi historis.
 - Setiap update administratif dan perubahan status wajib memuat alasan. Pembuatan data tidak memerlukan alasan.
@@ -32,14 +34,14 @@ Tabel cache/jobs bawaan Laravel juga dipertahankan untuk kebutuhan framework dan
 ## Asumsi dan batas Fase 1
 
 - Scope institusi/penempatan/peserta disiapkan oleh bentuk generik `scope_type` dan akan ditambahkan saat tabel bisnis terkait tersedia.
-- Pengelolaan detail lisensi tenaga pendidik belum diberi layar tersendiri karena tidak diwajibkan sebagai master inti Fase 1; tabel dan constraint sudah tersedia.
+- CRUD lisensi pendidik secara eksplisit ditunda ke Fase 3, sebelum validasi kelayakan penugasan pendidik. Tabel dan constraint sudah tersedia; ini bukan blocker modul surat/peserta Fase 2.
 - Dashboard Fase 1 hanya menampilkan statistik fondasi. Widget proses pendidikan dibuat pada fase bisnis masing-masing.
 - Email reset menggunakan mail driver Laravel. Lingkungan produksi wajib memasang SMTP/provider yang sesuai.
 - HTTPS, backup, dan konfigurasi cookie produksi merupakan pekerjaan deployment/hardening, bukan nilai yang aman untuk dipaksakan pada lingkungan lokal.
 
 ## Verifikasi manual
 
-1. Isi kredensial administrator awal di `.env`, jalankan `php artisan migrate --seed`, lalu kosongkan password bootstrap.
+1. Lokal: jalankan `scripts/php.ps1 artisan migrate --seed`, lalu `scripts/php.ps1 artisan sikordik:bootstrap-local-admin`. Ikuti petunjuk kredensial privat. Produksi memakai secret deployment sesuai [operasional](OPERASIONAL.md).
 2. Masuk dan pastikan menu sesuai role.
 3. Buat KSM, pengguna dengan dua role, dan scope KSM; masuk sebagai pengguna tersebut untuk memeriksa pembatasan.
 4. Ubah master/pengguna dengan alasan, lalu periksa data sebelum/sesudah pada Audit Log.

@@ -6,6 +6,7 @@ use App\Http\Requests\RoleRequest;
 use App\Services\AuditLogger;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RoleController extends Controller
@@ -74,6 +75,15 @@ class RoleController extends Controller
 
     private function syncPermissions(int $roleId, array $permissionIds): void
     {
+        if (! in_array('super-admin', auth()->user()->roleCodes(), true)) {
+            $existing = DB::table('role_permissions')->where('role_id', $roleId)->pluck('permission_id')->all();
+            $permissions = DB::table('permissions')->whereIn('id', array_merge($existing, $permissionIds))->pluck('code');
+            foreach ($permissions as $permission) {
+                if (! auth()->user()->hasPermission($permission)) {
+                    throw ValidationException::withMessages(['permission_ids' => 'Tidak boleh mengelola izin melebihi kewenangan Anda.']);
+                }
+            }
+        }
         DB::table('role_permissions')->where('role_id', $roleId)->delete();
         DB::table('role_permissions')->insert(collect($permissionIds)->map(fn ($permissionId) => ['role_id' => $roleId, 'permission_id' => $permissionId])->all());
     }

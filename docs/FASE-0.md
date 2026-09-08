@@ -3,7 +3,9 @@
 **Tanggal snapshot:** 27-08-2026  
 **Sumber aturan bisnis:** `MASTER PROMPT SIKORDIK.txt`  
 **Sifat audit:** retrospektif; Fase 1 sudah diimplementasikan sebelum laporan Fase 0 disusun  
-**Keputusan gate:** Fase 1 **lulus bersyarat**. Jangan mulai Fase 2 sebelum blocker pada bagian 13 ditutup dan laporan ini disetujui.
+**Keputusan gate saat snapshot:** Fase 1 **lulus bersyarat**.
+
+> Pembaruan 08-09-2026: gate wajib bagian 13 sudah ditutup melalui checkpoint koreksi Fase 1. **Siap memulai pengembangan Fase 2, belum siap produksi.** Baca [checkpoint terbaru](CHECKPOINT-FASE-1.md), [keputusan Fase 2](KEPUTUSAN-FASE-2.md), dan [operasional](OPERASIONAL.md). Isi audit di bawah tetap dipertahankan sebagai snapshot historis 27-08-2026, bukan status terkini.
 
 ## Ringkasan eksekutif
 

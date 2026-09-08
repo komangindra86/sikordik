@@ -18,37 +18,35 @@ copy .env.example .env
 php artisan key:generate
 ```
 
-Atur koneksi MySQL/MariaDB dan kredensial administrator awal pada `.env`:
+Atur koneksi MySQL/MariaDB pada `.env`. Buat database kosong `sikordik` jika belum ada. Untuk lingkungan lokal Laragon yang dipakai proyek ini:
 
 ```dotenv
 DB_DATABASE=sikordik
 DB_USERNAME=root
 DB_PASSWORD=
-INITIAL_ADMIN_NAME="Super Admin"
-INITIAL_ADMIN_EMAIL=admin@example.test
-INITIAL_ADMIN_PASSWORD="gunakan-kata-sandi-kuat"
 ```
 
 Lalu jalankan:
 
-```bash
-php artisan migrate --seed
+```powershell
+.\scripts\php.ps1 artisan migrate --seed
+.\scripts\php.ps1 artisan sikordik:bootstrap-local-admin
 npm run build
-php artisan serve
+.\scripts\php.ps1 artisan serve
 ```
 
-Kosongkan `INITIAL_ADMIN_PASSWORD` setelah akun pertama berhasil dibuat. Seeder tidak menyimpan kata sandi bawaan di source code dan aman dijalankan ulang.
+Bootstrap menghasilkan password acak di file privat yang diabaikan Git. Gunakan handoff yang ditunjukkan perintah, ganti password setelah login, kemudian hapus file handoff. Perintah tidak menimpa akun yang sudah ada. Produksi memakai secret deployment; lihat [operasional](docs/OPERASIONAL.md).
 
 ## Pengujian di Laragon saat ini
 
 PHP 8.2 lokal memiliki DLL SQLite tetapi belum mengaktifkannya di `php.ini`. Test dapat dijalankan tanpa mengubah konfigurasi global:
 
 ```powershell
-& 'C:\laragon\bin\php\php-8.2.27-Win32-vs16-x64\php.exe' -d extension=pdo_sqlite -d extension=sqlite3 vendor\bin\phpunit
-& 'C:\laragon\bin\php\php-8.2.27-Win32-vs16-x64\php.exe' vendor\bin\pint --test
+.\scripts\php.ps1 vendor\bin\phpunit
+.\scripts\php.ps1 vendor\bin\pint --test
 npm run build
 ```
 
 ## Fase aktif
 
-Fase 0 telah disusun sebagai audit retrospektif terhadap fondasi yang ada. Baca `docs/FASE-0.md` untuk arsitektur, ERD, matriks akses, alur status, risiko, dan gate sebelum Fase 2. Implementasi Fase 1 dijelaskan di `docs/FASE-1.md`.
+Fase 0/1 ditutup pada 08-09-2026: **siap mulai pengembangan Fase 2**, belum siap produksi. Bukti verifikasi: [checkpoint Fase 1](docs/CHECKPOINT-FASE-1.md). Aturan yang dipakai fase berikutnya: [keputusan Fase 2](docs/KEPUTUSAN-FASE-2.md). Audit historis: [Fase 0](docs/FASE-0.md); implementasi fondasi: [Fase 1](docs/FASE-1.md).

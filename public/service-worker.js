@@ -7,7 +7,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-    event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== STATIC_CACHE).map(key => caches.delete(key)))));
+    event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('sikordik-static-') && key !== STATIC_CACHE).map(key => caches.delete(key)))));
     self.clients.claim();
 });
 

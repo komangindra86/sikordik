@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Services\AuditLogger;
+use App\Services\UserAccessService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -52,6 +54,7 @@ class UserController extends Controller
 
     public function edit(int $user): View
     {
+        $this->protectAdministrator($user);
         $record = DB::table('users')->where('id', $user)->whereNull('deleted_at')->first();
         abort_unless($record, 404);
 
@@ -64,15 +67,23 @@ class UserController extends Controller
 
     public function update(UserRequest $request, int $user, AuditLogger $audit): RedirectResponse
     {
+        $this->protectAdministrator($user);
         $old = (array) DB::table('users')->where('id', $user)->whereNull('deleted_at')->first();
         abort_unless($old, 404);
         $data = $request->validated();
         $this->validateRoleAssignment($data['role_ids'], $data['department_ids'] ?? []);
 
+        $superRole = DB::table('roles')->where('code', 'super-admin')->value('id');
+        if ($user === (int) auth()->id() && in_array('super-admin', auth()->user()->roleCodes(), true) && ! in_array($superRole, $data['role_ids'])) {
+            throw ValidationException::withMessages(['role_ids' => 'Super Admin tidak dapat mencabut role administrator dari akun sendiri.']);
+        }
+
         DB::transaction(function () use ($data, $user, $old, $audit) {
             $updates = ['name' => $data['name'], 'email' => $data['email'], 'phone' => $data['phone'] ?? null, 'job_title' => $data['job_title'] ?? null, 'updated_at' => now()];
             if (! empty($data['password'])) {
                 $updates['password'] = Hash::make($data['password']);
+                $updates['remember_token'] = Str::random(60);
+                DB::table('sessions')->where('user_id', $user)->delete();
             }
             $oldRoles = DB::table('user_roles')->where('user_id', $user)->pluck('role_id')->all();
             $oldScopes = DB::table('user_scopes')->where('user_id', $user)->where('scope_type', 'department')->pluck('scope_id')->all();
@@ -86,6 +97,7 @@ class UserController extends Controller
 
     public function status(Request $request, int $user, AuditLogger $audit): RedirectResponse
     {
+        $this->protectAdministrator($user);
         $data = $request->validate(['is_active' => ['required', 'boolean'], 'change_reason' => ['required', 'string', 'min:5', 'max:1000']]);
         abort_if($request->user()->id === $user && ! $request->boolean('is_active'), 422, 'Anda tidak dapat menonaktifkan akun sendiri.');
         $old = DB::table('users')->where('id', $user)->whereNull('deleted_at')->value('is_active');
@@ -94,6 +106,7 @@ class UserController extends Controller
         DB::transaction(function () use ($user, $data, $old, $audit) {
             DB::table('users')->where('id', $user)->update(['is_active' => $data['is_active'], 'updated_at' => now()]);
             if (! $data['is_active']) {
+                DB::table('users')->where('id', $user)->update(['remember_token' => Str::random(60)]);
                 DB::table('sessions')->where('user_id', $user)->delete();
             }
             $audit->log('user.status_changed', 'user', $user, 'Status akun pengguna diubah.', $data['change_reason'], ['is_active' => (bool) $old], ['is_active' => (bool) $data['is_active']]);
@@ -114,12 +127,46 @@ class UserController extends Controller
     private function validateRoleAssignment(array $roleIds, array $departmentIds): void
     {
         $roleCodes = DB::table('roles')->whereIn('id', $roleIds)->pluck('code')->all();
+        if (! app(UserAccessService::class)->hasGlobalScope(auth()->user())) {
+            abort_if(array_intersect(['super-admin', 'admin-kordik', 'tim-kordik'], $roleCodes) !== [], 403);
+            abort_if(array_diff($departmentIds, auth()->user()->departmentScopeIds()) !== [], 403);
+        }
         if (in_array('super-admin', $roleCodes, true) && ! in_array('super-admin', request()->user()->roleCodes(), true)) {
             throw ValidationException::withMessages(['role_ids' => 'Hanya Super Admin yang dapat menetapkan role Super Admin.']);
         }
         $scopedRoles = ['sekretariat-ksm', 'ketua-ksm'];
         if (array_intersect($scopedRoles, $roleCodes) && $departmentIds === []) {
             throw ValidationException::withMessages(['department_ids' => 'Minimal satu scope KSM wajib dipilih untuk role berbasis KSM.']);
+        }
+
+        if (! in_array('super-admin', auth()->user()->roleCodes(), true)) {
+            $permissions = DB::table('role_permissions')->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')->whereIn('role_id', $roleIds)->pluck('permissions.code');
+            foreach ($permissions as $permission) {
+                if (! auth()->user()->hasPermission($permission)) {
+                    throw ValidationException::withMessages(['role_ids' => 'Tidak boleh memberikan izin melebihi kewenangan Anda.']);
+                }
+            }
+        }
+    }
+
+    private function protectAdministrator(int $userId): void
+    {
+        if (in_array('super-admin', auth()->user()->roleCodes(), true)) {
+            return;
+        }
+        $isAdministrator = DB::table('user_roles')->join('roles', 'roles.id', '=', 'user_roles.role_id')
+            ->where('user_id', $userId)->where('roles.code', 'super-admin')->exists();
+        abort_if($isAdministrator, 403, 'Akun Super Admin hanya boleh dikelola Super Admin.');
+        $permissions = DB::table('user_roles')->join('role_permissions', 'role_permissions.role_id', '=', 'user_roles.role_id')
+            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+            ->where('user_id', $userId)->pluck('permissions.code');
+        foreach ($permissions as $permission) {
+            abort_unless(auth()->user()->hasPermission($permission), 403, 'Akun memiliki kewenangan lebih tinggi.');
+        }
+        if (! app(UserAccessService::class)->hasGlobalScope(auth()->user())) {
+            $targetRoles = DB::table('user_roles')->join('roles', 'roles.id', '=', 'user_roles.role_id')->where('user_id', $userId)->pluck('roles.code')->all();
+            $scopes = DB::table('user_scopes')->where('user_id', $userId)->where('scope_type', 'department')->pluck('scope_id')->all();
+            abort_if(array_intersect(['admin-kordik', 'tim-kordik'], $targetRoles) !== [] || array_diff($scopes, auth()->user()->departmentScopeIds()) !== [], 403);
         }
     }
 

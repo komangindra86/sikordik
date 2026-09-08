@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::transaction(fn () => $this->seedFoundation());
+    }
+
+    private function seedFoundation(): void
+    {
         $now = now();
 
         foreach (config('rbac.permissions') as $code => [$name, $module]) {
@@ -26,12 +31,14 @@ class DatabaseSeeder extends Seeder
         }
 
         foreach (config('rbac.roles') as $code => [$name, $permissionCodes]) {
-            DB::table('roles')->updateOrInsert(
-                ['code' => $code],
-                ['name' => $name, 'is_system' => true, 'updated_at' => $now, 'created_at' => $now],
-            );
-            $roleId = DB::table('roles')->where('code', $code)->value('id');
-            DB::table('role_permissions')->where('role_id', $roleId)->delete();
+            // Running the seeder again must not undo an administrator's access decisions.
+            if (DB::table('roles')->where('code', $code)->exists()) {
+                continue;
+            }
+            $roleId = DB::table('roles')->insertGetId([
+                'code' => $code, 'name' => $name, 'is_system' => true,
+                'updated_at' => $now, 'created_at' => $now,
+            ]);
 
             if ($permissionCodes !== ['*']) {
                 $permissionIds = DB::table('permissions')->whereIn('code', $permissionCodes)->pluck('id');
@@ -44,13 +51,12 @@ class DatabaseSeeder extends Seeder
             ['code' => 'RESIDEN', 'name' => 'Residen'],
             ['code' => 'NONKEDOKTERAN', 'name' => 'Nonkedokteran'],
         ] as $participantType) {
-            DB::table('participant_types')->updateOrInsert(
-                ['code' => $participantType['code']],
-                array_merge($participantType, ['is_active' => true, 'created_at' => $now, 'updated_at' => $now]),
-            );
+            DB::table('participant_types')->insertOrIgnore(array_merge($participantType, [
+                'is_active' => true, 'created_at' => $now, 'updated_at' => $now,
+            ]));
         }
 
-        $email = env('INITIAL_ADMIN_EMAIL');
+        $email = mb_strtolower(trim((string) env('INITIAL_ADMIN_EMAIL')));
         $password = env('INITIAL_ADMIN_PASSWORD');
         if ($email && $password && ! DB::table('users')->where('email', $email)->exists()) {
             $userId = DB::table('users')->insertGetId([
