@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdmissionsController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -24,6 +25,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::prefix('presensi')->name('attendance.')->controller(AttendanceController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/laporan/{ulid}', 'report')->name('report');
+        Route::get('/penempatan/{ulid}', 'show')->name('show');
+        Route::post('/penempatan/{ulid}', 'save')->name('save');
+        Route::post('/penempatan/{ulid}/rekap', 'summary')->name('summary');
+        Route::post('/{ulid}/verifikasi', 'decide')->name('decide');
+        Route::post('/{ulid}/pengganti', 'replaceVerifier')->name('replace');
+    });
     Route::prefix('penjadwalan')->name('scheduling.')->controller(SchedulingController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/lisensi', 'licenses')->name('licenses');

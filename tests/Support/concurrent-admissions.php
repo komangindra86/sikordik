@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Services\AttendanceService;
 use App\Services\ParticipantService;
 use App\Services\PlacementService;
 use App\Services\ScheduleService;
@@ -32,6 +33,10 @@ try {
     } elseif ($input['action'] === 'schedule') {
         Carbon::setTestNow('2026-09-09 10:00:00');
         app(ScheduleService::class)->transition($actor, $input['ulid'], $input['payload']);
+    } elseif (in_array($input['action'], ['attendance-save', 'attendance-decide', 'attendance-summary'])) {
+        Carbon::setTestNow('2026-10-11 10:00:00');
+        $method = substr($input['action'], strlen('attendance-'));
+        app(AttendanceService::class)->$method($actor, $input['ulid'], $input['payload']);
     } else {
         app(ParticipantService::class)->create($actor, $input['payload']);
     }

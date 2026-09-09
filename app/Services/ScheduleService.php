@@ -28,6 +28,7 @@ class ScheduleService
 
         return DB::transaction(function () use ($u, $placement, $d, $ulid) {
             $p = app(PlacementService::class)->locked($placement);
+            app(AttendanceService::class)->assertCalendarMutable($p);
             $this->editor($u, $p);
             abort_unless(in_array($p->status, self::OPEN_PLACEMENTS), 422, 'Penempatan belum terverifikasi atau sudah ditutup.');
             $old = $ulid ? DB::table('schedules')->where('ulid', $ulid)->where('placement_id', $p->id)->lockForUpdate()->firstOrFail() : null;
@@ -44,6 +45,7 @@ class ScheduleService
             }
             if ($d['replaces_id'] ?? null) {
                 $target = DB::table('schedules')->where('id', $d['replaces_id'])->where('placement_id', $p->id)->lockForUpdate()->firstOrFail();
+                abort_if(DB::table('attendances')->where('placement_id', $p->id)->where('date', $target->date)->lockForUpdate()->exists(), 422, 'Hari yang sudah memiliki presensi tidak dapat diubah melalui jadwal.');
                 abort_unless($target->status === 'published', 422, 'Hanya jadwal terbit yang dapat diajukan perubahan.');
                 abort_if(DB::table('schedules')->where('replaces_id', $target->id)->whereIn('status', ['draft', 'revision', 'submitted', 'approved'])->when($old, fn ($q) => $q->where('id', '!=', $old->id))->exists(), 422, 'Sudah ada permohonan perubahan aktif.');
                 $values['replaces_revision'] = $target->revision;
@@ -105,6 +107,7 @@ class ScheduleService
         DB::transaction(function () use ($u, $ulid, $d) {
             $s = DB::table('schedules')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $s->placement_id)->value('ulid'));
+            app(AttendanceService::class)->assertCalendarMutable($p);
             $s = DB::table('schedules')->where('id', $s->id)->lockForUpdate()->first();
             app(SchedulingAccess::class)->placement($u, $p->ulid);
             abort_unless(in_array($p->status, self::OPEN_PLACEMENTS) && $s->revision == $d['revision'], 422, 'Penempatan terkunci atau jadwal berubah.');
@@ -132,6 +135,7 @@ class ScheduleService
             $target = null;
             if ($s->replaces_id && in_array($action, ['submit', 'approve', 'publish'])) {
                 $target = DB::table('schedules')->where('id', $s->replaces_id)->lockForUpdate()->firstOrFail();
+                abort_if(DB::table('attendances')->where('placement_id', $p->id)->where('date', $target->date)->lockForUpdate()->exists(), 422, 'Hari yang sudah memiliki presensi tidak dapat diganti atau dibatalkan.');
                 abort_unless($target->status === 'published' && $target->revision == $s->replaces_revision, 422, 'Jadwal asal berubah. Ajukan ulang.');
             }
             if (in_array($action, ['submit', 'approve', 'publish'])) {

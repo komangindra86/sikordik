@@ -15,6 +15,7 @@ class PlacementExtensionService
         $d = Validator::make($input, ['new_end_date' => 'required|date_format:Y-m-d', 'revision' => 'required|integer|min:1', 'reason' => 'required|string|min:10|max:2000', 'supporting_file_id' => 'nullable|integer'])->validate();
         DB::transaction(function () use ($u, $ulid, $d) {
             $p = app(PlacementService::class)->locked($ulid);
+            app(AttendanceService::class)->assertCalendarMutable($p);
             abort_unless(in_array($p->status, ScheduleService::OPEN_PLACEMENTS) && $p->revision == $d['revision'] && $d['new_end_date'] > $p->end_date, 422, 'Perpanjangan tidak sah atau data berubah.');
             abort_if(DB::table('placement_extensions')->where('placement_id', $p->id)->whereIn('status', ['pending_ksm', 'pending_kordik'])->exists(), 422, 'Permohonan perpanjangan masih aktif.');
             $candidate = clone $p;
@@ -40,6 +41,7 @@ class PlacementExtensionService
             $e = DB::table('placement_extensions')->where('ulid', $ulid)->firstOrFail();
             $service = app(PlacementService::class);
             $p = $service->locked(DB::table('placements')->where('id', $e->placement_id)->value('ulid'));
+            app(AttendanceService::class)->assertCalendarMutable($p);
             $e = DB::table('placement_extensions')->where('id', $e->id)->lockForUpdate()->first();
             abort_unless(in_array($e->status, ['pending_ksm', 'pending_kordik']) && $e->revision == $d['revision'], 422, 'Permohonan sudah berubah.');
             $a = app(SchedulingAccess::class);

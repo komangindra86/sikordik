@@ -49,9 +49,11 @@ npm run build
 
 ## Fase aktif
 
-Fase 3: penugasan pembimbing/penguji/supervisor, lisensi, kelompok, jadwal, persetujuan dan revisi, perpanjangan stase, serta notifikasi internal. Akses melalui menu **Penugasan & jadwal**. Implementasi dan verifikasi: [Fase 3](docs/FASE-3.md). Aturan bisnis: [keputusan Fase 3](docs/KEPUTUSAN-FASE-3.md).
+Fase 4: presensi harian, verifikasi pembimbing, verifikator pengganti, pengingat internal, rekap akhir, pengesahan wajib Ketua KSM, penguncian, koreksi beralasan, dan laporan privat. Akses melalui menu **Presensi**. Implementasi dan verifikasi: [Fase 4](docs/FASE-4.md). Aturan bisnis: [keputusan Fase 4](docs/KEPUTUSAN-FASE-4.md).
 
-Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 3. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 4 belum dimulai.
+Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 4. Pengingat pukul 16.00 memerlukan Laravel scheduler (`artisan schedule:run` setiap menit); command manual: `scripts/php.ps1 artisan sikordik:remind-attendance`. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 5 belum dimulai.
+
+Penugasan dan jadwal tetap tersedia: [Fase 3](docs/FASE-3.md), [keputusan Fase 3](docs/KEPUTUSAN-FASE-3.md).
 
 Penerimaan tetap tersedia melalui menu **Penerimaan & penempatan**: [Fase 2](docs/FASE-2.md), [keputusan Fase 2](docs/KEPUTUSAN-FASE-2.md).
 
