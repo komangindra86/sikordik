@@ -1,0 +1,11 @@
+<x-layouts.app title="Surat masuk">
+    @include('admissions.nav')<h1 class="mb-5 text-2xl font-bold">Surat masuk</h1>
+    <details class="card mb-6" @if($errors->any()) open @endif><summary class="cursor-pointer font-bold">Catat surat masuk</summary><form class="mt-4 grid gap-4 md:grid-cols-2" method="POST" action="{{ route('admissions.letter-store') }}">@csrf
+        <label>Institusi pengirim<select name="institution_id" required><option value="">Pilih institusi</option>@foreach($institutions as $i)<option value="{{ $i->id }}" @selected(old('institution_id') == $i->id)>{{ $i->name }}</option>@endforeach</select></label>
+        <label>Nomor surat<input name="number" value="{{ old('number') }}" maxlength="191" required></label><label>Tanggal surat<input type="date" name="letter_date" value="{{ old('letter_date') }}" required></label><label>Perihal<input name="subject" value="{{ old('subject') }}" maxlength="255" required></label><div><button class="btn-primary">Simpan surat</button></div>
+    </form></details>
+    <div class="space-y-4">@forelse($letters as $letter)<div class="card"><h2 class="font-bold">{{ $letter->number }}</h2><a class="mt-2 inline-block text-sm text-brand-700 underline" href="{{ route('admissions.create', ['letter' => $letter->ulid]) }}">Tambah peserta pada surat ini</a><p class="mt-1 text-sm">{{ $letter->letter_date }} · {{ $letter->subject }}</p>
+        @if(app(\App\Services\AdmissionsAccess::class)->role(auth()->user(), ['admin-kordik']))<details class="mt-4"><summary class="cursor-pointer text-brand-700">Berkas surat dan versi</summary><div class="mt-3">@include('admissions.upload', ['resource' => 'letter', 'resourceUlid' => $letter->ulid, 'categories' => ['surat']])</div>
+        @foreach(\Illuminate\Support\Facades\DB::table('private_files')->where('resource_type','letter')->where('resource_id',$letter->id)->orderByDesc('version')->get() as $file)<p class="mt-2 text-sm">Versi {{ $file->version }} · {{ $file->scan_status }} @if($file->scan_status === 'clean')<a class="text-brand-700 underline" href="{{ route('admissions.download', $file->ulid) }}">Unduh</a>@endif</p>@endforeach</details>@endif
+    </div>@empty<div class="card text-slate-500">Belum ada surat masuk. Master institusi harus diisi petugas terlebih dahulu.</div>@endforelse</div><div class="mt-4">{{ $letters->links() }}</div>
+</x-layouts.app>

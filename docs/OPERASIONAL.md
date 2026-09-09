@@ -50,3 +50,16 @@ Tutup terminal test setelah selesai agar override tidak terbawa ke perintah apli
 9. Uji browser/mobile, installability PWA, CSRF nyata, logout/offline dan larangan cache dokumen pada lingkungan HTTPS produksi. Pengujian HTTP PHPUnit tidak menggantikan uji lintas browser atau uji penetrasi.
 
 Kesiapan memulai pengembangan Fase 2 tidak sama dengan izin meluncurkan sistem ke produksi atau menggunakan data pribadi nyata.
+# Operasional berkas Fase 2
+
+Konfigurasikan `CLAMAV_HOST`, `CLAMAV_PORT` (default 127.0.0.1:3310) dan `QPDF_BINARY` (path executable qpdf). Jalankan clamd pada jaringan privat; jangan mengekspos port scanner ke internet. Pastikan PHP memiliki fileinfo, zip, SimpleXML, GD, dan akses executable qpdf. Atur batas upload PHP/web server agar mendukung file 10 MB dan overhead multipart. Pemindai/pemeriksa yang tidak tersedia membuat file tetap tertahan.
+
+Pemeriksaan ulang karantina:
+
+```powershell
+.\scripts\php.ps1 artisan sikordik:scan-private-files --limit=50
+```
+
+Perintah tidak menganggap error sebagai bersih dan tidak menghapus/menimpa versi. Untuk impor yang sebelumnya tertahan, setelah scanner siap unggah ulang sumber yang sama untuk membuat pratinjau. Pantau `pending`, `held`, `infected`, dan `invalid` melalui metadata/audit; reviewer tidak boleh mengubah status bersih langsung melalui SQL. Qpdf yang gagal memeriksa struktur harus ditangani sebagai berkas tertahan. Scanner malware tidak membuktikan file bebas identitas pasien.
+
+Belum ada penghapusan terjadwal. Tinjau karantina yatim setelah 7 hari dan sumber/laporan impor setelah 90 hari sesuai kebijakan yang disahkan, dengan pemeriksaan legal hold/bukti bisnis/backup. Jangan membersihkan dokumen yang sudah terkait placement sebagai file sementara.

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdmissionsController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -22,6 +23,34 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::prefix('penerimaan')->name('admissions.')->controller(AdmissionsController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/peserta', 'participants')->name('participants');
+        Route::post('/peserta/pratinjau', 'previewParticipant')->name('participant-preview');
+        Route::post('/peserta', 'storeParticipant')->name('participant-store');
+        Route::post('/peserta/{ulid}/aktivasi', 'activate')->name('activate');
+        Route::get('/peserta/{ulid}/ubah', 'editParticipant')->name('participant-edit');
+        Route::post('/peserta/{ulid}/ubah', 'updateParticipant')->name('participant-update');
+        Route::get('/surat', 'letters')->name('letters');
+        Route::post('/surat', 'storeLetter')->name('letter-store');
+        Route::get('/impor', 'imports')->name('imports');
+        Route::post('/impor', 'previewImport')->name('import-preview');
+        Route::get('/impor/{ulid}', 'showImport')->name('import');
+        Route::post('/impor/{ulid}', 'commitImport')->name('import-commit');
+        Route::get('/persyaratan', 'templates')->name('templates');
+        Route::post('/persyaratan', 'storeTemplate')->name('template-store');
+        Route::post('/persyaratan/{id}/nonaktif', 'disableTemplate')->whereNumber('id')->name('template-disable');
+        Route::get('/penempatan/tambah', 'create')->name('create');
+        Route::post('/penempatan', 'store')->name('store');
+        Route::get('/penempatan/{ulid}', 'show')->name('show');
+        Route::post('/penempatan/{ulid}/status', 'transition')->name('transition');
+        Route::post('/penempatan/{ulid}/periode', 'period')->name('period');
+        Route::post('/penempatan/{ulid}/pengecualian', 'requestOverlap')->name('exception');
+        Route::post('/pengecualian/{ulid}/keputusan', 'decideException')->name('exception-decide');
+        Route::post('/penempatan/{ulid}/dokumen', 'review')->name('review');
+        Route::post('/berkas/{resource}/{ulid}', 'upload')->middleware('throttle:20,1')->name('upload');
+        Route::get('/berkas/{ulid}', 'download')->name('download');
+    });
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', DashboardController::class)->middleware('permission:dashboard.view')->name('dashboard');
 

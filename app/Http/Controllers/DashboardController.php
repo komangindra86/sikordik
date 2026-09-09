@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AdmissionsAccess;
 use App\Services\UserAccessService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -20,6 +21,14 @@ class DashboardController extends Controller
             ['label' => 'KSM dalam cakupan', 'value' => $access->scopeDepartments(DB::table('departments')->where('is_active', true), auth()->user(), 'id')->count(), 'hint' => 'KSM yang ditugaskan kepada Anda'],
         ];
 
-        return view('dashboard', compact('stats'));
+        $placements = app(AdmissionsAccess::class)->placements(auth()->user());
+        $admissions = [
+            ['label' => 'Menunggu KSM', 'value' => (clone $placements)->where('status', 'menunggu_konfirmasi_ksm')->count()],
+            ['label' => 'Menunggu Kordik', 'value' => (clone $placements)->where('status', 'menunggu_persetujuan_kordik')->count()],
+            ['label' => 'Menunggu dokumen', 'value' => (clone $placements)->where('status', 'menunggu_dokumen')->count()],
+            ['label' => 'Terverifikasi', 'value' => (clone $placements)->where('status', 'terverifikasi')->count()],
+        ];
+
+        return view('dashboard', compact('stats', 'admissions'));
     }
 }

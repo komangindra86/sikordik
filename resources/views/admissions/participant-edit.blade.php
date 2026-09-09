@@ -1,0 +1,12 @@
+<x-layouts.app title="Ubah data peserta">
+    @include('admissions.nav')<h1 class="mb-4 text-2xl font-bold">Ubah data induk · {{ $p->number }}</h1>
+    <form class="card grid gap-4 md:grid-cols-2" method="POST" action="{{ route('admissions.participant-update', $p->ulid) }}">@csrf
+        <input type="hidden" name="expected_hash" value="{{ \App\Services\ParticipantService::identityHash($p) }}">
+        @foreach(['name' => 'Nama', 'birth_date' => 'Tanggal lahir', 'nik' => 'NIK', 'nim' => 'NIM', 'email' => 'Email kontak'] as $key => $label)<label>{{ $label }}<input name="{{ $key }}" type="{{ $key === 'birth_date' ? 'date' : ($key === 'email' ? 'email' : 'text') }}" value="{{ old($key, $p->$key) }}" @required($key === 'name')></label>@endforeach
+        <label>Institusi<select name="institution_id" required>@foreach($institutions as $i)<option value="{{ $i->id }}" @selected(old('institution_id', $p->institution_id) == $i->id)>{{ $i->name }}</option>@endforeach</select></label>
+        <label>Alasan perubahan<textarea name="reason" minlength="10" maxlength="2000" required>{{ old('reason') }}</textarea></label><label>Alasan kandidat berbeda orang (jika ada)<textarea name="duplicate_reason" minlength="10" maxlength="2000">{{ old('duplicate_reason') }}</textarea></label><div><button class="btn-primary">Simpan perubahan</button></div>
+    </form>
+    @if(app(\App\Services\AdmissionsAccess::class)->role(auth()->user(), ['admin-kordik']))<section class="card mt-5"><h2 class="mb-4 font-bold">Foto peserta privat</h2>
+    <form class="space-y-3" method="POST" enctype="multipart/form-data" action="{{ route('admissions.upload', ['participant', $p->ulid]) }}">@csrf<input type="hidden" name="category" value="foto"><label class="block">Foto JPEG, PNG, WebP; maksimum 3 MB<input type="file" name="file" accept=".jpg,.jpeg,.png,.webp" required></label><label class="flex gap-2"><input type="checkbox" name="deidentified" value="1" required> Foto tidak memuat identitas pasien.</label><button class="btn-secondary">Unggah versi foto</button></form>
+    @foreach(\Illuminate\Support\Facades\DB::table('private_files')->where('resource_type','participant')->where('resource_id',$p->id)->orderByDesc('version')->get() as $f)<p class="mt-3 text-sm">Versi {{ $f->version }} · {{ $f->scan_status }} @if($f->scan_status === 'clean')<a class="text-brand-700 underline" href="{{ route('admissions.download', $f->ulid) }}">Unduh</a>@endif</p>@endforeach</section>@endif
+</x-layouts.app>

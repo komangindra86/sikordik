@@ -1,0 +1,9 @@
+<x-layouts.app title="Tambah penempatan">
+    @include('admissions.nav')<h1 class="mb-2 text-2xl font-bold">Tambah penempatan</h1><p class="mb-5 text-sm text-slate-500">Satu surat dapat digunakan untuk beberapa peserta. Kunjungan kembali tetap memakai data induk peserta lama.</p>
+    <form class="card grid gap-4 md:grid-cols-2" method="POST" action="{{ route('admissions.store') }}">@csrf
+        <label>Peserta<select name="participant_ulid" required><option value="">Pilih peserta</option>@foreach($participants as $p)<option value="{{ $p->ulid }}" @selected(old('participant_ulid', request('participant')) === $p->ulid)>{{ $p->number }} · {{ $p->name }}</option>@endforeach</select><span class="text-xs font-normal">Menampilkan 100 terbaru. Gunakan pencarian Data peserta untuk data lama.</span></label>
+        <label>Surat masuk<select name="letter_ulid" required><option value="">Pilih surat</option>@foreach($letters as $l)<option value="{{ $l->ulid }}" @selected(old('letter_ulid', request('letter')) === $l->ulid)>{{ $l->number }} · {{ $l->letter_date }}</option>@endforeach</select></label>
+        @foreach(['study_program_id' => ['Program studi', $study_programs], 'participant_type_id' => ['Jenis peserta', $participant_types], 'department_id' => ['KSM tujuan', $departments]] as $key => [$label, $options])<label>{{ $label }}<select name="{{ $key }}" required><option value="">Pilih</option>@foreach($options as $o)<option value="{{ $o->id }}" @selected(old($key) == $o->id)>{{ $o->name }}</option>@endforeach</select></label>@endforeach
+        <label>Tanggal mulai<input type="date" name="start_date" value="{{ old('start_date') }}" required></label><label>Tanggal selesai (inklusif)<input type="date" name="end_date" value="{{ old('end_date') }}" required></label><div class="md:col-span-2"><button class="btn-primary">Simpan draft penempatan</button></div>
+    </form>
+</x-layouts.app>

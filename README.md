@@ -49,4 +49,8 @@ npm run build
 
 ## Fase aktif
 
-Fase 0/1 ditutup pada 08-09-2026: **siap mulai pengembangan Fase 2**, belum siap produksi. Bukti verifikasi: [checkpoint Fase 1](docs/CHECKPOINT-FASE-1.md). Aturan yang dipakai fase berikutnya: [keputusan Fase 2](docs/KEPUTUSAN-FASE-2.md). Audit historis: [Fase 0](docs/FASE-0.md); implementasi fondasi: [Fase 1](docs/FASE-1.md).
+Fase 2: penerimaan, peserta, surat, penempatan, persetujuan, checklist, file privat, impor XLSX, aktivasi akun, dan histori. Akses melalui menu **Penerimaan & penempatan**. Implementasi dan verifikasi: [Fase 2](docs/FASE-2.md). Aturan bisnis: [keputusan Fase 2](docs/KEPUTUSAN-FASE-2.md).
+
+Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 2. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 3 belum dimulai.
+
+Riwayat fondasi: [checkpoint Fase 1](docs/CHECKPOINT-FASE-1.md), [audit Fase 0](docs/FASE-0.md), [Fase 1](docs/FASE-1.md).
