@@ -1,5 +1,7 @@
 <div class="mb-6 flex items-center gap-3"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 font-bold text-white">SK</div><div><p class="font-bold text-slate-900">SIKORDIK</p><p class="text-xs text-slate-500">Pendidikan Klinis RSBM</p></div></div>
 <nav class="space-y-1">
+    <a class="nav-link {{ request()->routeIs('scheduling.*') ? 'nav-link-active' : '' }}" href="{{ route('scheduling.index') }}">Penugasan & jadwal</a>
+    <a class="nav-link" href="{{ route('scheduling.notifications') }}">Notifikasi</a>
     <a class="nav-link {{ request()->routeIs('admissions.*') ? 'nav-link-active' : '' }}" href="{{ route('admissions.index') }}">Penerimaan & penempatan</a>
     @if(auth()->user()->hasPermission('dashboard.view'))<a class="nav-link {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>@endif
     @if(auth()->user()->hasPermission('users.view'))<a class="nav-link {{ request()->routeIs('users.*') ? 'nav-link-active' : '' }}" href="{{ route('users.index') }}">Manajemen pengguna</a>@endif

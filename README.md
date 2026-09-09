@@ -49,8 +49,10 @@ npm run build
 
 ## Fase aktif
 
-Fase 2: penerimaan, peserta, surat, penempatan, persetujuan, checklist, file privat, impor XLSX, aktivasi akun, dan histori. Akses melalui menu **Penerimaan & penempatan**. Implementasi dan verifikasi: [Fase 2](docs/FASE-2.md). Aturan bisnis: [keputusan Fase 2](docs/KEPUTUSAN-FASE-2.md).
+Fase 3: penugasan pembimbing/penguji/supervisor, lisensi, kelompok, jadwal, persetujuan dan revisi, perpanjangan stase, serta notifikasi internal. Akses melalui menu **Penugasan & jadwal**. Implementasi dan verifikasi: [Fase 3](docs/FASE-3.md). Aturan bisnis: [keputusan Fase 3](docs/KEPUTUSAN-FASE-3.md).
 
-Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 2. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 3 belum dimulai.
+Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 3. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 4 belum dimulai.
+
+Penerimaan tetap tersedia melalui menu **Penerimaan & penempatan**: [Fase 2](docs/FASE-2.md), [keputusan Fase 2](docs/KEPUTUSAN-FASE-2.md).
 
 Riwayat fondasi: [checkpoint Fase 1](docs/CHECKPOINT-FASE-1.md), [audit Fase 0](docs/FASE-0.md), [Fase 1](docs/FASE-1.md).

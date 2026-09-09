@@ -272,8 +272,8 @@ class PlacementService
         abort_unless($data['status'] === 'exception' ? $access->role($actor, ['tim-kordik']) : $access->role($actor, ['admin-kordik']), 403);
         DB::transaction(function () use ($actor, $ulid, $data) {
             $p = $this->locked($ulid);
-            if ($p->status !== 'menunggu_dokumen') {
-                $this->fail('Review dokumen hanya pada antrean menunggu dokumen.');
+            if (! in_array($p->status, ['menunggu_dokumen', 'terverifikasi', 'dijadwalkan', 'sedang_stase'])) {
+                $this->fail('Review dokumen tidak tersedia pada status ini.');
             }
             $doc = DB::table('placement_documents')->where('placement_id', $p->id)->where('code', $data['code'])->firstOrFail();
             $file = null;
@@ -293,7 +293,7 @@ class PlacementService
         }, 5);
     }
 
-    private function checkDocuments(object $p): void
+    public function checkDocuments(object $p): void
     {
         foreach (DB::table('placement_documents')->where('placement_id', $p->id)->lockForUpdate()->get() as $doc) {
             if ($doc->status === 'exception') {
@@ -305,7 +305,7 @@ class PlacementService
         }
     }
 
-    private function history(User $actor, object $p, ?string $from, string $action, ?string $reason): void
+    public function history(User $actor, object $p, ?string $from, string $action, ?string $reason): void
     {
         DB::table('placement_histories')->insert(['placement_id' => $p->id, 'from_status' => $from, 'to_status' => $p->status, 'action' => $action, 'reason' => $reason, 'actor_id' => $actor->id, 'snapshot' => json_encode((array) $p, JSON_THROW_ON_ERROR), 'created_at' => now()]);
         app(AuditLogger::class)->log('placement.'.$action, 'placement', $p->ulid, reason: $reason, newValues: ['actor_id' => $actor->id, 'from' => $from, 'to' => $p->status, 'revision' => $p->revision]);

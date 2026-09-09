@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SchedulingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,27 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::prefix('penjadwalan')->name('scheduling.')->controller(SchedulingController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/lisensi', 'licenses')->name('licenses');
+        Route::post('/lisensi', 'license')->name('license');
+        Route::get('/notifikasi', 'notifications')->name('notifications');
+        Route::post('/notifikasi/{ulid}', 'readNotification')->name('notification-read');
+        Route::post('/kelompok', 'group')->name('group');
+        Route::post('/keanggotaan/{id}/akhir', 'endMembership')->whereNumber('id')->name('membership-end');
+        Route::post('/penugasan/{ulid}/keputusan', 'decideAssignment')->name('assignment-decide');
+        Route::post('/perpanjangan/{ulid}/keputusan', 'decideExtension')->name('extension-decide');
+        Route::post('/jadwal/{ulid}/status', 'transition')->name('transition');
+        Route::get('/penempatan/{ulid}', 'show')->name('show');
+        Route::post('/penempatan/{ulid}/penugasan', 'assignment')->name('assignment');
+        Route::post('/penempatan/{ulid}/kelompok', 'join')->name('join');
+        Route::post('/penempatan/{ulid}/perpanjangan', 'extension')->name('extension');
+        Route::post('/penempatan/{ulid}/mulai', 'start')->name('start');
+        Route::get('/penempatan/{ulid}/jadwal/tambah', 'form')->name('create');
+        Route::post('/penempatan/{ulid}/jadwal', 'save')->name('store');
+        Route::get('/penempatan/{ulid}/jadwal/{schedule}', 'form')->name('edit');
+        Route::post('/penempatan/{ulid}/jadwal/{schedule}', 'save')->name('update');
+    });
     Route::prefix('penerimaan')->name('admissions.')->controller(AdmissionsController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/peserta', 'participants')->name('participants');
