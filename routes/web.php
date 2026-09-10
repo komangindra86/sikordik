@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchedulingController;
@@ -25,6 +26,18 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::prefix('logbook')->name('logbooks.')->controller(LogbookController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/berkas/{ulid}', 'download')->name('download');
+        Route::get('/penempatan/{ulid}', 'placement')->name('placement');
+        Route::get('/penempatan/{ulid}/rekap', 'report')->name('report');
+        Route::get('/penempatan/{ulid}/tambah', 'form')->name('create');
+        Route::post('/penempatan/{ulid}', 'save')->middleware('throttle:20,1')->name('store');
+        Route::get('/penempatan/{ulid}/{logbook}/versi', 'form')->name('edit');
+        Route::post('/penempatan/{ulid}/{logbook}/versi', 'save')->middleware('throttle:20,1')->name('update');
+        Route::get('/{ulid}', 'show')->name('show');
+        Route::post('/{ulid}/status', 'transition')->name('transition');
+    });
     Route::prefix('presensi')->name('attendance.')->controller(AttendanceController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/laporan/{ulid}', 'report')->name('report');

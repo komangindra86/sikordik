@@ -51,9 +51,11 @@ npm run build
 
 Untuk mencoba alur tanpa input manual, tersedia [paket latihan DUMMY lokal](docs/LATIHAN-DUMMY.md). Akun/password dan panduan latihan tersimpan privat setelah menjalankan `scripts/php.ps1 artisan sikordik:seed-local-demo`.
 
-Fase 4: presensi harian, verifikasi pembimbing, verifikator pengganti, pengingat internal, rekap akhir, pengesahan wajib Ketua KSM, penguncian, koreksi beralasan, dan laporan privat. Akses melalui menu **Presensi**. Implementasi dan verifikasi: [Fase 4](docs/FASE-4.md). Aturan bisnis: [keputusan Fase 4](docs/KEPUTUSAN-FASE-4.md).
+Fase 5: unggah dan versi PDF logbook peserta, verifikasi pembimbing, logbook kegiatan pembimbing, pemeriksaan supervisor, pengesahan internal, dan rekap kegiatan privat. Akses melalui menu **Logbook**. Implementasi dan verifikasi: [Fase 5](docs/FASE-5.md). Aturan bisnis: [keputusan Fase 5](docs/KEPUTUSAN-FASE-5.md).
 
-Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 4. Pengingat pukul 16.00 memerlukan Laravel scheduler (`artisan schedule:run` setiap menit); command manual: `scripts/php.ps1 artisan sikordik:remind-attendance`. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 5 belum dimulai.
+Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 5. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Pemeriksaan ulang: `scripts/php.ps1 artisan sikordik:scan-private-files`. Sistem belum dinyatakan siap produksi. Fase 6 belum dimulai.
+
+Presensi tetap tersedia: [Fase 4](docs/FASE-4.md), [keputusan Fase 4](docs/KEPUTUSAN-FASE-4.md). Pengingat pukul 16.00 memerlukan Laravel scheduler (`artisan schedule:run` setiap menit); command manual: `scripts/php.ps1 artisan sikordik:remind-attendance`.
 
 Penugasan dan jadwal tetap tersedia: [Fase 3](docs/FASE-3.md), [keputusan Fase 3](docs/KEPUTUSAN-FASE-3.md).
 

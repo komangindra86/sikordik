@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Services\AttendanceService;
+use App\Services\LogbookService;
 use App\Services\ParticipantService;
 use App\Services\PlacementService;
 use App\Services\ScheduleService;
@@ -37,6 +38,12 @@ try {
         Carbon::setTestNow('2026-10-11 10:00:00');
         $method = substr($input['action'], strlen('attendance-'));
         app(AttendanceService::class)->$method($actor, $input['ulid'], $input['payload']);
+    } elseif ($input['action'] === 'logbook-save') {
+        Carbon::setTestNow('2026-10-11 10:00:00');
+        app(LogbookService::class)->save($actor, $input['ulid'], $input['payload'], null);
+    } elseif ($input['action'] === 'logbook-transition') {
+        Carbon::setTestNow('2026-10-11 10:00:00');
+        app(LogbookService::class)->transition($actor, $input['ulid'], $input['payload']);
     } else {
         app(ParticipantService::class)->create($actor, $input['payload']);
     }

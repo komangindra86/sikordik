@@ -1,6 +1,6 @@
 # Data latihan lokal SIKORDIK
 
-Paket tambahan setelah Fase 4, dibuat pada 10-09-2026. Fase 5 belum dimulai.
+Paket tambahan setelah Fase 4, dibuat pada 10-09-2026. Paket latihan ini mencakup fase 1–4; belum menyediakan fixture logbook Fase 5.
 
 ## Menyiapkan paket
 

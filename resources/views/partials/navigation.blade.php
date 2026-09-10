@@ -1,5 +1,6 @@
 <div class="mb-6 flex items-center gap-3"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 font-bold text-white">SK</div><div><p class="font-bold text-slate-900">SIKORDIK</p><p class="text-xs text-slate-500">Pendidikan Klinis RSBM</p></div></div>
 <nav class="space-y-1">
+    <a class="nav-link {{ request()->routeIs('logbooks.*') ? 'nav-link-active' : '' }}" href="{{ route('logbooks.index') }}">Logbook</a>
     <a class="nav-link {{ request()->routeIs('attendance.*') ? 'nav-link-active' : '' }}" href="{{ route('attendance.index') }}">Presensi</a>
     <a class="nav-link {{ request()->routeIs('scheduling.*') ? 'nav-link-active' : '' }}" href="{{ route('scheduling.index') }}">Penugasan & jadwal</a>
     <a class="nav-link" href="{{ route('scheduling.notifications') }}">Notifikasi</a>
