@@ -49,6 +49,8 @@ npm run build
 
 ## Fase aktif
 
+Untuk mencoba alur tanpa input manual, tersedia [paket latihan DUMMY lokal](docs/LATIHAN-DUMMY.md). Akun/password dan panduan latihan tersimpan privat setelah menjalankan `scripts/php.ps1 artisan sikordik:seed-local-demo`.
+
 Fase 4: presensi harian, verifikasi pembimbing, verifikator pengganti, pengingat internal, rekap akhir, pengesahan wajib Ketua KSM, penguncian, koreksi beralasan, dan laporan privat. Akses melalui menu **Presensi**. Implementasi dan verifikasi: [Fase 4](docs/FASE-4.md). Aturan bisnis: [keputusan Fase 4](docs/KEPUTUSAN-FASE-4.md).
 
 Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 4. Pengingat pukul 16.00 memerlukan Laravel scheduler (`artisan schedule:run` setiap menit); command manual: `scripts/php.ps1 artisan sikordik:remind-attendance`. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Sistem belum dinyatakan siap produksi. Fase 5 belum dimulai.
