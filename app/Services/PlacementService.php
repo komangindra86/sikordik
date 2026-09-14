@@ -116,6 +116,7 @@ class PlacementService
         DB::transaction(function () use ($actor, $ulid, $action, $expected, $revision, $reason) {
             $p = $this->locked($ulid);
             app(AdmissionsAccess::class)->placement($actor, $ulid);
+            abort_if(DB::table('completion_requests')->where('placement_id', $p->id)->whereIn('status', ['pending', 'approved'])->exists(), 422, 'Selesaikan atau tarik permohonan penyelesaian terlebih dahulu.');
             if ($p->status !== $expected || (int) $p->revision !== $revision) {
                 $this->fail('Data berubah. Muat ulang sebelum melanjutkan.');
             }
@@ -139,9 +140,6 @@ class PlacementService
             } elseif ($action === 'cancel' && in_array($p->status, array_diff(array_merge(['draft'], self::RESERVING), ['selesai']))) {
                 $to = 'dibatalkan';
                 $role = in_array($p->status, ['sedang_stase', 'menunggu_penyelesaian']) ? 'kordik' : 'admin';
-            } elseif ($action === 'reopen' && $p->status === 'selesai') {
-                $to = 'menunggu_penyelesaian';
-                $role = 'kordik';
             } else {
                 $this->fail('Transisi status tidak diizinkan.');
             }
@@ -159,10 +157,6 @@ class PlacementService
                 $this->checkDocuments($p);
             }
             $p->status = $to;
-            if ($action === 'reopen') {
-                $p->actual_end_date = null;
-                $p->revision++;
-            }
             if (in_array($to, self::RESERVING)) {
                 $this->checkOverlap($p);
             }
@@ -179,9 +173,6 @@ class PlacementService
             if ($action === 'revise') {
                 $changes += ['revision' => $p->revision + 1, 'actual_end_date' => null, 'ksm_status' => 'pending', 'kordik_status' => 'pending', 'document_status' => 'pending', 'completion_status' => 'pending'];
                 DB::table('placement_documents')->where('placement_id', $p->id)->update(['status' => 'pending', 'reviewed_by' => null, 'updated_at' => now()]);
-            }
-            if ($action === 'reopen') {
-                $changes += ['revision' => $p->revision, 'actual_end_date' => null, 'completion_status' => 'pending'];
             }
             DB::table('placements')->where('id', $p->id)->update($changes);
             $p = DB::table('placements')->find($p->id);
@@ -272,7 +263,7 @@ class PlacementService
         abort_unless($data['status'] === 'exception' ? $access->role($actor, ['tim-kordik']) : $access->role($actor, ['admin-kordik']), 403);
         DB::transaction(function () use ($actor, $ulid, $data) {
             $p = $this->locked($ulid);
-            if (! in_array($p->status, ['menunggu_dokumen', 'terverifikasi', 'dijadwalkan', 'sedang_stase'])) {
+            if (! in_array($p->status, ['menunggu_dokumen', 'terverifikasi', 'dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian'])) {
                 $this->fail('Review dokumen tidak tersedia pada status ini.');
             }
             $doc = DB::table('placement_documents')->where('placement_id', $p->id)->where('code', $data['code'])->firstOrFail();

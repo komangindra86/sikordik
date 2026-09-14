@@ -59,7 +59,7 @@ Status konfirmasi KSM, keputusan Kordik, kelengkapan dokumen, kegiatan, dan peny
 | `terverifikasi` | Jadwal disahkan/dipublikasikan (Fase 3) | `dijadwalkan` |
 | `dijadwalkan` | Kegiatan dimulai sesuai periode dan syarat | `sedang_stase` |
 | `sedang_stase` | Pengajuan akhir kegiatan | `menunggu_penyelesaian` |
-| `menunggu_penyelesaian` | Checklist selesai dan Tim Kordik menyetujui (Fase 7) | `selesai` |
+| `menunggu_penyelesaian` | Checklist diperiksa Admin, snapshot diperiksa ulang dan Tim Kordik menyetujui ([Fase 7](KEPUTUSAN-FASE-7.md)) | `selesai` |
 
 - Sekretariat KSM menyiapkan/menindaklanjuti respons; persetujuan final KSM adalah Ketua/Koordinator. Admin Kordik mengelola proses administratif, Tim Kordik memutuskan penerimaan. Multi-role tidak menghapus pemeriksaan scope.
 - Tolak/batal/revisi memerlukan alasan. Pembatalan sebelum stase oleh Admin Kordik; setelah mulai memerlukan persetujuan Tim Kordik. Penempatan selesai tidak dibatalkan langsung: perlu pembukaan kembali beralasan dan berizin.

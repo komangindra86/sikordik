@@ -7,6 +7,7 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\CompletionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MasterDataController;
@@ -27,6 +28,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::prefix('penyelesaian')->name('completion.')->controller(CompletionController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/formulir', 'forms')->name('forms');
+        Route::post('/formulir', 'formStore')->name('form-store');
+        Route::post('/formulir/{id}/nonaktif', 'formDisable')->whereNumber('id')->name('form-disable');
+        Route::get('/{ulid}', 'show')->name('show');
+        Route::post('/{ulid}/survei', 'survey')->middleware('throttle:20,1')->name('survey');
+        Route::post('/{ulid}/status', 'transition')->middleware('throttle:20,1')->name('transition');
+    });
     Route::prefix('penilaian')->name('assessments.')->controller(AssessmentController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/template', 'templates')->name('templates');

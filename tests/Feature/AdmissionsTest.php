@@ -153,7 +153,7 @@ class AdmissionsTest extends TestCase
         $this->action($old, 'reopen', $this->kordik)->assertSessionHasErrors('placement');
         $this->action($old, 'cancel')->assertSessionHasErrors('placement');
         $this->action($new, 'cancel')->assertSessionHasNoErrors();
-        $this->action($old, 'reopen', $this->kordik)->assertSessionHasNoErrors();
+        $this->action($old, 'reopen', $this->kordik)->assertSessionHasErrors('placement');
     }
 
     public function test_workflow_enforces_scope_roles_stale_status_and_transactional_history(): void

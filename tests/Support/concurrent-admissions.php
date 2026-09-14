@@ -3,10 +3,12 @@
 use App\Models\User;
 use App\Services\AssessmentService;
 use App\Services\AttendanceService;
+use App\Services\CompletionService;
 use App\Services\LogbookService;
 use App\Services\ParticipantService;
 use App\Services\PlacementService;
 use App\Services\ScheduleService;
+use App\Services\SurveyService;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +53,11 @@ try {
     } elseif ($input['action'] === 'assessment-transition') {
         Carbon::setTestNow('2026-10-11 10:00:00');
         app(AssessmentService::class)->transition($actor, $input['ulid'], $input['payload']);
+    } elseif (in_array($input['action'], ['completion', 'survey'])) {
+        Carbon::setTestNow($input['payload']['action'] === 'archive' ? '2029-10-12 10:00:00' : '2026-10-11 12:00:00');
+        config(['filesystems.disks.local.root' => storage_path('framework/testing/disks/local')]);
+        $service = $input['action'] === 'completion' ? CompletionService::class : SurveyService::class;
+        app($service)->act($actor, $input['ulid'], $input['payload']);
     } else {
         app(ParticipantService::class)->create($actor, $input['payload']);
     }

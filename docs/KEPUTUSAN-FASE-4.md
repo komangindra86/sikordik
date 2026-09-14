@@ -2,6 +2,8 @@
 
 Tanggal: 09-09-2026. Dasar: MASTER PROMPT SIKORDIK bagian 10 dan cakupan Fase 4.
 
+Pembaruan Fase 7: koreksi presensi setelah penempatan selesai kini memerlukan [prosedur pembukaan kembali](KEPUTUSAN-FASE-7.md) terlebih dahulu. Semua mutasi presensi dan rekap terkunci pada penempatan selesai; aturan koreksi setelah pengesahan tetap berlaku setelah penempatan dibuka kembali.
+
 ## Hari pendidikan dan presensi
 
 - Hari pendidikan adalah tanggal unik jadwal `published` atau `completed` per placement. Beberapa sesi dalam satu tanggal tetap memiliki satu presensi. Akhir pekan tidak otomatis dikecualikan apabila ada jadwal pendidikan terbit. Kalender hari libur nasional tidak diasumsikan sebagai kebijakan rumah sakit.

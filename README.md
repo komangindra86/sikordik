@@ -51,9 +51,11 @@ npm run build
 
 Untuk mencoba alur tanpa input manual, tersedia [paket latihan DUMMY lokal](docs/LATIHAN-DUMMY.md). Akun/password dan panduan latihan tersimpan privat setelah menjalankan `scripts/php.ps1 artisan sikordik:seed-local-demo`.
 
-Fase 6: template penilaian dinamis, pengisian nilai atau unggah PDF institusi, pengesahan dan publikasi langsung oleh pembimbing, tampilan nilai peserta, keberatan, serta riwayat koreksi. Akses melalui menu **Penilaian**. Implementasi dan verifikasi: [Fase 6](docs/FASE-6.md). Aturan bisnis: [keputusan Fase 6](docs/KEPUTUSAN-FASE-6.md).
+Fase 7: survei per penempatan melalui Google Form, verifikasi respons, checklist kelengkapan, pemeriksaan Admin dan persetujuan Tim Kordik, penguncian, pembukaan kembali terotorisasi, serta arsip tanpa penghapusan. Akses melalui menu **Survei & penyelesaian**. Implementasi: [Fase 7](docs/FASE-7.md). Aturan bisnis: [keputusan Fase 7](docs/KEPUTUSAN-FASE-7.md).
 
-Jalankan `scripts/php.ps1 artisan migrate` untuk menambah tabel fase 6. Admin membuat template sesuai format institusi melalui **Penilaian → Kelola template penilaian**. Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Pemeriksaan ulang: `scripts/php.ps1 artisan sikordik:scan-private-files`. Sistem belum dinyatakan siap produksi. Fase 7 belum dimulai.
+Jalankan `scripts/php.ps1 artisan migrate` untuk tabel fase 7. Admin menyiapkan dua tautan Google Form melalui **Survei & penyelesaian → Kelola tautan survei**. Respons dicocokkan manual memakai kode; membuka tautan tidak dianggap selesai. Sistem belum dinyatakan siap produksi. Fase 8 belum dimulai.
+
+Penilaian tetap tersedia: [Fase 6](docs/FASE-6.md), [keputusan Fase 6](docs/KEPUTUSAN-FASE-6.md). Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Pemeriksaan ulang: `scripts/php.ps1 artisan sikordik:scan-private-files`.
 
 Logbook tetap tersedia: [Fase 5](docs/FASE-5.md), [keputusan Fase 5](docs/KEPUTUSAN-FASE-5.md).
 

@@ -49,7 +49,7 @@ class AttendanceService
             $access = app(SchedulingAccess::class);
             $correction = $d['action'] === 'correct';
             abort_unless($correction ? $access->admin($u) : $access->owner($u, $p), 403);
-            abort_unless(in_array($p->status, $correction ? ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian', 'selesai'] : ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']), 422, 'Penempatan tidak terbuka untuk presensi.');
+            abort_unless(in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']), 422, 'Penempatan tidak terbuka untuk presensi. Ajukan pembukaan kembali sebelum koreksi data selesai.');
             abort_unless($d['date'] >= $p->start_date && $d['date'] <= $p->end_date && $d['date'] <= now()->toDateString() && in_array($d['date'], $this->days($p), true), 422, 'Tanggal harus merupakan hari pendidikan yang sudah berlangsung dalam periode stase.');
             $old = DB::table('attendances')->where('placement_id', $p->id)->where('date', $d['date'])->lockForUpdate()->first();
             abort_unless((int) ($old->revision ?? 0) === (int) $d['revision'], 422, 'Versi presensi berubah; muat ulang halaman.');
@@ -85,6 +85,7 @@ class AttendanceService
         DB::transaction(function () use ($u, $ulid, $d) {
             $a = DB::table('attendances')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $a->placement_id)->value('ulid'));
+            abort_unless(in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']), 422, 'Penempatan dikunci.');
             $a = DB::table('attendances')->where('id', $a->id)->lockForUpdate()->first();
             abort_unless(app(SchedulingAccess::class)->mentor($u, $a) && ! app(SchedulingAccess::class)->owner($u, $p), 403);
             $this->assignment($p, $a->mentor_assignment_id, $a->date);
@@ -104,6 +105,7 @@ class AttendanceService
             $old = DB::table('attendances')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $old->placement_id)->value('ulid'));
             abort_unless(app(SchedulingAccess::class)->admin($u), 403);
+            abort_unless(in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']), 422, 'Penempatan dikunci.');
             $old = DB::table('attendances')->where('id', $old->id)->lockForUpdate()->first();
             abort_if($this->sealed($p) || ! in_array($old->status, ['waiting', 'corrected', 'rejected']) || $old->revision != $d['revision'], 422, 'Presensi terkunci atau versi berubah.');
             $a = $this->assignment($p, $d['mentor_assignment_id'], $old->date);
@@ -144,6 +146,7 @@ class AttendanceService
         $d = Validator::make($input, ['action' => 'required|in:generate,approve', 'version' => 'required|integer|min:0'])->validate();
         DB::transaction(function () use ($u, $placement, $d) {
             $p = app(PlacementService::class)->locked($placement);
+            abort_unless(in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']), 422, 'Penempatan dikunci.');
             $a = app(SchedulingAccess::class);
             abort_unless($d['action'] === 'approve' ? ($a->chief($u, $p->department_id) && ! $a->owner($u, $p)) : ($a->manage($u, $p->department_id) || $a->chief($u, $p->department_id)), 403);
             abort_unless($p->end_date < now()->toDateString(), 422, 'Rekap akhir dibuat setelah hari terakhir stase berakhir.');

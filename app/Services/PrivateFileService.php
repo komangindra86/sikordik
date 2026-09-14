@@ -37,6 +37,7 @@ class PrivateFileService
         // A failed transaction leaves a private quarantine orphan for operational review, never a public file.
         $file = DB::transaction(function () use ($actor, $resource, $ulid, $category, $upload, $mime, $fileUlid, $path, $table) {
             $parent = $resource === 'placement' ? app(PlacementService::class)->locked($ulid) : DB::table($table)->where('ulid', $ulid)->lockForUpdate()->firstOrFail();
+            abort_if($resource === 'placement' && $parent->status === 'selesai', 422, 'Penempatan selesai dikunci; jalankan pembukaan kembali sebelum unggah.');
             $version = (int) DB::table('private_files')->where('resource_type', $resource)->where('resource_id', $parent->id)->where('category', $category)->max('version') + 1;
             $id = DB::table('private_files')->insertGetId([
                 'ulid' => $fileUlid, 'resource_type' => $resource, 'resource_id' => $parent->id, 'category' => $category, 'version' => $version,
