@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdmissionsController;
+use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -26,6 +27,20 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::prefix('penilaian')->name('assessments.')->controller(AssessmentController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/template', 'templates')->name('templates');
+        Route::post('/template', 'templateStore')->name('template-store');
+        Route::post('/template/{id}/nonaktif', 'templateDisable')->whereNumber('id')->name('template-disable');
+        Route::get('/berkas/{ulid}', 'download')->name('download');
+        Route::get('/penempatan/{ulid}', 'placement')->name('placement');
+        Route::get('/penempatan/{ulid}/tambah', 'form')->name('create');
+        Route::post('/penempatan/{ulid}', 'save')->middleware('throttle:20,1')->name('store');
+        Route::get('/penempatan/{ulid}/{assessment}/versi', 'form')->name('edit');
+        Route::post('/penempatan/{ulid}/{assessment}/versi', 'save')->middleware('throttle:20,1')->name('update');
+        Route::get('/{ulid}', 'show')->name('show');
+        Route::post('/{ulid}/status', 'transition')->middleware('throttle:20,1')->name('transition');
+    });
     Route::prefix('logbook')->name('logbooks.')->controller(LogbookController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/berkas/{ulid}', 'download')->name('download');
