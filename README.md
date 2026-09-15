@@ -2,6 +2,12 @@
 
 Sistem Informasi Manajemen Pendidikan Klinis RSBM, dibangun dengan Laravel 12, Blade, Tailwind CSS 4, Vite, dan Query Builder untuk proses aplikasi.
 
+## Panduan pengguna dan proses bisnis
+
+- [Buku panduan pengguna PDF](docs/panduan/Buku-Panduan-SIKORDIK.pdf): langkah per peran, penerimaan sampai penyelesaian, kendala dan latihan.
+- [Alur proses bisnis PDF](docs/panduan/Alur-Proses-Bisnis-SIKORDIK.pdf): ringkasan untuk orientasi dan pembagian tugas.
+- [Sumber panduan](docs/PANDUAN-PENGGUNA.md) dan [diagram proses bisnis](docs/PROSES-BISNIS.md) untuk pemeliharaan dokumentasi.
+
 ## Kebutuhan lokal
 
 - PHP 8.2+
