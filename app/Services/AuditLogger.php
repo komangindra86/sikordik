@@ -11,6 +11,7 @@ class AuditLogger
     private const SENSITIVE_KEYS = [
         'password', 'password_confirmation', 'current_password', 'token',
         'remember_token', 'authorization', 'cookie', 'file', 'contents',
+        'app_key', 'secret', 'backup_password', 'access_token', 'refresh_token',
     ];
 
     public function log(

@@ -11,9 +11,11 @@ use App\Http\Controllers\CompletionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\MasterDataController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SchedulingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/dashboard');
@@ -28,6 +30,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
+    Route::get('/laporan', ReportController::class)->middleware('throttle:30,1')->name('reports');
+    Route::get('/verifikasi', [VerificationController::class, 'index'])->name('verification.index');
+    Route::get('/verifikasi/{type}/{id}', [VerificationController::class, 'show'])->whereNumber('id')->middleware('throttle:60,1')->name('verification.show');
     Route::prefix('penyelesaian')->name('completion.')->controller(CompletionController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/formulir', 'forms')->name('forms');

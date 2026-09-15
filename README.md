@@ -51,9 +51,13 @@ npm run build
 
 Untuk mencoba alur tanpa input manual, tersedia [paket latihan DUMMY lokal](docs/LATIHAN-DUMMY.md). Akun/password dan panduan latihan tersimpan privat setelah menjalankan `scripts/php.ps1 artisan sikordik:seed-local-demo`.
 
-Fase 7: survei per penempatan melalui Google Form, verifikasi respons, checklist kelengkapan, pemeriksaan Admin dan persetujuan Tim Kordik, penguncian, pembukaan kembali terotorisasi, serta arsip tanpa penghapusan. Akses melalui menu **Survei & penyelesaian**. Implementasi: [Fase 7](docs/FASE-7.md). Aturan bisnis: [keputusan Fase 7](docs/KEPUTUSAN-FASE-7.md).
+Fase 8: dashboard sesuai peran, laporan Excel/PDF, QR verifikasi pengesahan, hardening, backup terenkripsi dan latihan restore. Menu **Laporan Excel / PDF** dan **Verifikasi pengesahan** tersedia. Lihat [Fase 8](docs/FASE-8.md), [keputusan desain](docs/KEPUTUSAN-FASE-8.md), dan [UAT / syarat go-live](docs/UAT-FASE-8.md).
 
-Jalankan `scripts/php.ps1 artisan migrate` untuk tabel fase 7. Admin menyiapkan dua tautan Google Form melalui **Survei & penyelesaian → Kelola tautan survei**. Respons dicocokkan manual memakai kode; membuka tautan tidak dianggap selesai. Sistem belum dinyatakan siap produksi. Fase 8 belum dimulai.
+**Fase 8 adalah fase pengembangan terakhir MVP. Aplikasi dapat diuji lokal dengan data DUMMY, tetapi belum siap digunakan di produksi dengan data pribadi nyata.** UAT petugas, konfigurasi HTTPS/SMTP/scanner, worker/scheduler dan bukti pemulihan produksi masih diperlukan. Jalankan `scripts/php.ps1 artisan sikordik:readiness` untuk pemeriksaan konfigurasi tanpa menampilkan secret.
+
+Jalankan `composer install`, `scripts/php.ps1 artisan migrate` dan `npm run build` setelah memperbarui kode. Migration fase 8 bersifat aditif (kolom pengesahan dan indeks). QR menggunakan APP_URL; atur domain resmi sebelum produksi.
+
+Fase 7 tetap tersedia melalui **Survei & penyelesaian**: [implementasi](docs/FASE-7.md), [aturan bisnis](docs/KEPUTUSAN-FASE-7.md). Admin menyiapkan dua tautan Google Form melalui **Kelola tautan survei**. Respons dicocokkan manual memakai kode; membuka tautan tidak dianggap selesai.
 
 Penilaian tetap tersedia: [Fase 6](docs/FASE-6.md), [keputusan Fase 6](docs/KEPUTUSAN-FASE-6.md). Konfigurasikan ClamAV dan qpdf sebelum memakai berkas/impor; file tetap tertahan jika pemeriksa tidak tersedia. Pemeriksaan ulang: `scripts/php.ps1 artisan sikordik:scan-private-files`.
 

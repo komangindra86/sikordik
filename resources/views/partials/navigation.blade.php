@@ -1,5 +1,7 @@
 <div class="mb-6 flex items-center gap-3"><div class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 font-bold text-white">SK</div><div><p class="font-bold text-slate-900">SIKORDIK</p><p class="text-xs text-slate-500">Pendidikan Klinis RSBM</p></div></div>
 <nav class="space-y-1">
+    <a class="nav-link {{ request()->routeIs('reports') ? 'nav-link-active' : '' }}" href="{{ route('reports') }}">Laporan Excel / PDF</a>
+    <a class="nav-link {{ request()->routeIs('verification.*') ? 'nav-link-active' : '' }}" href="{{ route('verification.index') }}">Verifikasi pengesahan</a>
     <a class="nav-link {{ request()->routeIs('completion.*') ? 'nav-link-active' : '' }}" href="{{ route('completion.index') }}">Survei & penyelesaian</a>
     <a class="nav-link {{ request()->routeIs('logbooks.*') ? 'nav-link-active' : '' }}" href="{{ route('logbooks.index') }}">Logbook</a>
     <a class="nav-link {{ request()->routeIs('assessments.*') ? 'nav-link-active' : '' }}" href="{{ route('assessments.index') }}">Penilaian</a>

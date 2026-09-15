@@ -92,6 +92,10 @@ class AttendanceService
             abort_if($this->sealed($p) || ! in_array($a->status, ['waiting', 'corrected']) || $a->revision != $d['revision'], 422, 'Presensi terkunci atau versi berubah.');
             DB::table('attendances')->where('id', $a->id)->update(['status' => $d['action'] === 'verify' ? 'verified' : 'rejected', 'revision' => $a->revision + 1,
                 'verified_by' => $u->id, 'verified_at' => now(), 'decision_note' => $d['reason'], 'updated_at' => now()]);
+            if ($d['action'] === 'verify') {
+                $verified = DB::table('attendances')->find($a->id);
+                DB::table('attendances')->where('id', $a->id)->update(['approval' => json_encode(app(VerificationService::class)->attendanceApproval($u, $verified), JSON_THROW_ON_ERROR)]);
+            }
             $this->invalidate($u, $p, $d['reason']);
             app(SchedulingJournal::class)->record($u, 'attendances', $a->id, 'attendance_'.$d['action'], $a, $d['reason']);
             app(SchedulingJournal::class)->notify([DB::table('participants')->where('id', $p->participant_id)->value('user_id')], $p, 'Keputusan verifikasi presensi tersedia di menu Presensi.');
@@ -164,6 +168,7 @@ class AttendanceService
                 abort_unless($s && $s->status === 'draft' && hash_equals($s->fingerprint, $fingerprint), 422, 'Data berubah; buat ulang rekap.');
                 abort_if(! count($snapshot['days']) || count($snapshot['missing']) || $snapshot['pending'] || array_diff(array_column($snapshot['rows'], 'date'), $snapshot['days']), 422, 'Lengkapi verifikasi semua hari pendidikan sebelum pengesahan.');
                 DB::table('attendance_summaries')->where('id', $s->id)->update(['status' => 'sealed', 'approved_by' => $u->id, 'approved_at' => now(), 'updated_at' => now()]);
+                DB::table('attendance_summaries')->where('id', $s->id)->update(['approval' => json_encode(app(VerificationService::class)->attendanceApproval($u, $s, true), JSON_THROW_ON_ERROR)]);
                 app(SchedulingJournal::class)->record($u, 'attendance_summaries', $s->id, 'attendance_summary_sealed', $s);
                 app(SchedulingJournal::class)->notify([DB::table('participants')->where('id', $p->participant_id)->value('user_id')], $p, 'Rekap presensi telah disahkan Ketua KSM dan dikunci.');
             }
