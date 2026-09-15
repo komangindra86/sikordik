@@ -85,4 +85,3 @@ Mulai pemeriksaan melalui Survei & penyelesaian, pilih penempatan lalu lihat Kel
 5. Setelah disetujui, pastikan status selesai dan nomor pengesahan tercatat dalam Riwayat permohonan dan pengesahan.
 
 Hasil: penempatan dikunci dan tanggal akhir aktual mengikuti tanggal akhir resmi. Penolakan atau penarikan penyelesaian mengembalikan status sedang_stase agar kekurangan ditindaklanjuti.
-

@@ -137,5 +137,5 @@ probis = [pages[2].replace('2 Peta proses bisnis dari awal sampai akhir', 'Prose
           pages[1].replace('1 Mulai dari peran Anda', 'Pembagian Tugas dan Titik Mulai'),
           pages[16].replace('16 Checklist akhir dan penyelesaian', 'Pemeriksaan Akhir dan Penyelesaian')]
 build('Alur-Proses-Bisnis-SIKORDIK.pdf', probis, 'Alur Proses Bisnis SIKORDIK')
-(ROOT / 'docs/PROSES-BISNIS.md').write_text('\n\n<!-- page -->\n\n'.join(probis), encoding='utf-8')
+(ROOT / 'docs/PROSES-BISNIS.md').write_text('\n\n<!-- page -->\n\n'.join(p.strip() for p in probis) + '\n', encoding='utf-8')
 print('Created user guide and process guide in', OUT)
