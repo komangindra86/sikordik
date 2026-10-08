@@ -76,7 +76,7 @@
                         <form class="mt-3 flex flex-wrap items-end gap-3" method="POST" action="{{ route('admissions.review', $p->ulid) }}">@csrf<input type="hidden" name="code" value="{{ $doc->code }}"><input type="hidden" name="status" value="valid"><input type="hidden" name="file_ulid" value="{{ $clean->ulid }}">
                             <label>Berlaku sampai (kosongkan bila tidak ada)<input type="date" name="valid_until"></label><button class="btn-primary">Nyatakan valid (versi {{ $clean->version }})</button></form>
                     @endif
-                    @if($doc->status !== 'rejected')
+                    @if($doc->status !== 'rejected' && $docFiles->isNotEmpty())
                         <details class="mt-2"><summary class="cursor-pointer text-sm font-semibold text-red-700">Minta perbaikan…</summary><form class="mt-3 space-y-3" method="POST" action="{{ route('admissions.review', $p->ulid) }}">@csrf<input type="hidden" name="code" value="{{ $doc->code }}"><input type="hidden" name="status" value="rejected"><label class="block">Apa yang harus diperbaiki (minimal 10 karakter)<textarea name="reason" minlength="10" maxlength="2000" required></textarea></label><button class="btn-danger">Tolak dokumen</button></form></details>
                     @endif
                 @endif

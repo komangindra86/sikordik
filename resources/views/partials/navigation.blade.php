@@ -25,7 +25,7 @@
             <summary class="nav-heading cursor-pointer">Pengaturan</summary>
             @if($navUser->hasPermission('users.view'))<a class="{{ $navLink('users.*') }}" href="{{ route('users.index') }}">Pengguna</a>@endif
             @if($navUser->hasPermission('roles.manage'))<a class="{{ $navLink('roles.*') }}" href="{{ route('roles.index') }}">Role & hak akses</a>@endif
-            @if($navUser->hasPermission('masters.view'))@foreach(config('masters') as $slug => $item)<a class="nav-link {{ request()->route('master') === $slug ? 'nav-link-active' : '' }}" href="{{ route('masters.index', $slug) }}">{{ $item['label'] }}</a>@endforeach @endif
+            @if($navUser->hasPermission('masters.create'))@foreach(config('masters') as $slug => $item)<a class="nav-link {{ request()->route('master') === $slug ? 'nav-link-active' : '' }}" href="{{ route('masters.index', $slug) }}">{{ $item['label'] }}</a>@endforeach @endif
             @if(in_array('admin-kordik', $navRoles, true))<a class="{{ $navLink('scheduling.licenses') }}" href="{{ route('scheduling.licenses') }}">Lisensi pendidik</a>@endif
             @if($navAdmin)
                 <a class="{{ $navLink('admissions.templates') }}" href="{{ route('admissions.templates') }}">Persyaratan dokumen</a>

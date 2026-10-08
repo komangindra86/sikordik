@@ -85,7 +85,9 @@ class TaskService
     {
         $this->add('Ajukan penempatan ke KSM', 'Periksa & ajukan', 'admissions.show', $this->placements(['draft'])->get(['id as placement_id']));
         $this->add('Tinjau penerimaan yang ditolak', 'Baca alasan', 'admissions.show', $this->placements(['ditolak_ksm', 'ditolak_kordik'])->get(['id as placement_id']));
-        $this->add('Periksa dokumen peserta', 'Periksa dokumen', 'admissions.show', $this->placements(['menunggu_dokumen'])->get(['id as placement_id']));
+        // Only once something has been handed in; before that the participant (or the activation task) is next.
+        $this->add('Periksa dokumen peserta', 'Periksa dokumen', 'admissions.show', $this->placements(['menunggu_dokumen'])
+            ->whereExists(fn ($q) => $q->from('private_files')->where('resource_type', 'placement')->whereColumn('resource_id', 'placements.id'))->get(['id as placement_id']));
         $this->add('Aktifkan akun peserta', 'Aktifkan akun', 'admissions.show', DB::table('placements as p')->join('participants as s', 's.id', '=', 'p.participant_id')
             ->whereNull('s.user_id')->whereNull('p.archived_at')->whereIn('p.status', ParticipantService::ACTIVATABLE)->limit(self::LIMIT)->get(['p.id as placement_id']));
         $this->add('Mulai stase', 'Mulai', 'scheduling.show', $this->placements(['dijadwalkan'])->where('start_date', '<=', $today)->where('end_date', '>=', $today)->get(['id as placement_id']));

@@ -375,7 +375,7 @@ class SchedulingTest extends TestCase
         $e = DB::table('placement_extensions')->first();
         $url = '/penjadwalan/perpanjangan/'.$e->ulid.'/keputusan';
         $this->actingAs($f['chief'])->post($url, ['action' => 'approve', 'revision' => 1, 'reason' => 'KSM memeriksa dokumen perpanjangan'])->assertSessionHasErrors('placement');
-        $this->actingAs($f['admin'])->get('/penerimaan/penempatan/'.$f['p']->ulid)->assertOk()->assertSee('Minta perbaikan');
+        $this->actingAs($f['admin'])->get('/penerimaan/penempatan/'.$f['p']->ulid)->assertOk()->assertSee('Unggah berkas')->assertDontSee('Minta perbaikan');
         $this->post('/penerimaan/penempatan/'.$f['p']->ulid.'/dokumen', ['code' => 'ijazah', 'file_ulid' => $fileUlid, 'status' => 'valid', 'valid_until' => '2026-10-15', 'reason' => 'Dokumen sudah diperiksa untuk periode baru'])->assertRedirect()->assertSessionHasNoErrors();
         $this->actingAs($f['chief'])->post($url, ['action' => 'approve', 'revision' => 1, 'reason' => 'Dokumen telah mencakup perpanjangan'])->assertRedirect()->assertSessionHasNoErrors();
     }

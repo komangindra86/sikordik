@@ -80,11 +80,15 @@ class SelfServiceTest extends TestCase
         $url = '/penerimaan/berkas/placement/'.$f['p']->ulid;
         $tasks = fn () => collect(app(TaskService::class)->for($f['owner']))->firstWhere('title', 'Unggah dokumen persyaratan');
 
+        $adminTitles = fn () => array_column(app(TaskService::class)->for($f['admin']), 'title');
         $this->assertStringContainsString('Ijazah', $tasks()['items'][0]['detail']);
+        // Nothing to check yet: the next step is the participant's.
+        $this->assertNotContains('Periksa dokumen peserta', $adminTitles());
         $this->actingAs($f['owner'])->get('/penerimaan/penempatan/'.$f['p']->ulid)->assertOk()->assertSee('Unggah berkas')->assertDontSee('Nyatakan valid')->assertDontSee('Berkas pendukung lain');
         $this->post($url, ['category' => 'ijazah', 'deidentified' => 1, 'file' => $this->pdf()])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertDatabaseHas('private_files', ['resource_type' => 'placement', 'resource_id' => $f['p']->id, 'category' => 'ijazah', 'uploaded_by' => $f['owner']->id, 'scan_status' => 'clean']);
         $this->assertStringNotContainsString('Ijazah', $tasks()['items'][0]['detail']);
+        $this->assertContains('Periksa dokumen peserta', $adminTitles());
 
         $this->post($url, ['category' => 'pendukung', 'deidentified' => 1, 'file' => $this->pdf()])->assertForbidden();
         $letter = DB::table('incoming_letters')->value('ulid');
@@ -96,7 +100,7 @@ class SelfServiceTest extends TestCase
         $file = DB::table('private_files')->first();
         $review = ['code' => 'ijazah', 'status' => 'valid', 'file_ulid' => $file->ulid];
         $this->actingAs($f['owner'])->post('/penerimaan/penempatan/'.$f['p']->ulid.'/dokumen', $review)->assertForbidden();
-        $this->actingAs($f['admin'])->get('/penerimaan/penempatan/'.$f['p']->ulid)->assertOk()->assertSee('Nyatakan valid (versi 1)');
+        $this->actingAs($f['admin'])->get('/penerimaan/penempatan/'.$f['p']->ulid)->assertOk()->assertSee('Nyatakan valid (versi 1)')->assertSee('Minta perbaikan');
         $this->post('/penerimaan/penempatan/'.$f['p']->ulid.'/dokumen', $review)->assertRedirect()->assertSessionHasNoErrors();
         $this->assertDatabaseHas('placement_documents', ['placement_id' => $f['p']->id, 'code' => 'ijazah', 'status' => 'valid', 'reviewed_by' => $f['admin']->id]);
     }

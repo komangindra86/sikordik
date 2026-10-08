@@ -53,6 +53,7 @@ Tambahkan ke scheduler (sudah terdaftar di `routes/console.php`): `sikordik:star
 
 - Buku panduan lengkap ditulis ulang menjadi Edisi 2 ([PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md)); [PROSES-BISNIS.md](PROSES-BISNIS.md) dibuat ulang dari naskah itu.
 - Kedua PDF di `docs/panduan/` dibuat ulang dari naskah Edisi 2 (21 dan 3 halaman); diagram dan catatan kaki pada `scripts/build-user-guide.py` disesuaikan.
+- Alur dijalankan di peramban dengan akun latihan pada MySQL lokal: penerimaan rombongan tiga peserta, persetujuan sekaligus oleh Ketua KSM dan Tim Kordik, aktivasi akun dengan tautan sekali pakai, unggah dokumen oleh peserta dan pernyataan valid, jadwal satu periode, persetujuan semua jadwal, presensi satu ketuk, serta pengajuan dan persetujuan penyelesaian. Temuan dari uji itu sudah diperbaiki: notifikasi tidak lagi menumpuk pada tindakan massal, tugas *Periksa dokumen peserta* baru muncul setelah ada berkas, menu data master hanya untuk pengelolanya, dan *Minta perbaikan* hanya tampil bila ada berkas.
 
 ## Belum dikerjakan
 
