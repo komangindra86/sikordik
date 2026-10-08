@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AdmissionsAccess;
 use App\Services\AuditLogger;
+use App\Services\BatchAdmissionService;
 use App\Services\ParticipantImportService;
 use App\Services\ParticipantService;
 use App\Services\PlacementService;
@@ -212,6 +213,51 @@ class AdmissionsController extends Controller
         app(AuditLogger::class)->log('file.downloaded', 'private_file', $file->ulid);
 
         return $disk->download($file->path, $file->original_name, ['Content-Type' => $file->mime, 'Cache-Control' => 'private, no-store', 'X-Content-Type-Options' => 'nosniff']);
+    }
+
+    public function batch(Request $request)
+    {
+        $this->admin($request);
+
+        return view('admissions.batch', $this->masters() + ['letters' => DB::table('incoming_letters')->orderByDesc('id')->limit(50)->get()]);
+    }
+
+    public function batchPreview(Request $request, BatchAdmissionService $service)
+    {
+        $data = $service->preview($request->user(), $request->all());
+        $names = [];
+        foreach (['study_programs' => 'study_program_id', 'participant_types' => 'participant_type_id', 'departments' => 'department_id', 'institutions' => 'institution_id'] as $table => $key) {
+            $names[$key] = DB::table($table)->where('id', $data['head'][$key])->value('name');
+        }
+
+        return view('admissions.batch-preview', $data + ['names' => $names]);
+    }
+
+    public function batchStore(Request $request, BatchAdmissionService $service)
+    {
+        $result = $service->commit($request->user(), $request->all());
+        $count = count($result['placements']);
+        $message = $count.' penempatan dibuat'.($request->boolean('submit') ? ' dan diajukan ke KSM.' : ' sebagai draf.').' Unggah PDF surat pada tab Dokumen salah satu penempatan.';
+
+        return $count === 1 ? redirect()->route('admissions.show', $result['placements'][0]->ulid)->with('status', $message)
+            : redirect()->route('placements.index')->with('status', $message);
+    }
+
+    public function decisions(Request $request, BatchAdmissionService $service)
+    {
+        $placements = $service->waiting($request->user())->select('placements.*')
+            ->selectSub(DB::table('participants')->select('name')->whereColumn('participants.id', 'placements.participant_id'), 'participant_name')
+            ->selectSub(DB::table('incoming_letters')->select('number')->whereColumn('incoming_letters.id', 'placements.incoming_letter_id'), 'letter_number')
+            ->orderBy('incoming_letter_id')->orderBy('id')->limit(200)->get();
+
+        return view('admissions.decisions', compact('placements'));
+    }
+
+    public function acceptMany(Request $request, BatchAdmissionService $service)
+    {
+        $data = $request->validate(['ids' => 'required|array|min:1', 'ids.*' => 'string']);
+
+        return redirect()->route('admissions.decisions')->with('status', $service->acceptMany($request->user(), $data['ids']).' penerimaan disetujui.');
     }
 
     public function imports(Request $request)

@@ -5,7 +5,7 @@
     <h2 class="mb-3 text-lg font-bold">Tugas saya @if($tasks)<span class="badge badge-wait ml-1">{{ collect($tasks)->sum(fn ($g) => count($g['items'])) }}</span>@endif</h2>
     @forelse($tasks as $group)
         <div class="card mb-4 p-0">
-            <h3 class="border-b border-slate-200 px-5 py-3 font-semibold">{{ $group['title'] }} <span class="text-sm font-normal text-slate-500">({{ count($group['items']) }})</span></h3>
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-3"><h3 class="font-semibold">{{ $group['title'] }} <span class="text-sm font-normal text-slate-500">({{ count($group['items']) }})</span></h3>@if($group['bulk'])<a class="btn-secondary" href="{{ $group['bulk'] }}">Putuskan sekaligus</a>@endif</div>
             <ul class="divide-y divide-slate-100">
                 @foreach($group['items'] as $item)
                     <li><a class="flex flex-wrap items-center justify-between gap-3 px-5 py-3 hover:bg-brand-50" href="{{ $item['url'] }}">

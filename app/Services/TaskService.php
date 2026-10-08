@@ -37,7 +37,7 @@ class TaskService
                 ->where('author_id', '!=', $u->id)->whereIn('reviewer_assignment_id', $mine)->get(['placement_id', 'ulid as param', 'type as detail']));
         }
         if ($has('ketua-ksm')) {
-            $this->add('Konfirmasi kesediaan KSM', 'Putuskan', 'admissions.show', $this->placements(['menunggu_konfirmasi_ksm'], $scope)->get(['id as placement_id']));
+            $this->add('Konfirmasi kesediaan KSM', 'Putuskan', 'admissions.show', $this->placements(['menunggu_konfirmasi_ksm'], $scope)->get(['id as placement_id']), 'admissions.decisions');
             $this->add('Setujui penugasan pendidik', 'Putuskan', 'scheduling.show', DB::table('educator_assignments as a')->join('placements as p', 'p.id', '=', 'a.placement_id')
                 ->join('educators as e', 'e.id', '=', 'a.educator_id')->where('a.status', 'pending')->where('a.requested_by', '!=', $u->id)->whereIn('p.department_id', $scope)
                 ->limit(self::LIMIT)->get(['a.placement_id', 'e.name as detail']));
@@ -56,7 +56,7 @@ class TaskService
                 ->whereNotExists(fn ($q) => $q->from('attendance_summaries')->whereColumn('placement_id', 'placements.id')->whereIn('status', ['draft', 'sealed']))->get(['id as placement_id']));
         }
         if ($has('tim-kordik')) {
-            $this->add('Putuskan penerimaan peserta', 'Putuskan', 'admissions.show', $this->placements(['menunggu_persetujuan_kordik'])->get(['id as placement_id']));
+            $this->add('Putuskan penerimaan peserta', 'Putuskan', 'admissions.show', $this->placements(['menunggu_persetujuan_kordik'])->get(['id as placement_id']), 'admissions.decisions');
             $this->add('Putuskan penyelesaian / pembukaan kembali', 'Putuskan', 'completion.show', DB::table('completion_requests')->where('status', 'pending')
                 ->where('requested_by', '!=', $u->id)->limit(self::LIMIT)->get(['placement_id']));
             $this->add('Putuskan perpanjangan stase', 'Putuskan', 'scheduling.show', DB::table('placement_extensions')->where('status', 'pending_kordik')->limit(self::LIMIT)->get(['placement_id']));
@@ -163,9 +163,10 @@ class TaskService
         }
     }
 
-    private function add(string $title, string $cta, string $route, iterable $rows): void
+    private function add(string $title, string $cta, string $route, iterable $rows, ?string $bulk = null): void
     {
         foreach ($rows as $row) {
+            $this->groups[$title]['bulk'] = $bulk;
             $this->groups[$title]['cta'] = $cta;
             $this->groups[$title]['route'] = $route;
             $this->groups[$title]['rows'][] = $row;
@@ -192,7 +193,7 @@ class TaskService
                     'url' => isset($row->query) ? route($g['route'], ['q' => $row->query]) : route($g['route'], $row->param ?? $p->ulid),
                 ];
             }
-            $out[] = ['title' => $title, 'cta' => $g['cta'], 'items' => $items];
+            $out[] = ['title' => $title, 'cta' => $g['cta'], 'items' => $items, 'bulk' => $g['bulk'] && count($items) > 1 ? route($g['bulk']) : null];
         }
 
         return $out;

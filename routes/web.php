@@ -109,6 +109,11 @@ Route::middleware(['auth', 'active'])->group(function () {
     });
     Route::prefix('penerimaan')->name('admissions.')->controller(AdmissionsController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/rombongan', 'batch')->name('batch');
+        Route::post('/rombongan/periksa', 'batchPreview')->name('batch-preview');
+        Route::post('/rombongan', 'batchStore')->name('batch-store');
+        Route::get('/keputusan', 'decisions')->name('decisions');
+        Route::post('/keputusan', 'acceptMany')->name('accept-many');
         Route::get('/peserta', 'participants')->name('participants');
         Route::post('/peserta/pratinjau', 'previewParticipant')->name('participant-preview');
         Route::post('/peserta', 'storeParticipant')->name('participant-store');
