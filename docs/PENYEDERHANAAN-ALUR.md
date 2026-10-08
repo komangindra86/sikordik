@@ -45,9 +45,15 @@ Tidak berubah: konfirmasi KSM lalu persetujuan Tim Kordik, pemisahan pemohon dan
 
 Tambahkan ke scheduler (sudah terdaftar di `routes/console.php`): `sikordik:start-placements` setiap hari pukul 00.10 WITA. Tanpa scheduler, stase tetap mulai pada presensi pertama.
 
+## Lanjutan (8 Oktober 2026)
+
+- Paket latihan DUMMY kini sampai penyelesaian: `sikordik:seed-local-demo` menambah tiga penempatan bertanggal sekitar hari ini (susun jadwal, siap ditutup, selesai). Lihat [LATIHAN-DUMMY.md](LATIHAN-DUMMY.md).
+- Tampilan ponsel (375 px) diperiksa pada beranda, ringkasan penempatan, dokumen, jadwal, penyelesaian, dan akun: tidak ada geser horizontal; sapaan di header disembunyikan agar tombol tidak berdesakan.
+- Halaman daftar per modul (`/presensi`, `/logbook`, `/penilaian`, `/penjadwalan`, `/penyelesaian`) memakai kartu yang sama dengan daftar penempatan. Halaman itu dibuka dari kartu *Ringkasan angka* dan menu Pengaturan.
+
+- Buku panduan lengkap ditulis ulang menjadi Edisi 2 ([PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md)); [PROSES-BISNIS.md](PROSES-BISNIS.md) dibuat ulang dari naskah itu.
+
 ## Belum dikerjakan
 
-- Paket latihan DUMMY masih mencakup Fase 1–4; skenario logbook, nilai, survei, dan penyelesaian dijalankan manual memakai akun latihan.
-- PDF buku panduan (`docs/panduan/*.pdf`) belum dibuat ulang; isinya masih memakai nama menu lama. Gunakan [panduan ringkas](PANDUAN-RINGKAS.md).
-- Halaman daftar per modul (`/presensi`, `/logbook`, `/penilaian`) masih ada tetapi tidak lagi ditautkan dari menu.
+- PDF buku panduan (`docs/panduan/*.pdf`) belum dibuat ulang karena ReportLab tidak terpasang di komputer pengembangan; isinya masih Edisi 1. Naskah sumbernya sudah Edisi 2.
 - UAT petugas dan syarat produksi pada [UAT-FASE-8.md](UAT-FASE-8.md) tetap berlaku dan belum dipenuhi.

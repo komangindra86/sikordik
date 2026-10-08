@@ -1,6 +1,6 @@
 # Panduan ringkas SIKORDIK
 
-Berlaku sejak penyederhanaan alur, Oktober 2026. Panduan ini menggantikan urutan menu pada [buku panduan lama](PANDUAN-PENGGUNA.md); aturan pendidikan di buku itu tetap berlaku kecuali yang dicatat di [perubahan alur](PENYEDERHANAAN-ALUR.md).
+Berlaku sejak penyederhanaan alur, Oktober 2026. Rincian tiap langkah ada di [buku panduan lengkap](PANDUAN-PENGGUNA.md); aturan yang berubah dicatat di [perubahan alur](PENYEDERHANAAN-ALUR.md).
 
 ## Tiga hal yang perlu diingat
 

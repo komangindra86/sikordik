@@ -1,6 +1,6 @@
 # Data latihan lokal SIKORDIK
 
-Paket tambahan setelah Fase 4, dibuat pada 10-09-2026. Paket latihan ini mencakup fase 1–4; belum menyediakan fixture logbook Fase 5.
+Paket dasar dibuat setelah Fase 4 (10-09-2026). Paket lanjutan ditambahkan pada penyederhanaan alur (Oktober 2026) dan mencakup jadwal satu periode, penutupan, dan stase selesai. Perintah yang sama membuat keduanya dan hanya menambah yang belum ada.
 
 ## Menyiapkan paket
 
@@ -26,9 +26,23 @@ Email dan password disimpan **hanya pada file privat** `storage/app/private/demo
 | DUMMY 05 — Sahkan Rekap | Periode berakhir, presensi terverifikasi, draft rekap siap | `ketua@demo.sikordik.test` |
 | DUMMY 06 — Rekap Terkunci | Rekap disahkan dan terkunci | `admin@demo.sikordik.test` untuk latihan koreksi |
 
-Mulai dari DUMMY 03 melalui menu **Presensi**, lalu berganti akun pembimbing untuk memverifikasi. Untuk latihan pengesahan tanpa menunggu periode berakhir, gunakan DUMMY 05. Password masing-masing ada pada file privat, bukan dokumen ini.
+Mulai dari DUMMY 03: masuk sebagai pesertanya, buka **Stase saya → Presensi**, lalu berganti akun pembimbing dan verifikasi dari **Beranda**. Untuk latihan pengesahan tanpa menunggu periode berakhir, gunakan DUMMY 05. Password masing-masing ada pada file privat, bukan dokumen ini.
 
 Tanggal relatif terhadap hari pembuatan pertama, tidak digeser pada pengulangan. Jadwal berjalan tersedia pada hari pembuatan dan hari berikutnya; tambahkan jadwal terbit baru bila berlatih pada tanggal lain. Periode berjalan hingga 14 hari setelah pembuatan.
+
+## Paket lanjutan
+
+Tanggalnya relatif terhadap hari perintah dijalankan, sehingga langsung dapat dipakai berlatih.
+
+| Peserta | Kondisi awal | Latihan |
+|---|---|---|
+| DUMMY 07 — Susun Jadwal | Stase sedang dalam periodenya, pembimbing sudah disetujui, belum ada jadwal | `jadwal@demo.sikordik.test`: *Susun jadwal satu periode* → *Simpan & ajukan*. `pembimbing@…`: *Setujui semua*. `jadwal@…`: tombol *Hadir*. |
+| DUMMY 08 — Siap Ditutup | Periode berakhir kemarin; presensi, logbook, nilai, survei, dan rekap sudah lengkap | `admin@…`: Beranda → *Periksa kelengkapan & ajukan penyelesaian*. `tim@…`: *Setujui penyelesaian*. |
+| DUMMY 09 — Selesai | Selesai dan terkunci | `selesai@…`: melihat nilai, logbook, dan pengesahan; `admin@…`: berlatih *Ajukan pembukaan kembali*. |
+
+Paket lanjutan mengunggah satu PDF logbook contoh per peserta melalui layanan aplikasi. Karena itu pemeriksaan berkas harus berjalan: pasang ClamAV dan qpdf, atau pada komputer latihan isi `SIKORDIK_SCAN_BYPASS=true` di `.env` (hanya berlaku pada `APP_ENV=local`). Bila pemeriksaan tidak tersedia, paket dasar tetap dibuat dan paket lanjutan dilewati dengan pesan; jalankan ulang perintah setelahnya.
+
+Tautan survei pada paket ini adalah contoh, bukan Google Form nyata. Ganti melalui *Pengaturan → Tautan survei* sebelum berlatih mengisi survei. Akun dan password paket lanjutan ditambahkan ke file privat yang sama.
 
 ## Batas simulasi
 

@@ -2,55 +2,53 @@
 
 Sistem Informasi Manajemen Pendidikan Klinis RSBM
 
-Edisi 1 | 15 September 2026 | Cakupan fitur sampai Fase 8
+Edisi 2 | 8 Oktober 2026 | Mengikuti alur yang telah disederhanakan
 
-> **Catatan Oktober 2026.** Menu dan urutan klik telah disederhanakan. Gunakan [panduan ringkas](PANDUAN-RINGKAS.md) untuk langkah yang berlaku sekarang dan [penyederhanaan alur](PENYEDERHANAAN-ALUR.md) untuk aturan yang berubah. Buku ini tetap menjadi rujukan aturan pendidikan dan penanganan kendala.
+Panduan ini membantu Admin Kordik, Tim Kordik, petugas KSM, pendidik, dan peserta menjalankan pendidikan klinis dari penerimaan hingga penyelesaian. Bila hanya butuh urutan singkat, baca [panduan ringkas](PANDUAN-RINGKAS.md).
 
-Panduan ini membantu Admin Kordik, Tim Kordik, petugas KSM, pendidik, dan peserta menjalankan pendidikan klinis dari penerimaan hingga penyelesaian. Mulailah dari petunjuk sesuai peran, lalu ikuti bab kegiatan yang sedang dikerjakan.
-
-Urutan utama adalah penerimaan, persetujuan, verifikasi dokumen, penugasan, penerbitan jadwal, pelaksanaan kegiatan, dan penyelesaian. Menyimpan data sebagai draft belum mengirimkannya kepada pemeriksa. Selalu periksa status setelah menekan tombol tindakan.
+Tiga hal yang selalu berlaku: buka Beranda dan kerjakan Tugas saya; satu peserta diurus dari satu halaman penempatan; menyetujui cukup satu klik, sedangkan menolak harus beralasan.
 
 ## Cara menggunakan buku ini
 
-- Pengguna baru: baca halaman 2 sampai 5 untuk memahami titik mulai, istilah, akses, dan alur bersama.
-- Admin dan petugas KSM: gunakan halaman 6 sampai 11 untuk persiapan, penerimaan dan penjadwalan.
-- Peserta dan pendidik: gunakan halaman 11 sampai 16 untuk jadwal, kegiatan harian, logbook, nilai, dan survei.
+- Pengguna baru: baca halaman 2 sampai 5 untuk memahami titik mulai, istilah, tahap, dan tampilan aplikasi.
+- Admin dan petugas KSM: gunakan halaman 6 sampai 11 untuk persiapan, penerimaan, dokumen, pembimbing, dan jadwal.
+- Peserta dan pendidik: gunakan halaman 11 sampai 16 untuk jadwal, presensi, logbook, nilai, dan survei.
 - Menutup stase atau mencari kendala: gunakan halaman 17 sampai 21.
 
 Panduan ini dapat dipakai untuk orientasi dan latihan. Penggunaan operasional dengan data nyata mengikuti pemberitahuan kesiapan dan izin operasional dari pengelola RSBM. Gunakan alamat aplikasi dan akun yang diberikan pengelola.
 
 ## Daftar isi ringkas
 
-- Halaman 2-5: titik mulai setiap peran, diagram proses bisnis, status dan cara masuk.
-- Halaman 6-8: persiapan pengelola, surat, peserta, impor dan penempatan.
-- Halaman 9-11: persetujuan penerimaan, dokumen, penugasan, kelompok dan jadwal.
-- Halaman 12-14: presensi, rekap, logbook dan penilaian.
-- Halaman 15-16: keberatan nilai, perubahan stase dan kedua survei.
-- Halaman 17-18: checklist akhir, penyelesaian, pembukaan kembali dan arsip.
-- Halaman 19-21: laporan, verifikasi pengesahan, kendala dan latihan lengkap.
+- Halaman 2-5: titik mulai setiap peran, diagram proses bisnis, status, dan tampilan aplikasi.
+- Halaman 6-8: persiapan pengelola, penerimaan peserta baru, peserta lama, dan impor.
+- Halaman 9-11: keputusan penerimaan, dokumen, pembimbing, kelompok, dan jadwal.
+- Halaman 12-14: presensi, rekap, logbook, dan penilaian.
+- Halaman 15-16: keberatan nilai, perubahan stase, dan kedua survei.
+- Halaman 17-18: kelengkapan akhir, penyelesaian, pembukaan kembali, dan arsip.
+- Halaman 19-21: laporan, cek pengesahan, kendala, dan latihan lengkap.
 
 Gunakan panel bookmark pada pembaca PDF untuk langsung menuju bab yang dibutuhkan.
 
 <!-- page -->
 # 1 Mulai dari peran Anda
 
-Jangan mulai dari urutan menu di layar. Mulailah dari tanggung jawab Anda dan status penempatan peserta.
+Setelah masuk, buka Beranda. Bagian Tugas saya berisi pekerjaan yang menunggu Anda saat ini, dengan tombol untuk langsung mengerjakannya.
 
-| Peran | Langkah pertama | Pekerjaan berikutnya |
+| Peran | Yang muncul di Tugas saya | Pekerjaan berikutnya |
 |---|---|---|
-| Super Admin | Siapkan master KSM dan akun petugas | Atur hak akses dan cakupan KSM; pantau sistem |
-| Admin Kordik | Cari peserta lama dan catat surat masuk | Buat penempatan, ajukan, periksa dokumen, siapkan penugasan, pantau dan ajukan penyelesaian |
-| Sekretariat KSM | Periksa penempatan KSM Anda | Bantu penugasan, kelompok, jadwal, dan pembuatan rekap |
-| Ketua atau Koordinator KSM | Periksa antrean penerimaan KSM | Putuskan penugasan dan perpanjangan; sahkan rekap presensi |
-| Tim Kordik | Periksa penerimaan yang telah diterima KSM | Putuskan penerimaan, pengecualian, perpanjangan dan penyelesaian |
-| Peserta | Pastikan akun aktif dan penempatan benar | Susun jadwal setelah penugasan siap; isi presensi, logbook dan survei; lihat nilai |
-| Pembimbing | Pastikan penugasan resmi sudah disetujui | Periksa jadwal, presensi dan logbook peserta; isi, sahkan dan publikasikan nilai |
-| Penguji | Periksa penugasan sebagai penguji | Isi penilaian; pembimbing yang ditunjuk mengesahkan dan memublikasikan |
-| Supervisor | Periksa penugasan sebagai supervisor | Periksa logbook kegiatan pembimbing yang menunjuk Anda |
+| Super Admin | Tidak ada tugas stase | Siapkan data master, akun petugas, hak akses, dan cakupan KSM melalui Pengaturan |
+| Admin Kordik | Ajukan ke KSM, periksa dokumen, aktifkan akun, ajukan pembimbing, cocokkan survei, ajukan penyelesaian | Terima peserta baru; pantau penempatan sampai selesai |
+| Sekretariat KSM | Ajukan pembimbing, buat rekap presensi akhir | Bantu kelompok dan jadwal pada KSM-nya |
+| Ketua atau Koordinator KSM | Konfirmasi kesediaan KSM, setujui penugasan dan perpanjangan, sahkan rekap | Pantau peserta pada KSM-nya |
+| Tim Kordik | Putuskan penerimaan, pengecualian, perpanjangan, penyelesaian, dan pembukaan kembali | Pantau seluruh penempatan dan laporan |
+| Peserta | Unggah dokumen, susun jadwal, isi presensi, unggah logbook, isi survei | Lihat nilai dan status penyelesaian di Stase saya |
+| Pembimbing | Setujui jadwal, verifikasi presensi, periksa logbook, sahkan nilai, tanggapi keberatan | Catat kegiatan pembimbing dan isi penilaian |
+| Penguji | Tidak ada antrean khusus | Isi penilaian pada penempatan yang ditugaskan; pembimbing mengesahkan dan memublikasikan |
+| Supervisor | Periksa logbook pembimbing | Baca kegiatan pembimbing yang menunjuk Anda |
 
 Satu akun dapat mempunyai beberapa role. Hak bertindak tetap mengikuti cakupan KSM, kepemilikan, dan penugasan resmi. Pemohon tidak boleh menyetujui sendiri permohonan yang mensyaratkan pemisahan petugas. Super Admin tidak otomatis menjadi pemberi keputusan bisnis.
 
-Hasil orientasi: Anda mengetahui menu pertama yang dibuka, data yang menjadi tanggung jawab Anda, dan petugas yang menerima pekerjaan berikutnya.
+Hasil orientasi: Anda tahu bahwa pekerjaan dimulai dari Beranda, data yang menjadi tanggung jawab Anda, dan petugas yang menerima pekerjaan berikutnya.
 
 <!-- page -->
 # 2 Peta proses bisnis dari awal sampai akhir
@@ -59,21 +57,21 @@ Proses berikut berlaku untuk satu penempatan. Peserta yang kembali mengikuti sta
 
 ```mermaid
 flowchart TD
-    A[Admin mencatat surat peserta dan penempatan] --> B[Ketua KSM memutuskan kesediaan]
+    A[Admin menerima peserta baru: surat, peserta, penempatan] --> B[Ketua KSM mengonfirmasi kesediaan]
     B -->|Terima| C[Tim Kordik memutuskan penerimaan]
-    B -->|Tolak| R[Admin membaca alasan dan merevisi draft]
+    B -->|Tolak| R[Admin membaca alasan dan merevisi draf]
     C -->|Tolak| R
     R --> A
-    C -->|Setuju| D[Admin memverifikasi dokumen dan mengaktifkan akun]
-    D --> E[Admin atau Sekretariat mengajukan penugasan]
-    E --> F[Ketua KSM menyetujui penugasan]
-    F --> G[Peserta menyusun dan mengajukan jadwal]
+    C -->|Setuju| D[Admin mengaktifkan akun; peserta mengunggah dokumen; Admin menyatakan valid]
+    D --> E[Admin atau Sekretariat mengajukan pembimbing]
+    E --> F[Ketua KSM menyetujui pembimbing]
+    F --> G[Peserta menyusun jadwal satu periode dan mengajukannya]
     G --> H[Pembimbing memeriksa jadwal]
     H -->|Revisi| G
-    H -->|Setuju| I[Peserta atau petugas menerbitkan jadwal]
-    I --> J[Admin memulai stase]
+    H -->|Setuju| I[Jadwal langsung terbit]
+    I --> J[Stase mulai otomatis pada presensi pertama]
     J --> K[Presensi logbook penilaian dan kedua survei]
-    K --> L[Rekap disahkan Ketua KSM dan checklist diperiksa Admin]
+    K --> L[Rekap disahkan Ketua KSM dan kelengkapan diperiksa Admin]
     L -->|Belum lengkap| K
     L -->|Lengkap dan periode berakhir| M[Admin mengajukan penyelesaian]
     M --> N[Tim Kordik memeriksa]
@@ -81,7 +79,7 @@ flowchart TD
     N -->|Setuju| O[Selesai dan data dikunci]
 ```
 
-Pada penerimaan, penolakan KSM atau Tim Kordik harus dibaca alasannya. Admin memperbaiki melalui revisi kembali ke draft dan mengulangi pengajuan. Pada kegiatan harian, permintaan revisi dikembalikan kepada penulis untuk diperbaiki dan diajukan ulang.
+Pada penerimaan, penolakan KSM atau Tim Kordik harus dibaca alasannya. Admin mengembalikan penempatan ke draf, memperbaiki, lalu mengajukan ulang. Pada kegiatan harian, permintaan revisi dikembalikan kepada penulis untuk diperbaiki dan diajukan ulang.
 
 Penyelesaian hanya dapat diajukan setelah hari terakhir stase berakhir dan seluruh kewajiban lengkap. Berakhirnya tanggal stase tidak membuat status otomatis menjadi selesai.
 
@@ -90,247 +88,265 @@ Penyelesaian hanya dapat diajukan setelah hari terakhir stase berakhir dan selur
 
 Peserta adalah data induk orang. Nomor peserta tetap dipakai saat orang yang sama datang kembali. Penempatan adalah satu episode pendidikan di KSM dengan institusi, program, jenis peserta, dan periode tertentu. Jadwal adalah kegiatan pada penempatan; satu penempatan mempunyai banyak jadwal.
 
-| Status penempatan | Artinya | Penanggung jawab berikutnya |
-|---|---|---|
-| draft | Data disiapkan; periode belum dipesan | Admin mengajukan ke KSM |
-| menunggu_konfirmasi_ksm | Menunggu kesediaan KSM | Ketua atau Koordinator KSM |
-| diterima_ksm | KSM menerima; sistem meneruskan antrean | Tim Kordik melalui antrean berikutnya |
-| menunggu_persetujuan_kordik | Menunggu keputusan penerimaan | Tim Kordik |
-| menunggu_dokumen | Penerimaan disetujui, checklist belum selesai | Admin Kordik |
-| terverifikasi | Checklist administrasi lengkap | Admin, KSM, peserta dan pembimbing menyiapkan jadwal |
-| dijadwalkan | Jadwal telah diterbitkan | Admin memulai stase sesuai periode |
-| sedang_stase | Kegiatan dan administrasi harian berjalan | Peserta, pendidik dan petugas |
-| menunggu_penyelesaian | Menunggu pemeriksaan akhir atau tindak lanjut | Admin dan Tim Kordik |
-| selesai | Penyelesaian disahkan dan data dikunci | Baca atau unduh sesuai hak akses |
-| ditolak_ksm atau ditolak_kordik | Penerimaan ditolak dengan alasan | Admin meninjau dan merevisi bila akan diajukan ulang |
-| dibatalkan | Penempatan dibatalkan; histori tetap ada | Admin menindaklanjuti sesuai alasan |
+Setiap halaman penempatan menampilkan garis lima tahap: Penerimaan, Dokumen, Jadwal, Stase, Selesai. Di bawahnya ada kalimat Langkah berikutnya yang menyebut siapa harus melakukan apa.
 
-Status penempatan berbeda dari status dokumen, jadwal, presensi, logbook, nilai dan survei. Contoh: jadwal disetujui masih harus diterbitkan; nilai disahkan masih harus dipublikasikan. Arsip adalah penanda penyimpanan riwayat, bukan penghapusan.
+| Status yang tampil | Artinya | Penanggung jawab berikutnya |
+|---|---|---|
+| Draf | Data disiapkan; periode belum dipesan | Admin mengajukan ke KSM |
+| Menunggu KSM | Menunggu kesediaan KSM | Ketua atau Koordinator KSM |
+| Menunggu Tim Kordik | KSM menerima; menunggu keputusan penerimaan | Tim Kordik |
+| Melengkapi dokumen | Penerimaan disetujui, dokumen belum lengkap | Peserta mengunggah, Admin Kordik memeriksa |
+| Siap dijadwalkan | Dokumen lengkap | Admin atau Sekretariat mengajukan pembimbing; peserta menyusun jadwal |
+| Terjadwal | Jadwal sudah terbit, stase belum berjalan | Peserta mengisi presensi pertama pada tanggal mulai |
+| Sedang stase | Kegiatan dan administrasi harian berjalan | Peserta, pendidik, dan petugas |
+| Menunggu penyelesaian | Penyelesaian sudah diajukan | Tim Kordik |
+| Selesai | Penyelesaian disahkan dan data dikunci | Baca atau unduh sesuai hak akses |
+| Ditolak KSM atau Ditolak Tim Kordik | Penerimaan ditolak dengan alasan | Admin meninjau dan merevisi bila akan diajukan ulang |
+| Dibatalkan | Penempatan dibatalkan; riwayat tetap ada | Admin menindaklanjuti sesuai alasan |
+
+Status penempatan berbeda dari status dokumen, jadwal, presensi, logbook, nilai, dan survei; masing-masing punya label sendiri di tabnya. Berkas yang diunggah juga berstatus: Menunggu pemeriksaan keamanan, Aman, Tertahan, atau Ditolak pemindai. Hanya berkas Aman yang dapat diunduh dan dinyatakan valid. Arsip adalah penanda penyimpanan riwayat, bukan penghapusan.
 
 <!-- page -->
-# 4 Masuk aplikasi dan mengenali menu
+# 4 Masuk aplikasi dan mengenali tampilan
 
 ## Masuk dan keluar
 
 1. Buka alamat SIKORDIK yang diberikan pengelola melalui peramban.
 2. Masukkan Email dan Kata sandi, lalu tekan Masuk. Hindari Ingat saya pada perangkat bersama.
-3. Periksa Dashboard dan Notifikasi. Pastikan data sesuai peran dan KSM Anda.
-4. Jika lupa kata sandi, pilih Lupa kata sandi?, masukkan email akun, lalu ikuti tautan pemulihan yang diterima. Jika tidak diterima, periksa folder spam dan hubungi pengelola akun.
-5. Setelah selesai, gunakan Keluar. Jangan menyerahkan sesi yang masih aktif kepada pengguna lain.
+3. Peserta baru membuat kata sandi dari tautan sekali pakai yang diberikan Admin Kordik. Tautan berlaku 60 menit; isi email akun dan kata sandi baru minimal 12 karakter.
+4. Jika lupa kata sandi, pilih Lupa kata sandi?, masukkan email akun, lalu ikuti tautan pemulihan yang diterima. Jika tidak diterima, hubungi pengelola akun.
+5. Untuk mengganti kata sandi sendiri, buka Akun saya di kanan atas. Setelah diganti, perangkat lain yang masih masuk dikeluarkan.
+6. Setelah selesai, gunakan Keluar. Jangan menyerahkan sesi yang masih aktif kepada pengguna lain.
 
-Peserta memperoleh akses setelah Admin memverifikasi penempatan dan kepemilikan akun. Email kontak pada data peserta tidak otomatis menjadi akun login. Tidak ada pendaftaran mandiri peserta melalui halaman login.
+Tidak ada pendaftaran mandiri peserta melalui halaman login.
 
-## Menu yang digunakan sehari hari
+## Menu
 
-- Dashboard: ringkasan pekerjaan sesuai peran. Angka peserta aktif menghitung penempatan sedang stase; orang yang mempunyai penempatan paralel dapat dihitung lebih dari sekali.
-- Notifikasi: pemberitahuan internal untuk pengajuan dan keputusan. Buka data terkait lalu tindak lanjuti; menandai notifikasi dibaca tidak menyetujui pengajuan.
-- Penerimaan & penempatan: data peserta, surat, impor, persyaratan dan penerimaan.
-- Penugasan & jadwal: pendidik, kelompok, jadwal dan perpanjangan.
-- Presensi, Logbook, Penilaian: pencatatan dan pemeriksaan kegiatan pendidikan.
-- Survei & penyelesaian: kewajiban survei dan checklist akhir.
-- Laporan Excel / PDF dan Verifikasi pengesahan: pelaporan dan pengecekan pengesahan.
-- Pengguna, Role, master data dan Audit log: tersedia menurut hak administrasi akun.
+- Beranda: Tugas saya, penempatan Anda, jadwal hari ini, dan untuk petugas Ringkasan angka.
+- Notifikasi: pemberitahuan keputusan dan pengajuan. Tombol Buka membawa ke penempatannya; menandai dibaca tidak menyetujui apa pun.
+- Penempatan (peserta: Stase saya; pendidik: Peserta bimbingan): daftar penempatan dengan pencarian dan pilihan Sedang berjalan, Selesai, atau Ditolak / dibatalkan.
+- Penerimaan peserta (Admin Kordik): Terima peserta baru, Daftar penerimaan, Data peserta, Surat masuk, Impor XLSX.
+- Laporan Excel / PDF dan Cek pengesahan (QR).
+- Pengaturan (petugas): pengguna, role, data master, lisensi pendidik, persyaratan dokumen, template penilaian, tautan survei, kelompok KSM, arsip, dan audit log.
 
-Jika daftar kosong, periksa filter, status, dan penempatan yang dipilih. Jika tindakan tidak tersedia, periksa peran, cakupan KSM, penugasan, serta status data melalui Admin. Jam kegiatan menggunakan WITA.
+## Halaman penempatan
+
+Membuka satu penempatan menampilkan identitas peserta, garis tahap, Langkah berikutnya, lalu tab: Ringkasan, Dokumen, Pembimbing & jadwal, Presensi, Logbook, Nilai, dan Survei & penyelesaian. Tab hanya tampil bila Anda berwenang membukanya. Bagian Tindakan Anda hanya muncul bila ada yang dapat Anda lakukan pada tahap itu. Jam kegiatan menggunakan WITA.
 
 <!-- page -->
 # 5 Persiapan oleh pengelola dan Admin
 
-Selesaikan persiapan sebelum memasukkan satu angkatan peserta. Gunakan data resmi yang telah disetujui pengelola pendidikan.
+Selesaikan persiapan sebelum memasukkan satu angkatan peserta. Semua ada di menu Pengaturan. Gunakan data resmi yang telah disetujui pengelola pendidikan.
 
 ## Urutan pengisian awal
 
-1. Isi master Institusi Pendidikan, Jenjang Pendidikan, KSM dan Jenis Peserta. Pastikan kode tidak ganda dan status aktif.
-2. Isi Program Studi dengan institusi serta jenjang yang sesuai. Isi Lokasi Klinis dan kaitkan lokasi kegiatan dengan KSM yang benar.
-3. Melalui Pengguna, tambahkan akun petugas. Isi identitas, email, jabatan, kata sandi beserta konfirmasi, role, dan Scope KSM. Kata sandi akun baru minimal 12 karakter. Simpan pengguna.
-4. Isi master Pembimbing / Penguji / Supervisor. Tautkan akun yang benar, tentukan KSM dan kemampuan sebagai pembimbing, penguji atau supervisor. Akun dan master pendidik harus aktif.
-5. Admin mencatat lisensi atau otorisasi pendidikan melalui bagian lisensi pada Penugasan & jadwal. Gunakan bukti resmi dan periode berlaku yang mencakup penugasan.
-6. Siapkan Persyaratan dokumen dalam Penerimaan & penempatan, Template penilaian dalam Penilaian, dan Kelola tautan survei dalam Survei & penyelesaian.
+1. Isi Institusi Pendidikan, Jenjang Pendidikan, KSM, dan Jenis Peserta. Pastikan kode tidak ganda dan status aktif.
+2. Isi Program Studi dengan institusi serta jenjang yang sesuai. Isi Lokasi Klinis dan kaitkan dengan KSM yang benar; lokasi tanpa KSM tidak dapat dipakai untuk presensi.
+3. Melalui Pengguna, tambahkan akun petugas dan pendidik. Isi identitas, email, jabatan, kata sandi minimal 12 karakter beserta konfirmasi, role, dan Scope KSM. Simpan pengguna.
+4. Isi Pembimbing / Penguji / Supervisor. Tautkan akun yang benar, tentukan KSM dan kemampuan sebagai pembimbing, penguji, atau supervisor.
+5. Melalui Lisensi pendidik, catat lisensi atau otorisasi pendidikan beserta masa berlakunya. Minimal satu lisensi aktif diperlukan dan harus berlaku sepanjang penugasan.
+6. Siapkan Persyaratan dokumen (tambahan di luar bawaan), Template penilaian, dan Tautan survei untuk kedua jenis survei.
+
+Persyaratan dokumen bawaan: Koas memerlukan surat pengantar, ijazah, dan BHD; Residen ditambah SIP, STR, dan sertifikat kompetensi; Nonkedokteran memerlukan surat pengantar dan ijazah.
 
 ## Mengelola perubahan
 
-Gunakan Ubah untuk memperbaiki master atau akun, dan isi alasan ketika diminta. Saat menonaktifkan akun, sesi aktif pengguna akan dihapus. Periksa dampaknya terhadap pemeriksa yang masih mempunyai pekerjaan tertunda.
+Gunakan Ubah untuk memperbaiki master atau akun, dan isi alasan ketika diminta. Saat menonaktifkan akun, sesi aktif pengguna dihapus. Periksa dampaknya terhadap pemeriksa yang masih mempunyai pekerjaan tertunda.
 
-Pengelola Role mengatur permission sesuai kewenangan yang telah ditetapkan. Hindari memberi banyak role hanya agar tombol muncul; perbaiki cakupan dan penugasan yang menjadi dasar pekerjaan.
+Role & hak akses mengatur permission sesuai kewenangan yang telah ditetapkan. Hindari memberi banyak role hanya agar tombol muncul; perbaiki cakupan dan penugasan yang menjadi dasar pekerjaan.
 
 ## Pemeriksaan sebelum angkatan dimulai
 
 - Petugas KSM dapat melihat KSM yang menjadi tanggung jawabnya.
-- Pendidik mempunyai akun, kemampuan peran dan lisensi yang berlaku.
-- Lokasi, persyaratan, template penilaian dan kedua tautan survei sudah siap.
+- Pendidik mempunyai akun, kemampuan peran, dan lisensi yang berlaku.
+- Lokasi, persyaratan, template penilaian, dan kedua tautan survei sudah siap.
 - Pengelola telah menyatakan lingkungan aplikasi siap digunakan. Panduan ini bukan persetujuan operasional.
 
 <!-- page -->
-# 6 Mencatat surat dan peserta
+# 6 Menerima peserta baru
 
-Pelaksana utama adalah Admin Kordik. Siapkan surat pengantar, data institusi, dan identitas peserta sebelum mulai.
+Pelaksana adalah Admin Kordik. Siapkan surat pengantar dan daftar peserta. Satu surat dapat memuat satu atau banyak peserta; semuanya dimasukkan sekaligus.
 
-## Surat masuk
+1. Buka Penerimaan peserta, lalu Terima peserta baru.
+2. Bagian 1, Surat pengantar: pilih surat yang sudah dicatat, atau biarkan Surat baru dan isi Institusi pengirim, Nomor surat, Tanggal surat, dan Perihal.
+3. Bagian 2, Penempatan: pilih Program studi, Jenis peserta, KSM tujuan, tanggal Mulai dan Selesai. Isian ini berlaku untuk semua peserta di bawahnya. Program studi harus berasal dari institusi pengirim.
+4. Bagian 3, Peserta: isi satu baris per orang. Nama wajib; NIM, tanggal lahir, dan email membantu mengenali peserta lama. Tekan Tambah 5 baris bila kurang, atau buka Atau tempel banyak peserta dari Excel dan tempel kolom Nama, NIM, Tanggal lahir, Email. Paling banyak 100 peserta sekali terima.
+5. Tekan Lanjut: periksa data. Belum ada yang tersimpan pada tahap ini.
+6. Pada Periksa sebelum menyimpan, setiap baris bertanda Peserta baru atau Mungkin peserta lama. Untuk yang kedua, pilih orang yang sama (data lama dipakai, penempatan baru dibuat) atau Orang berbeda dan tulis alasannya minimal 10 karakter. Sistem tidak pernah menggabungkan identitas secara otomatis.
+7. Tekan Simpan & ajukan … penempatan ke KSM. Pilih Simpan sebagai draf bila belum akan diajukan.
 
-1. Buka Penerimaan & penempatan, lalu Surat masuk.
-2. Isi institusi pengirim, nomor surat, tanggal dan informasi yang diminta formulir. Simpan surat.
-3. Unggah surat dalam PDF maksimal 10 MB melalui bagian berkas surat. Periksa hasil pemeriksaan keamanan.
-4. Gunakan surat yang sama untuk peserta atau penempatan yang memang berasal dari surat tersebut. Perbaikan berkas dibuat sebagai versi baru.
+Bila satu baris bermasalah, tidak ada yang tersimpan dan pesan menyebut nomor baris serta namanya. Perbaiki baris itu lalu kirim ulang.
 
-Nomor surat yang sama pada institusi dan tahun surat yang sama dianggap duplikat. Jangan membuat surat baru untuk setiap peserta dalam satu surat rombongan.
+Nomor surat yang sama pada institusi dan tahun yang sama tidak dapat dicatat dua kali; pilih surat tersebut dari daftar. Unggah PDF surat (maksimal 10 MB) dari tab Dokumen salah satu penempatan, pada baris Surat pengantar. Berkas surat berlaku untuk semua penempatan pada surat itu.
 
-## Data induk peserta
+Benturan periode: tanggal awal dan akhir sama-sama termasuk periode, sehingga 1–10 September berbenturan dengan 10–20 September untuk peserta yang sama. Benturan dalam KSM yang sama diselesaikan melalui penempatan lama. Program paralel lintas KSM memerlukan pengecualian Tim Kordik (halaman 15).
 
-1. Buka Data peserta untuk melihat Data induk peserta. Cari nama, nomor peserta, atau NIM terlebih dahulu.
-2. Bila orang yang sama sudah terdaftar, gunakan Tambah penempatan. Gunakan Ubah data / foto jika profil perlu diperbaiki.
-3. Bila belum terdaftar, buka Daftarkan peserta baru. Isi nama sesuai identitas dan institusi; lengkapi tanggal lahir, NIM, email kontak dan NIK bila tersedia. NIK opsional harus 16 digit.
-4. Tekan Periksa kandidat duplikat. Tinjau alasan kecocokan berdasarkan NIK, NIM dan institusi, email, atau nama dan tanggal lahir.
-5. Gunakan peserta lama jika sama. Jika kandidat berbeda orang, ikuti konfirmasi dan isi alasan yang diminta. Jangan menggandakan NIK.
-6. Setelah tersimpan, catat nomor peserta. Foto dapat diperbarui melalui Ubah data / foto; JPEG, PNG atau WebP maksimal 3 MB.
-
-Hasil: tersedia surat dan satu data induk per orang. Contoh nomor peserta adalah PDK-2026-000001; nomor ini hanya ilustrasi.
+Hasil: setiap peserta mempunyai penempatan berstatus Menunggu KSM. Contoh nomor peserta adalah PDK-2026-000001; nomor ini hanya ilustrasi.
 
 <!-- page -->
-# 7 Impor peserta dan membuat penempatan
+# 7 Peserta lama, data peserta, dan impor
 
-## Impor peserta dalam jumlah banyak
+## Menambah penempatan untuk satu peserta lama
 
-1. Siapkan XLSX tanpa macro dengan satu worksheet, maksimal 5 MB dan 500 peserta. Format semua kolom sebagai teks agar nol awal NIM dan NIK tidak hilang.
-2. Baris pertama kolom A sampai E harus berurutan: name, birth_date, nik, nim, email. Tanggal memakai YYYY-MM-DD. Hindari formula dan tautan eksternal.
-3. Buka Penerimaan & penempatan, lalu Impor XLSX untuk membuka Impor peserta. Pilih institusi dan Sumber XLSX, lalu Unggah dan pratinjau.
-4. Tinjau hasil setiap baris dan kandidat peserta lama. Pilih peserta lama secara eksplisit; sistem tidak menggabungkan identitas otomatis.
-5. Perbaiki baris yang gagal dan konfirmasikan baris sesuai pilihan yang tersedia pada pratinjau. Periksa hasil penyimpanan; jangan menganggap semua baris berhasil hanya karena unggahan selesai.
+1. Buka Penerimaan peserta, lalu Data peserta. Cari nama, nomor peserta, atau NIM.
+2. Pada baris peserta pilih Tambah penempatan. Pilih surat, program studi, jenis peserta, KSM, dan periode, lalu Simpan draft penempatan.
+3. Pada halaman penempatan, baca peringatan benturan periode bila ada, lalu tekan Ajukan ke KSM.
 
-Impor mengelola data peserta. Lanjutkan pembuatan penempatan untuk episode pendidikan masing-masing peserta.
+Cara ini sama hasilnya dengan Terima peserta baru; gunakan untuk satu orang yang sudah terdaftar.
 
-## Membuat penempatan
+## Memperbaiki data induk
 
-1. Pilih Tambah penempatan untuk peserta yang benar.
-2. Pilih surat, institusi, program studi, jenis peserta, KSM dan tanggal mulai serta selesai sesuai formulir.
-3. Simpan, kemudian baca kembali identitas dan periode pada Detail penempatan. Status awal adalah draft.
-4. Periksa peringatan periode bertumpang tindih. Tanggal akhir dan awal sama-sama termasuk periode: 1-10 September berbenturan dengan 10-20 September untuk peserta yang sama.
-5. Jika benar, pada Tindak lanjut pilih Ajukan ke KSM lalu Simpan keputusan.
+Pada Data peserta pilih Ubah data / foto. Perubahan wajib beralasan. Nomor peserta, akun, dan catatan penempatan lama tidak berubah. Foto: JPEG, PNG, atau WebP maksimal 3 MB. NIK bersifat opsional dan harus 16 digit; NIK yang sama tidak boleh dipakai dua orang.
 
-Benturan dalam KSM yang sama diselesaikan melalui penempatan lama. Program paralel lintas KSM memerlukan permohonan pengecualian beralasan, dokumen pendukung bersih, dan persetujuan Tim Kordik sebelum pengajuan. Persetujuan paralel tidak mengizinkan benturan jam kegiatan.
+Mendaftarkan satu peserta tanpa penempatan dilakukan dari Daftarkan peserta baru pada halaman yang sama: isi identitas, tekan Periksa kandidat duplikat, tinjau, lalu simpan.
 
-Hasil: status menunggu_konfirmasi_ksm. Serahkan tindak lanjut kepada Ketua atau Koordinator KSM terkait.
+## Impor data induk dari XLSX
+
+Gunakan impor bila perlu memasukkan banyak data induk beserta NIK. Impor hanya membuat data peserta; penempatan tetap dibuat melalui Terima peserta baru atau Tambah penempatan.
+
+1. Siapkan XLSX tanpa macro dengan satu worksheet, maksimal 5 MB dan 500 peserta. Format semua kolom sebagai teks agar nol di depan NIM dan NIK tidak hilang.
+2. Baris pertama kolom A sampai E berurutan: name, birth_date, nik, nim, email. Tanggal memakai YYYY-MM-DD. Hindari formula dan tautan eksternal.
+3. Buka Penerimaan peserta, lalu Impor XLSX. Pilih institusi dan berkas, lalu Unggah dan pratinjau.
+4. Tinjau hasil setiap baris dan kandidat peserta lama. Pilih peserta lama secara eksplisit bila sama.
+5. Konfirmasikan, lalu periksa hasil penyimpanan per baris. Jangan menganggap semua baris berhasil hanya karena unggahan selesai.
+
+## Daftar penerimaan
+
+Daftar penerimaan menampilkan semua penempatan dalam cakupan Anda dengan pencarian nama dan saringan status. Gunakan untuk memantau angkatan yang sedang diproses.
 
 <!-- page -->
-# 8 Persetujuan penerimaan dan dokumen
+# 8 Keputusan penerimaan dan dokumen
 
 ## Keputusan KSM dan Tim Kordik
 
-1. Ketua atau Koordinator KSM membuka Detail penempatan dalam cakupannya dan memeriksa peserta, program, periode serta kesediaan KSM.
-2. Pada Tindak lanjut, pilih KSM tersedia / terima atau KSM menolak, isi alasan yang diperlukan lalu Simpan keputusan.
-3. Penerimaan KSM diteruskan menjadi menunggu_persetujuan_kordik. Tim Kordik memeriksa, lalu memilih Setujui penerimaan atau Tolak penerimaan.
-4. Setelah disetujui Tim Kordik, status menjadi menunggu_dokumen. Jika ditolak, Admin membaca alasan dan menggunakan Revisi kembali ke draft bila akan mengajukan ulang.
+1. Ketua atau Koordinator KSM membuka Beranda. Pada Konfirmasi kesediaan KSM, tekan Putuskan sekaligus untuk satu rombongan, hilangkan centang peserta yang ingin diputuskan sendiri, lalu Setujui yang dicentang. Untuk satu peserta, tekan Putuskan lalu Terima peserta.
+2. Untuk menolak, buka penempatannya, pilih Tolak…, tulis alasan minimal 10 karakter, lalu tekan tombol tolak.
+3. Penempatan yang diterima KSM berstatus Menunggu Tim Kordik. Tim Kordik memutuskan dengan cara yang sama: Putuskan sekaligus atau Setujui penerimaan, dan Tolak penerimaan… dengan alasan.
+4. Jika ditolak, Admin membaca alasannya di bagian atas tab Dokumen, lalu memilih Kembalikan ke draf untuk direvisi… bila akan mengajukan ulang.
 
-## Verifikasi administrasi oleh Admin Kordik
+## Akun peserta
 
-1. Pada Detail penempatan, lihat Checklist dokumen. Kewajiban mengikuti template untuk penempatan tersebut.
-2. Buka Unggah dokumen penempatan, pilih kategori yang sesuai dan unggah berkas. Peserta menyerahkan dokumen kepada Admin melalui saluran resmi yang ditentukan pengelola.
-3. Tunggu status berkas clean. Unggah berhasil belum berarti dokumen dinyatakan valid.
-4. Pada setiap persyaratan, buka Review / pengecualian. Pilih Valid atau Tolak dokumen, pilih versi berkas yang sesuai, isi masa berlaku bila ada dan hasil pemeriksaan, lalu Simpan review.
-5. Pengecualian persyaratan hanya diputuskan Tim Kordik dengan alasan. Admin tidak menandai dokumen yang belum memenuhi syarat sebagai valid.
-6. Setelah seluruh kewajiban lengkap, pilih Verifikasi checklist lengkap dan Simpan keputusan. Status menjadi terverifikasi.
-7. Pada Data induk peserta, buka Aktivasi akun. Isi email akun, bukti pemeriksaan kepemilikan dan konfirmasi, lalu Aktifkan setelah verifikasi. Untuk akun baru, peserta menggunakan Lupa kata sandi? untuk menetapkan kata sandi melalui email yang telah diperiksa; jika email pemulihan belum tersedia, hubungi pengelola akun.
+Setelah penerimaan disetujui, tab Dokumen menampilkan Peserta belum punya akun kepada Admin. Periksa Email peserta, centang Email ini benar milik peserta, lalu Aktifkan akun. Sebuah tautan sekali pakai tampil di bagian atas halaman; kirimkan langsung kepada peserta. Peserta lama yang sudah punya akun tidak perlu diaktifkan lagi; ia langsung masuk dengan kata sandinya.
 
-Contoh checklist awal: Koas memerlukan surat, ijazah dan BHD; Residen ditambah SIP, STR dan sertifikat kompetensi; Nonkedokteran memerlukan surat dan ijazah. Checklist yang tampil pada penempatan menjadi acuan pengguna.
+## Dokumen persyaratan
 
-<!-- page -->
-# 9 Penugasan pendidik dan kelompok
+1. Peserta membuka Stase saya, tab Dokumen. Pada tiap persyaratan pilih Unggah berkas, pilih PDF, JPG, atau PNG maksimal 10 MB, centang Berkas tidak memuat identitas pasien, lalu Unggah. Admin Kordik dapat mengunggah atas nama peserta dengan cara yang sama.
+2. Tunggu status berkas Aman. Unggah berhasil belum berarti dokumen dinyatakan valid.
+3. Admin Kordik menekan Nyatakan valid pada tiap dokumen; isi Berlaku sampai bila dokumen punya masa berlaku. Masa berlaku harus mencakup akhir stase.
+4. Bila berkas tidak sesuai, Admin memilih Minta perbaikan… dan menulis apa yang harus diperbaiki. Peserta mengunggah berkas pengganti.
+5. Pengecualian persyaratan hanya diputuskan Tim Kordik melalui Kecualikan persyaratan ini… dengan alasan.
+6. Setelah semua baris Valid atau Dikecualikan, Admin menekan Semua dokumen lengkap — lanjutkan. Status menjadi Siap dijadwalkan.
 
-Pelaksana penyiapan adalah Admin Kordik atau Sekretariat KSM sesuai cakupan. Keputusan penugasan diberikan Ketua atau Koordinator KSM yang berwenang dan berbeda dari pemohon.
-
-## Menetapkan pembimbing penguji dan supervisor
-
-1. Buka Penugasan & jadwal, pilih penempatan yang telah terverifikasi.
-2. Pada Penugasan pendidik, pilih Pendidik dan Peran penugasan: Pembimbing, Penguji atau Supervisor.
-3. Isi tanggal mulai dan selesai. Pastikan periode mencakup kegiatan yang akan dibimbing, diperiksa atau dinilai.
-4. Pilih kelompok bila diperlukan. Untuk tambahan pendidik, gunakan Penugasan tambahan; untuk pergantian, pilih penugasan asal yang digantikan.
-5. Isi alasan, kemudian tekan Ajukan penugasan ke KSM.
-6. Ketua KSM membuka penugasan Menunggu KSM, memilih Setujui atau Tolak, mengisi alasan lalu Konfirmasi.
-
-Hasil: penugasan Disetujui dapat dipilih pada formulir kegiatan terkait. Bila pendidik tidak tersedia, periksa KSM, kemampuan peran, akun aktif, tautan akun dan lisensinya. Minimal satu kredensial aktif diperlukan; kredensial aktif harus berlaku untuk periode penugasan.
-
-## Menggunakan kelompok
-
-Buat kelompok pada Penugasan & jadwal sesuai KSM, kemudian pada detail penempatan buka Kelompok dan histori keanggotaan. Pilih kelompok dan periode keanggotaan yang berada dalam periode penempatan.
-
-Perpindahan dilakukan dengan mengakhiri keanggotaan lama disertai alasan, lalu menambahkan keanggotaan baru tanpa tumpang tindih. Jadwal dan penugasan tetap dicatat per penempatan; menambah anggota tidak otomatis menyalin jadwal atau penugasan seluruh kelompok.
-
-Pergantian pendidik tidak memindahkan jadwal lama otomatis. Jadwal aktif yang masih merujuk pendidik lama perlu ditindaklanjuti melalui perubahan atau pembatalan yang disetujui. Hubungi Admin jika pergantian tertahan oleh kegiatan aktif.
+Surat pengantar dan berkas pendukung hanya diunggah Admin Kordik. Jangan mengunggah berkas yang memuat identitas atau data medis pasien.
 
 <!-- page -->
-# 10 Menyusun dan menerbitkan jadwal
+# 9 Pembimbing dan kelompok
 
-Peserta menyusun jadwal setelah penugasan pembimbing disetujui. Admin atau Sekretariat KSM dapat membantu dengan alasan.
+Pelaksana penyiapan adalah Admin Kordik atau Sekretariat KSM sesuai cakupan. Keputusan diberikan Ketua atau Koordinator KSM yang berbeda dari pemohon.
 
-1. Buka Penugasan & jadwal, pilih penempatan lalu Tambah jadwal.
-2. Isi tanggal, kegiatan, lokasi, jam mulai dan selesai, kelompok bila ada, pembimbing dan penguji bila diperlukan. Isi catatan tanpa identitas pasien.
-3. Tekan Simpan draft. Baca ulang tanggal, jam, lokasi dan pembimbing.
-4. Pada jadwal draft, pilih Ajukan ke pembimbing lalu Konfirmasi tindakan.
-5. Pembimbing yang ditunjuk memilih Setujui atau Minta revisi. Jika revisi, peserta membaca alasan, memilih Ubah draft, menyimpan dan mengajukan ulang.
-6. Setelah Disetujui, peserta atau petugas penyiap memilih Terbitkan jadwal yang disetujui. Pastikan status jadwal sudah Terbit dan penempatan menjadi dijadwalkan jika memenuhi syarat.
-7. Pada awal periode yang sah, Admin menekan Mulai stase setelah syarat diperiksa. Pastikan status penempatan sedang_stase.
+## Menetapkan pembimbing, penguji, dan supervisor
+
+1. Buka penempatan, tab Pembimbing & jadwal.
+2. Pada Ajukan pembimbing, pilih Pendidik dan perannya pada Sebagai: Pembimbing, Penguji, atau Supervisor. Tanggal Mulai dan Selesai sudah terisi sesuai periode stase; ubah bila penugasan lebih pendek.
+3. Tekan Ajukan ke Ketua KSM.
+4. Ketua KSM membuka Beranda, memilih Setujui penugasan pendidik, lalu menekan Setujui. Untuk menolak, pilih Tolak… dan tulis alasannya.
+
+Hasil: penugasan berstatus Disetujui dan dapat dipilih pada jadwal, presensi, logbook, dan penilaian. Supervisor diperlukan bila pembimbing akan mencatat kegiatan pembimbing; penguji bila ada penilaian oleh penguji.
+
+Bila pendidik tidak muncul dalam pilihan atau pengajuan ditolak sistem, periksa: KSM pendidik, kemampuan perannya, akun aktif dan tertaut, role akun, dan lisensi yang berlaku sepanjang penugasan.
+
+## Mengganti pendidik
+
+Buka Ajukan pendidik lain / pengganti, lalu Kelompok atau pergantian pendidik (opsional). Pilih pendidik baru, pilih penugasan lama pada Menggantikan, dan tulis alasan minimal 10 karakter. Setelah disetujui Ketua KSM, penugasan lama berstatus Digantikan dan riwayatnya tetap tersimpan.
+
+Pergantian tidak memindahkan jadwal lama. Jadwal aktif yang masih merujuk pendidik lama harus diubah atau dibatalkan dahulu melalui Ubah / batalkan.
+
+## Kelompok
+
+Buat kelompok dari Pengaturan, Kelompok KSM. Pada tab Pembimbing & jadwal penempatan, buka Kelompok, pilih kelompok dan periode keanggotaan, isi alasan, lalu Masukkan ke kelompok. Perpindahan dilakukan dengan Akhiri keanggotaan lama disertai alasan, lalu memasukkan ke kelompok baru tanpa tumpang tindih.
+
+Jadwal dan penugasan tetap dicatat per penempatan; menambah anggota tidak otomatis menyalin jadwal atau penugasan kelompok.
+
+<!-- page -->
+# 10 Menyusun jadwal
+
+Peserta menyusun jadwal setelah pembimbing disetujui. Admin atau Sekretariat KSM dapat menyusunkan dengan menulis alasannya.
+
+## Satu form untuk seluruh periode
+
+1. Buka Stase saya, tab Pembimbing & jadwal, lalu Susun jadwal satu periode.
+2. Isi Dari tanggal dan Sampai tanggal, centang Hari kegiatan, isi Kegiatan, pilih Lokasi dan Pembimbing. Jam mulai dan selesai bersifat opsional; tanpa jam berarti kegiatan sepanjang hari.
+3. Tekan Simpan & ajukan ke pembimbing. Sistem membuat satu jadwal untuk setiap hari yang dipilih. Tanggal yang sudah punya jadwal dilewati, sehingga form aman diulang.
+4. Pembimbing membuka Beranda, memilih Setujui jadwal peserta, lalu Setujui semua. Jadwal yang disetujui langsung terbit.
+5. Bila ada hari yang perlu diubah, pembimbing memilih Minta revisi… pada jadwal itu dan menulis alasannya. Peserta memilih Ubah, memperbaiki, lalu Ajukan.
+
+Untuk satu hari yang berbeda dari biasanya gunakan Tambah satu jadwal. Jadwal yang disimpan sebagai draf belum terlihat pembimbing; kirim dengan Ajukan atau Ajukan semua ke pembimbing.
+
+## Stase mulai berjalan
+
+Stase berstatus Sedang stase secara otomatis: saat jadwal terbit pada periode yang sudah berjalan, atau saat peserta mengisi presensi pertamanya. Admin Kordik juga dapat menekan Mulai stase sekarang. Syaratnya tetap: jadwal terbit, dokumen lengkap, dan tidak ada benturan periode.
 
 ## Aturan waktu dan perubahan
 
-- Isi kedua jam bersama. Jam selesai harus lebih besar dari jam mulai; tanpa jam, kegiatan memesan satu hari penuh.
-- Jadwal 08.00-10.00 boleh diikuti 10.00-12.00. Jadwal yang berbenturan pada peserta yang sama ditolak, termasuk lintas KSM.
-- Kegiatan lintas tengah malam dibuat sebagai dua kegiatan pada tanggal masing-masing. Waktu menggunakan WITA.
-- Jadwal terbit diubah melalui Ajukan perubahan / pembatalan. Pilih jenis perubahan, isi alasan, lalu jalankan pengajuan, persetujuan dan penerbitan perubahan sesuai tindakan yang tersedia.
-- Hari yang sudah memiliki presensi tidak boleh dibatalkan atau diganti sehingga kehilangan dasar kalender presensinya.
+- Jam selesai harus lebih besar dari jam mulai. Jadwal 08.00–10.00 boleh diikuti 10.00–12.00.
+- Jadwal yang berbenturan pada peserta yang sama ditolak, termasuk lintas KSM. Satu jadwal bermasalah membatalkan seluruh form; perbaiki rentang atau harinya lalu kirim ulang.
+- Kegiatan lintas tengah malam dibuat sebagai dua kegiatan pada tanggal masing-masing.
+- Jadwal terbit diubah melalui Ubah / batalkan: pilih jenis perubahan, isi alasan, ajukan, dan pembimbing menyetujuinya.
+- Hari yang sudah memiliki presensi tidak dapat dibatalkan atau diganti.
+- Draf atau pengajuan yang tidak jadi dipakai dihapus dari rencana melalui Hapus dari rencana… dengan alasan.
 
-Pembimbing dapat memilih Tandai kegiatan selesai setelah hari kegiatan berakhir. Tindakan ini menyelesaikan satu kegiatan; presensi tetap perlu diverifikasi dan penempatan tetap memerlukan penyelesaian akhir.
+Pembimbing dapat menekan Tandai selesai setelah hari kegiatan berakhir. Ini bersifat opsional dan tidak menggantikan verifikasi presensi.
 
 <!-- page -->
 # 11 Presensi harian dan rekap
 
 ## Peserta mencatat kehadiran
 
-1. Buka Presensi, lalu penempatan milik Anda. Pilih tanggal pendidikan yang sudah berlangsung dan mempunyai jadwal terbit atau selesai.
-2. Isi status kehadiran: hadir, terlambat, izin, sakit atau tidak hadir. Pilih lokasi dan Pembimbing verifikator yang ditugaskan pada tanggal tersebut.
-3. Isi Ringkasan kegiatan dan Catatan bila diperlukan. Jangan masukkan identitas pasien.
-4. Simpan draft jika belum siap. Gunakan tindakan ajukan untuk mengirim kepada pembimbing; pastikan status Menunggu verifikasi.
-5. Jika ditolak, baca catatan, perbaiki dan ajukan kembali. Pastikan hasil akhirnya Terverifikasi.
+1. Buka Stase saya, tab Presensi. Bagian Isi presensi menampilkan hari kegiatan yang belum diisi sampai hari ini.
+2. Bila Anda mengikuti kegiatan sesuai jadwal, tekan Hadir pada hari itu. Lokasi, pembimbing, dan kegiatan diambil dari jadwal, dan presensi langsung dikirim ke pembimbing.
+3. Untuk izin, sakit, terlambat, tidak hadir, atau kegiatan yang berbeda, buka Lainnya…, pilih Kehadiran, periksa Lokasi dan Pembimbing yang memverifikasi, tulis keterangan, lalu Kirim ke pembimbing.
+4. Bila ditolak, baca catatan pembimbing pada baris tersebut, buka Perbaiki dan kirim ulang, lalu kirim kembali.
 
-Satu tanggal pendidikan mempunyai satu presensi per penempatan, meskipun ada beberapa sesi. Pengisian susulan diperbolehkan. Hari yang belum diisi tidak otomatis menjadi tidak hadir. Sistem tidak memakai GPS atau foto untuk presensi.
+Satu tanggal mempunyai satu presensi per penempatan, meskipun ada beberapa sesi. Pengisian susulan diperbolehkan. Hari yang belum diisi tidak otomatis menjadi tidak hadir. Presensi hanya tersedia pada tanggal yang punya jadwal terbit. Sistem tidak memakai GPS atau foto.
 
 ## Pembimbing memverifikasi
 
-Buka presensi yang menunjuk Anda sebagai verifikator. Periksa tanggal, status, lokasi dan ringkasan kegiatan, kemudian verifikasi atau tolak dengan catatan. Pembimbing tidak dapat memverifikasi presensi miliknya sendiri.
+Buka Beranda, pilih Verifikasi presensi. Bagian Menunggu verifikasi Anda mencantumkan semua hari; hilangkan centang hari yang belum akan diverifikasi, lalu tekan Verifikasi yang dicentang. Untuk menolak satu hari, buka Tolak hari ini… pada barisnya dan tulis alasan minimal 10 karakter.
 
-Jika verifikator perlu diganti, Admin menggunakan penugasan resmi pengganti dan mencatat alasan. Peserta tidak mengalihkan sendiri presensi yang sudah diajukan kepada sembarang pendidik.
+Jika verifikator perlu diganti, Admin memakai Ganti verifikator… dengan penugasan resmi pengganti dan alasan.
 
 ## Rekap akhir dan koreksi
 
-1. Setelah seluruh hari stase berakhir, Admin, Sekretariat KSM atau Ketua KSM memilih Buat rekap terbaru.
-2. Tinjau hari pendidikan, presensi hilang dan presensi belum terverifikasi. Lengkapi masalah di data harian terlebih dahulu.
-3. Ketua KSM memeriksa dan mengesahkan rekap terbaru. Hanya data terverifikasi yang dihitung pada jumlah status kehadiran.
-4. Jika data sudah berubah, buat rekap terbaru kembali. Rekap lama tidak boleh dipakai untuk menyatakan kelengkapan saat ini.
+1. Setelah hari terakhir stase, Admin, Sekretariat KSM, atau Ketua KSM membuka tab Presensi dan menekan Buat rekap.
+2. Bila masih ada hari belum diisi atau belum terverifikasi, lengkapi dahulu, lalu Buat ulang rekap dari data terbaru.
+3. Ketua KSM membuka Lihat / cetak untuk memeriksa, lalu Sahkan & kunci. Hanya presensi terverifikasi yang dihitung.
 
-Setelah rekap disahkan, koreksi hanya melalui Admin dengan alasan. Koreksi memerlukan verifikasi ulang pembimbing, rekap baru dan pengesahan ulang Ketua KSM. Jika penempatan sudah selesai, pembukaan kembali diperlukan lebih dahulu.
+Setelah rekap disahkan, koreksi hanya melalui Koreksi oleh Admin… dengan alasan. Koreksi memerlukan verifikasi ulang pembimbing, rekap baru, dan pengesahan ulang Ketua KSM. Jika penempatan sudah selesai, pembukaan kembali diperlukan lebih dahulu.
 
 <!-- page -->
 # 12 Logbook peserta dan pembimbing
 
 ## Peserta mengunggah logbook
 
-1. Buka Logbook, pilih penempatan, lalu tindakan unggah logbook peserta.
-2. Isi Jenis logbook institusi. Pilih Pembimbing verifikator dari penugasan resmi.
-3. Unggah PDF logbook maksimal 10 MB, isi catatan dan centang pernyataan bebas identitas serta informasi medis sensitif pasien.
-4. Tekan Simpan versi draft. Setelah berkas lolos pemeriksaan keamanan dan isinya benar, ajukan kepada pembimbing.
-5. Pantau keputusan: Disetujui, Perlu revisi atau Ditolak. Baca catatan pemeriksa pada detail dan riwayat.
-6. Untuk revisi atau penolakan, buat versi baru dengan PDF perbaikan lalu ajukan ulang. Gunakan logbook yang sama untuk jenis yang sama pada satu penempatan; riwayat lama tetap tersimpan.
+1. Buka Stase saya, tab Logbook, lalu Unggah logbook peserta.
+2. Isi Jenis logbook institusi dan pilih Pembimbing verifikator.
+3. Pilih PDF logbook maksimal 10 MB, isi catatan bila perlu, dan centang pernyataan bebas identitas serta informasi medis pasien.
+4. Tekan Simpan & ajukan. Bila berkas masih diperiksa keamanannya, logbook tersimpan sebagai draf; buka kembali dan tekan Ajukan ke pembimbing setelah berkas berstatus Aman.
+5. Pantau hasilnya: Disetujui, Perlu revisi, atau Ditolak. Catatan pemeriksa ada pada bagian Pengajuan dan pemeriksaan.
+6. Untuk revisi atau penolakan, tekan Unggah versi perbaikan, pilih PDF baru, lalu ajukan lagi. Gunakan logbook yang sama untuk jenis yang sama; versi lama tetap tersimpan.
 
 ## Pembimbing mencatat kegiatan pendidikan
 
-1. Pada Logbook penempatan, pilih Catat kegiatan pembimbing.
-2. Pilih penugasan Anda, jenis kegiatan, tanggal, lokasi, jam mulai dan selesai pada hari yang sama, serta materi pembelajaran.
-3. Pilih Supervisor pemeriksa. Lampiran PDF bersifat opsional, maksimal 10 MB. Setiap versi menyediakan lampirannya sendiri.
-4. Isi catatan dan pernyataan privasi, lalu Simpan versi draft dan ajukan. Durasi dihitung dalam menit dari jam yang diisi.
+1. Pada tab Logbook pilih Catat kegiatan pembimbing.
+2. Pilih penugasan Anda, isi jenis kegiatan, tanggal, lokasi, jam mulai dan selesai pada hari yang sama, serta materi pembelajaran.
+3. Pilih Supervisor pemeriksa. Lampiran PDF bersifat opsional, maksimal 10 MB.
+4. Centang pernyataan privasi, lalu Simpan & ajukan. Durasi dihitung dari jam yang diisi.
 
-## Memeriksa dan melihat hasil
+## Memeriksa
 
-Pembimbing memeriksa logbook peserta yang menunjuk penugasannya. Supervisor memeriksa logbook pembimbing yang menunjuk penugasan supervisornya. Buka versi dan berkas, isi catatan keputusan, berikan konfirmasi, lalu setujui, minta revisi atau tolak.
+Pembimbing memeriksa logbook peserta yang menunjuknya; supervisor memeriksa kegiatan pembimbing yang menunjuknya. Buka dari Beranda, baca isi dan unduh berkasnya, lalu tekan Setujui. Untuk Minta perbaikan atau Tolak, tulis catatan untuk penulis minimal 5 karakter.
 
-Persetujuan menghasilkan pengesahan versi. Versi disetujui tidak dapat ditimpa. Rekap kegiatan pembimbing hanya menghitung menit dari kegiatan yang disetujui. Peserta tidak memperoleh akses ke logbook pembimbing hanya karena penempatannya sama.
+Persetujuan disimpan sebagai pengesahan elektronik atas nama akun pemeriksa. Versi yang disetujui tidak dapat ditimpa. Rekap kegiatan hanya menghitung menit dari kegiatan pembimbing yang disetujui. Peserta tidak dapat membuka logbook pembimbing.
 
 Jika pemeriksa yang sudah menerima pengajuan tidak lagi berwenang, hubungi Admin. Pengalihan logbook yang sudah diajukan belum tersedia sebagai tindakan langsung.
 
@@ -339,153 +355,158 @@ Jika pemeriksa yang sudah menerima pengajuan tidak lagi berwenang, hubungi Admin
 
 ## Admin menyiapkan template
 
-Buka Penilaian lalu Template penilaian. Isi nama, jenis penilaian, cakupan institusi/program/jenis peserta/KSM dan periode bila diperlukan. Tambahkan komponen, jenis input, rentang skor, kewajiban pengisian dan aturan perhitungan sesuai formulir institusi.
+Buka Pengaturan, Template penilaian. Isi nama, jenis penilaian, cakupan institusi, program, jenis peserta, atau KSM, dan periode bila diperlukan. Tambahkan komponen, jenis input, rentang skor, kewajiban pengisian, dan cara perhitungan sesuai formulir institusi.
 
-Pada metode berbobot, total bobot harus 100 dan komponen angka wajib. Nilai komponen dinormalisasi dari rentang masing-masing ke skala total 0-100. Jika rumus institusi berbeda, gunakan tanpa agregasi atau unggahan formulir institusi yang telah dihitung. Jangan menafsirkan tidak adanya hasil lulus otomatis sebagai keputusan lulus.
-
-Template tersimpan bersifat tetap. Untuk perubahan, buat template pengganti dan nonaktifkan template lama bagi penilaian baru.
+Pada metode berbobot, total bobot harus 100 dan komponen angka wajib diisi. Nilai komponen dinormalisasi dari rentangnya ke skala total 0–100. Jika rumus institusi berbeda, gunakan tanpa perhitungan atau unggah formulir institusi yang sudah dihitung. Template yang tersimpan bersifat tetap; untuk perubahan, buat template pengganti dan nonaktifkan yang lama.
 
 ## Pembimbing atau penguji mengisi
 
-1. Buka Penilaian, pilih penempatan lalu Isi penilaian.
-2. Pilih tanggal penilaian dan template yang sesuai, lalu Terapkan tanggal dan template. Tanggal harus sudah berlangsung dan tercakup penempatan serta penugasan.
-3. Isi Judul / identitas ujian. Pilih Penugasan Anda sebagai pengisi dan Pembimbing pengesah dan penerbit nilai.
-4. Pilih metode Formulir dinamis untuk mengisi komponen, atau Unggah formulir institusi yang sudah diisi dan ditandatangani untuk PDF maksimal 10 MB.
-5. Isi komponen atau unggah PDF sesuai metode, lengkapi catatan dan pernyataan privasi, lalu Simpan versi draft.
-6. Pembimbing yang ditunjuk memeriksa dan mengesahkan draft. Untuk dokumen, berkas harus telah lolos pemeriksaan keamanan.
-7. Pembimbing memublikasikan versi yang sudah disahkan. Pastikan status Published atau Terpublikasi sebelum mengarahkan peserta melihat hasil.
+1. Buka penempatan, tab Nilai, lalu Isi penilaian.
+2. Pilih Tanggal penilaian dan template, lalu Terapkan tanggal dan template. Tanggal harus sudah berlangsung dan tercakup penempatan serta penugasan.
+3. Isi Judul / identitas ujian. Pilih penugasan Anda sebagai pengisi dan Pembimbing pengesah.
+4. Pilih metode: Formulir dinamis untuk mengisi komponen, atau Unggah formulir institusi untuk PDF yang sudah diisi dan ditandatangani, maksimal 10 MB.
+5. Lengkapi catatan dan pernyataan privasi, lalu Simpan versi draft.
+6. Pembimbing pengesah membuka nilai tersebut dan menekan Sahkan & publikasikan. Catatan bersifat opsional. Untuk formulir PDF, berkas harus sudah berstatus Aman.
 
-Alur nilai: Draft → Disahkan → Dipublikasikan. Penguji dapat mengisi berdasarkan penugasan; hak sebagai penguji saja tidak memberi hak pengesahan atau publikasi. Admin memantau dan tidak mengubah nilai langsung.
+Selama masih draf, isi dapat diperbaiki melalui Ubah isi nilai. Setelah dipublikasikan, peserta langsung dapat melihat nilai dan koreksi hanya melalui keberatan. Pengesahan dan publikasi tercatat sebagai dua kejadian atas nama pembimbing.
 
-Peserta membuka Penilaian untuk melihat nilai yang telah dipublikasikan. Versi koreksi yang masih draft atau disahkan tidak menggantikan hasil yang terakhir dipublikasikan di tampilan peserta.
+Penguji dapat mengisi berdasarkan penugasannya, tetapi hanya pembimbing pengesah yang dapat mengesahkan dan memublikasikan. Admin dan Tim Kordik memantau tanpa mengubah nilai.
+
+## Peserta melihat nilai
+
+Buka Stase saya, tab Nilai. Hanya nilai yang sudah dipublikasikan yang tampil. Versi koreksi yang belum dipublikasikan tidak menggantikan nilai yang terakhir dipublikasikan.
 
 <!-- page -->
 # 14 Keberatan nilai dan perubahan stase
 
-## Peserta mengajukan keberatan
+## Keberatan nilai
 
-1. Buka detail penilaian yang sudah dipublikasikan. Periksa komponen atau hasil yang dianggap tidak sesuai.
-2. Pada bagian keberatan, tulis alasan yang spesifik. Lengkapi konfirmasi dan pernyataan privasi; lampiran PDF bersifat opsional dengan batas 10 MB.
-3. Ajukan dan pantau riwayat tanggapan. Satu keberatan tersedia untuk setiap versi publikasi.
-4. Pembimbing yang ditunjuk meninjau, kemudian menerima atau menolak dengan tanggapan. Jika lampiran masih tertahan, pemeriksaan berkas harus selesai dahulu.
-5. Jika diterima, pembimbing membuat versi koreksi, mengesahkan dan memublikasikannya. Keberatan menjadi Selesai setelah koreksi dipublikasikan.
+1. Peserta membuka nilai yang dipublikasikan, lalu Ajukan keberatan atas nilai ini.
+2. Tulis komponen yang dipermasalahkan dan alasannya, centang pernyataan privasi, lampirkan PDF bila perlu (maksimal 10 MB), lalu Ajukan keberatan. Satu keberatan tersedia untuk setiap versi publikasi.
+3. Pembimbing pengesah membuka dari Beranda, menulis tanggapan minimal 5 karakter, lalu Terima keberatan atau Tolak keberatan. Lampiran harus sudah berstatus Aman.
+4. Jika diterima, pembimbing menekan Buat versi koreksi, menyimpan, lalu Sahkan & publikasikan. Keberatan menjadi Koreksi selesai setelah versi koreksi dipublikasikan.
 
-Nilai lama dan riwayat tidak dihapus. Penolakan keberatan tidak membuka pengeditan nilai. Tenggat khusus atau kuota ujian mengikuti pengaturan pengelola; aplikasi belum menetapkan seluruh ketentuan institusi secara otomatis.
+Nilai lama dan riwayatnya tidak dihapus. Penolakan keberatan tidak membuka pengeditan nilai.
 
-## Revisi periode sebelum berjalan
+## Mengubah periode atau KSM sebelum stase berjalan
 
-Pada Detail penempatan, Admin menggunakan Revisi periode / KSM bila tindakan masih tersedia. Isi tanggal, KSM dan alasan. Revisi mengembalikan penempatan ke draft dan mengulangi persetujuan. Jangan menganggap persetujuan lama tetap berlaku untuk periode baru.
+Admin membuka tab Dokumen, Ubah periode atau KSM, mengisi tanggal, KSM, dan alasan. Perubahan mengembalikan penempatan ke draf dan persetujuan diulang dari awal.
+
+## Program paralel lintas KSM
+
+Bila penempatan draf berbenturan dengan penempatan di KSM lain, Admin mengunggah berkas pendukung pada Berkas pendukung lain, lalu membuka Minta pengecualian periode paralel lintas KSM. Tim Kordik menyetujui atau menolak. Persetujuan paralel tidak mengizinkan benturan jam kegiatan.
 
 ## Perpanjangan
 
-1. Admin membuka Penugasan & jadwal pada penempatan dan bagian perpanjangan. Isi tanggal akhir baru serta alasan dan bukti jika diminta.
-2. KSM memutuskan lebih dahulu, kemudian Tim Kordik memutuskan. Tanggal resmi berubah hanya setelah persetujuan final Tim Kordik.
-3. Sesudah disetujui, periksa ulang masa berlaku dokumen, penugasan pendidik dan keanggotaan kelompok. Perpanjangan penempatan tidak memperpanjang semuanya otomatis.
-4. Buat jadwal tambahan hanya dengan penugasan yang mencakup tanggal tambahan. Jika permohonan sudah tidak sesuai, Admin menarik dan mengajukan ulang.
+1. Admin membuka tab Pembimbing & jadwal, Perpanjangan stase. Isi Tanggal akhir baru dan alasan, lalu Ajukan perpanjangan.
+2. Ketua KSM lalu Tim Kordik menekan Setujui perpanjangan, atau Tolak… dengan alasan. Tanggal resmi berubah hanya setelah persetujuan Tim Kordik.
+3. Sesudah disetujui, periksa masa berlaku dokumen, penugasan pendidik, dan keanggotaan kelompok; ketiganya tidak ikut diperpanjang otomatis.
+4. Buat jadwal tambahan dengan penugasan yang mencakup tanggal tambahan.
 
-Pembatalan sebelum stase ditangani Admin; setelah mulai memerlukan keputusan Tim Kordik. Penempatan selesai harus memakai prosedur pembukaan kembali. Jangan menggandakan peserta untuk mengatasi perubahan periode.
+## Pembatalan
+
+Sebelum stase berjalan, Admin memilih Batalkan penempatan… dengan alasan. Setelah stase berjalan, pembatalan diputuskan Tim Kordik. Penempatan selesai memakai prosedur pembukaan kembali. Jangan menggandakan peserta untuk mengatasi perubahan periode.
 
 <!-- page -->
 # 15 Survei peserta dan wawancara pasien
 
-Terdapat dua kewajiban per penempatan: survei kepuasan peserta dan minimal satu respons survei wawancara pasien. Respons dikirim melalui Google Form; Admin mencocokkan kode secara manual.
+Terdapat dua kewajiban per penempatan: survei kepuasan peserta dan satu respons survei wawancara pasien. Jawaban diisi di Google Form; SIKORDIK hanya menyimpan kode pencocokan dan statusnya.
 
 ## Admin menyiapkan tautan
 
-1. Buka Survei & penyelesaian lalu Kelola tautan survei.
-2. Siapkan formulir untuk masing-masing jenis dan kolom kode respons. Untuk survei pasien, jangan meminta nama, NIK, nomor rekam medis, diagnosis atau data medis sensitif; matikan pengumpulan email otomatis.
-3. Catat nama, jenis dan tautan respons HTTPS Google Form yang sesuai. Gunakan tautan forms.gle atau halaman respons docs.google.com/forms/d/e/.../viewform tanpa parameter.
-4. Periksa konfigurasi formulir, berikan konfirmasi yang diminta dan simpan. Untuk perubahan, buat versi baru. Kode yang terbit sebelumnya tetap mengacu pada formulir asal.
+1. Buka Pengaturan, Tautan survei.
+2. Siapkan formulir untuk masing-masing jenis dengan satu kolom untuk kode respons. Untuk survei pasien, jangan meminta nama, NIK, nomor rekam medis, diagnosis, atau data medis sensitif; matikan pengumpulan email otomatis.
+3. Catat nama, jenis, dan tautan respons Google Form: forms.gle atau docs.google.com/forms/d/e/…/viewform tanpa parameter.
+4. Beri konfirmasi dan simpan. Untuk perubahan, buat tautan baru; kode yang sudah terbit tetap mengacu pada formulir asalnya.
 
-## Peserta memenuhi masing masing kewajiban
+## Peserta mengisi
 
-1. Buka Survei & penyelesaian lalu penempatan Anda yang sedang stase atau menunggu penyelesaian.
-2. Pada Kewajiban survei, baca ketentuan, centang konfirmasi dan tekan Terbitkan kode respons.
-3. Salin kode SV yang tampil, lalu tekan Buka Google Form. Isi kode pada kolom yang disediakan dan kirim respons lengkap sesuai jenis survei.
-4. Kembali ke SIKORDIK. Centang pernyataan telah mengirim respons, lalu Ajukan verifikasi respons.
-5. Lakukan langkah yang sama untuk jenis survei lainnya. Tunggu kedua status menjadi Terverifikasi.
+Buka Stase saya, tab Survei & penyelesaian, bagian Dua survei wajib. Untuk tiap survei:
 
-## Admin memverifikasi
+1. Centang pernyataan privasi, lalu tekan Ambil kode.
+2. Salin kode yang tampil, tekan Buka Google Form, tempel kode pada kolomnya, isi, dan kirim.
+3. Kembali ke SIKORDIK dan tekan Saya sudah mengirim formulir.
 
-Buka respons pada Google Form asal, cari kode yang sama, dan periksa kelengkapannya. Di SIKORDIK, pilih Respons dengan kode ini ditemukan dan lengkap atau Belum ditemukan / belum lengkap. Centang konfirmasi pemeriksaan lalu Simpan pemeriksaan.
+Status berubah menjadi Menunggu pemeriksaan Admin, lalu Terverifikasi. Survei tersedia selama stase berjalan atau menunggu penyelesaian.
 
-Jika ditolak, peserta memperbaiki pengiriman dengan kode yang sama dan mengajukan ulang. Membuka tautan atau menerbitkan kode saja belum memenuhi kewajiban. SIKORDIK menyimpan status dan kode pencocokan, bukan jawaban survei atau identitas pasien.
+## Admin mencocokkan
+
+Buka dari Beranda, Cocokkan respons survei. Cari kode pada lembar respons Google Form, lalu tekan Ditemukan & lengkap atau Belum ditemukan. Jika belum ditemukan, peserta mengirim ulang formulir dengan kode yang sama dan menekan tombol kirim lagi.
+
+Membuka tautan atau mengambil kode saja belum memenuhi kewajiban. Tim Kordik dapat melihat status tanpa membuka jawaban.
 
 <!-- page -->
 # 16 Checklist akhir dan penyelesaian
 
-Mulai pemeriksaan melalui Survei & penyelesaian, pilih penempatan lalu lihat Kelengkapan saat ini. Tautan Dokumen, Presensi, Logbook dan Penilaian membantu membuka pekerjaan yang belum lengkap.
+Buka penempatan, tab Survei & penyelesaian. Bagian Kelengkapan untuk menutup stase menampilkan setiap syarat dengan tanda Lengkap atau Belum. Pada baris Belum, tekan Buka untuk langsung menuju tempat memperbaikinya. Daftar yang sama tampil di tab Ringkasan.
 
 ## Syarat yang harus dituntaskan
 
 - Seluruh tanggal stase berakhir; pengajuan paling awal pada hari setelah tanggal akhir resmi, termasuk perpanjangan yang disetujui.
-- Dokumen wajib valid atau memiliki pengecualian resmi, berkas lolos pemeriksaan, dan masa berlaku mencakup akhir stase.
-- Rekap presensi terbaru telah disahkan Ketua KSM; seluruh hari pendidikan tercatat dan terverifikasi.
-- Minimal satu logbook peserta tersedia. Semua logbook yang tercatat, termasuk logbook pembimbing, telah disetujui.
-- Minimal satu penilaian tersedia. Semua penilaian tercatat telah dipublikasikan pada versi terkini; keberatan sudah Ditolak atau Selesai.
-- Kedua survei telah Terverifikasi.
-- Tidak ada proses tertunda, termasuk penugasan, jadwal draft/revisi/pengajuan/disetujui belum terbit, perpanjangan atau pengecualian periode.
-- Admin telah memastikan seluruh kewajiban khusus institusi tercatat. Batas minimum aplikasi tidak menggantikan kewajiban institusi.
+- Dokumen wajib valid atau dikecualikan secara resmi, berkasnya Aman, dan masa berlakunya mencakup akhir stase.
+- Rekap presensi terbaru disahkan Ketua KSM; seluruh hari kegiatan tercatat dan terverifikasi.
+- Minimal satu logbook peserta tersedia. Semua logbook yang tercatat, termasuk kegiatan pembimbing, telah disetujui.
+- Minimal satu penilaian tersedia. Semua penilaian yang tercatat telah dipublikasikan pada versi terkini; keberatan sudah ditolak atau koreksinya selesai.
+- Kedua survei Terverifikasi.
+- Tidak ada yang tertunda: penugasan, jadwal draf atau menunggu, perpanjangan, atau pengecualian periode.
+- Admin memastikan kewajiban khusus institusi telah tercatat. Batas minimum aplikasi tidak menggantikan kewajiban institusi.
 
 ## Pengajuan dan keputusan
 
-1. Admin memperbaiki seluruh indikator Belum hingga lengkap.
-2. Pada Pemeriksaan dan keputusan pilih Ajukan penyelesaian. Isi Alasan dan hasil pemeriksaan minimal 10 karakter, centang konfirmasi lalu Simpan tindakan.
-3. Status menjadi menunggu_penyelesaian. Tim Kordik yang berbeda dari pemohon memeriksa permohonan dan memilih Setujui permohonan atau Tolak permohonan, disertai alasan dan konfirmasi.
-4. Jika data berubah setelah pengajuan, lakukan penarikan atau penolakan dan pemeriksaan ulang. Admin mengajukan kembali berdasarkan data terbaru.
-5. Setelah disetujui, pastikan status selesai dan nomor pengesahan tercatat dalam Riwayat permohonan dan pengesahan.
+1. Setelah semua baris Lengkap, Admin Kordik menekan Ajukan penyelesaian ke Tim Kordik. Status menjadi Menunggu penyelesaian.
+2. Tim Kordik yang berbeda dari pemohon membuka dari Beranda dan menekan Setujui penyelesaian, atau Tolak… dengan alasan minimal 10 karakter.
+3. Jika data berubah setelah pengajuan, persetujuan ditolak sistem. Admin memilih Tarik permohonan untuk diperiksa ulang…, melengkapi, lalu mengajukan kembali.
+4. Setelah disetujui, status menjadi Selesai dan nomor pengesahan tercatat pada Riwayat permohonan dan pengesahan.
 
-Hasil: penempatan dikunci dan tanggal akhir aktual mengikuti tanggal akhir resmi. Penolakan atau penarikan penyelesaian mengembalikan status sedang_stase agar kekurangan ditindaklanjuti.
+Hasil: penempatan dikunci dan tanggal akhir aktual mengikuti tanggal akhir resmi. Penolakan atau penarikan mengembalikan status ke Sedang stase agar kekurangan ditindaklanjuti.
 
 <!-- page -->
 # 17 Sesudah selesai dan pembukaan kembali
 
 ## Membaca hasil akhir
 
-Data yang diizinkan tetap dapat dibaca dan diunduh melalui modul terkait. Presensi, logbook, nilai, keberatan, survei dan dokumen penempatan dikunci setelah selesai. Simpan nomor pengesahan dan periksa versi terbaru saat menggunakan laporan.
+Data yang diizinkan tetap dapat dibaca dan diunduh melalui tab penempatan. Presensi, logbook, nilai, keberatan, survei, dan dokumen dikunci setelah selesai. Simpan nomor pengesahan dan periksa versi terbaru saat menggunakan laporan.
 
 ## Memperbaiki penempatan selesai
 
-1. Admin membuka Survei & penyelesaian pada penempatan selesai.
-2. Pilih Ajukan pembukaan kembali, isi alasan yang menjelaskan data yang perlu diperbaiki dan berikan konfirmasi.
-3. Tim Kordik memeriksa lalu menyetujui atau menolak. Persetujuan saja belum melaksanakan pembukaan kembali.
-4. Admin yang berbeda dari pemberi persetujuan memilih Laksanakan pembukaan kembali. Sistem memeriksa ulang kondisi penempatan.
-5. Penempatan kembali menjadi menunggu_penyelesaian. Lakukan koreksi melalui aturan modul terkait, kemudian periksa dan ajukan penyelesaian baru.
+1. Admin membuka tab Survei & penyelesaian pada penempatan selesai.
+2. Pilih Ajukan pembukaan kembali…, jelaskan data yang perlu diperbaiki dan alasannya, lalu Ajukan ke Tim Kordik.
+3. Tim Kordik menyetujui atau menolak. Persetujuan saja belum membuka penempatan.
+4. Admin yang berbeda dari pemberi persetujuan menulis catatan pelaksanaan dan menekan Laksanakan pembukaan kembali. Sistem memeriksa ulang kondisi penempatan.
+5. Status kembali ke Menunggu penyelesaian. Lakukan koreksi melalui aturan tiap tab, lalu ajukan penyelesaian baru.
 
-Pembukaan kembali tidak otomatis mengizinkan perubahan versi logbook atau nilai yang sudah disahkan. Nilai mengikuti alur keberatan dan koreksi yang tersedia. Jika tindakan koreksi belum tersedia, minta tindak lanjut pengelola dan jangan membuat data pengganti yang menyamarkan riwayat.
+Pembukaan kembali tidak otomatis mengizinkan perubahan versi logbook atau nilai yang sudah disahkan. Nilai mengikuti alur keberatan dan koreksi. Jika tindakan koreksi belum tersedia, minta tindak lanjut pengelola dan jangan membuat data pengganti yang menyamarkan riwayat.
 
 ## Arsip
 
-Admin dapat memilih Arsipkan setelah retensi tiga tahun jika syarat waktu terpenuhi, penempatan selesai dan tidak memiliki permohonan aktif. Isi alasan serta konfirmasi. Arsip keluar dari daftar aktif penyelesaian tetapi tersedia melalui filter Arsip dan laporan yang berwenang.
+Setelah retensi tiga tahun terpenuhi, penempatan selesai tanpa permohonan aktif menampilkan Arsipkan… kepada Admin; isi alasan lalu arsipkan. Penempatan arsip keluar dari daftar aktif dan tersedia melalui Pengaturan, Arsip, serta laporan yang berwenang.
 
-Arsip tidak menghapus data, riwayat atau berkas. Pemulihan arsip untuk koreksi belum disediakan sebagai tindakan langsung. Hubungi pengelola jika terdapat kebutuhan tersebut.
+Arsip tidak menghapus data, riwayat, atau berkas. Pemulihan arsip untuk koreksi belum tersedia sebagai tindakan langsung; hubungi pengelola bila diperlukan.
 
 ## Tanggung jawab pengguna
 
-Gunakan akun sendiri, jangan membagikan kata sandi, dan simpan hasil unduhan hanya pada penyimpanan yang disetujui pengelola. Jangan memasukkan identitas pasien ke catatan, alasan, logbook, lampiran atau survei. Jika berkas salah terunggah, segera laporkan kategori berkas dan penempatannya kepada Admin tanpa menyebarkan isi berkas.
+Gunakan akun sendiri, jangan membagikan kata sandi atau tautan sekali pakai, dan simpan hasil unduhan hanya pada penyimpanan yang disetujui pengelola. Jangan memasukkan identitas pasien ke catatan, alasan, logbook, lampiran, atau survei. Jika berkas salah terunggah, segera laporkan jenis berkas dan penempatannya kepada Admin tanpa menyebarkan isinya.
 
 <!-- page -->
-# 18 Laporan dan verifikasi pengesahan
+# 18 Laporan dan cek pengesahan
 
 ## Mengunduh laporan
 
 1. Buka Laporan Excel / PDF, pilih Jenis laporan.
-2. Atur institusi, KSM, peserta, penempatan, status dan tanggal sesuai kebutuhan. Laporan nilai dan logbook wajib memilih satu penempatan.
+2. Atur institusi, KSM, peserta, penempatan, status, dan tanggal sesuai kebutuhan. Laporan nilai dan logbook wajib memilih satu penempatan.
 3. Tekan Tampilkan dan periksa jumlah serta isi baris sebelum mengunduh.
-4. Tekan Excel untuk XLSX atau PDF untuk PDF. Jika batas ekspor terlampaui, persempit filter: Excel maksimal 5.000 baris dan PDF maksimal 500 baris.
+4. Tekan Excel atau PDF. Jika batas ekspor terlampaui, persempit saringan: Excel maksimal 5.000 baris dan PDF maksimal 500 baris.
 5. Simpan hasil sesuai ketentuan pengelola dan bagikan hanya kepada penerima yang berwenang.
 
-Tersedia laporan penempatan dan riwayat, surat, dokumen, presensi, rekap sah, jadwal atau kegiatan pembimbing, logbook, nilai, survei, penyelesaian dan metadata audit sesuai hak akses.
+Tersedia laporan penempatan dan riwayat, surat, dokumen, presensi, rekap sah, jadwal atau kegiatan pembimbing, logbook, nilai, survei, penyelesaian, dan metadata audit sesuai hak akses. Kartu pada Ringkasan angka di Beranda petugas membuka laporan atau daftar terkait.
 
-Filter tanggal penempatan mengambil periode yang beririsan; presensi dan jadwal juga memakai tanggal kegiatan. Surat memakai tanggal surat dan audit memakai waktu kejadian. Filter penempatan atau KSM tidak berlaku untuk jenis surat dan audit yang mempunyai pembatasan khusus.
-
-Pilihan filter memuat maksimal 500 penempatan terbaru dalam cakupan. Jika penempatan lama tidak muncul, telusuri laporan penempatan dan gunakan tautan Referensi. Laporan dokumen menunjukkan status review tercatat; laporan survei tidak menampilkan kode atau jawaban Google Form.
+Saringan tanggal penempatan mengambil periode yang beririsan; presensi dan jadwal memakai tanggal kegiatan. Surat memakai tanggal surat dan audit memakai waktu kejadian. Pilihan penempatan memuat maksimal 500 penempatan terbaru dalam cakupan. Laporan dokumen menunjukkan status pemeriksaan yang tercatat; laporan survei tidak menampilkan kode atau jawaban Google Form.
 
 ## Memeriksa pengesahan
 
-1. Buka Verifikasi pengesahan, masukkan Kode penempatan dari kolom Referensi laporan penempatan lalu tekan Cari dan pilih pengesahan. Alternatifnya, pindai QR yang tersedia pada pengesahan atau laporan.
-2. Masuk menggunakan akun yang berwenang jika diminta. QR tidak membuka akses publik ke data.
-3. Cocokkan jenis dokumen, nomor, versi, nama dan jabatan pengesah serta waktu pengesahan. Perhatikan penanda riwayat jika dokumen sudah diganti atau penempatan dibuka kembali.
+1. Buka Cek pengesahan (QR), masukkan kode penempatan dari kolom Referensi pada laporan penempatan, tekan Cari, lalu pilih pengesahan. Alternatifnya, pindai QR pada pengesahan atau laporan.
+2. Masuk dengan akun yang berwenang jika diminta. QR tidak membuka akses publik ke data.
+3. Cocokkan jenis dokumen, nomor, versi, nama dan jabatan pengesah, serta waktu pengesahan. Perhatikan penanda riwayat jika dokumen sudah diganti atau penempatan dibuka kembali.
 4. Jika hasil tidak sesuai atau akses ditolak, minta pemeriksaan Admin dengan menyertakan nomor pengesahan.
 
 Pengesahan internal mencatat keputusan dalam SIKORDIK dan bukan tanda tangan elektronik tersertifikasi. QR memeriksa catatan pengesahan di sistem; QR tidak membuktikan bahwa PDF lain yang diterima di luar sistem sama dengan berkas sumber. Ekspor laporan bukan pengesahan baru.
@@ -493,40 +514,48 @@ Pengesahan internal mencatat keputusan dalam SIKORDIK dan bukan tanda tangan ele
 <!-- page -->
 # 19 Mengatasi kendala yang sering muncul
 
+Langkah pertama untuk semua kendala: baca kalimat Langkah berikutnya pada halaman penempatan. Di sana tertulis siapa yang sedang ditunggu.
+
 | Kendala | Pemeriksaan dan tindakan | Hubungi |
 |---|---|---|
-| Tidak bisa masuk | Periksa email dan kata sandi; gunakan pemulihan; pastikan akun aktif | Pengelola akun |
-| Menu atau tombol tidak tersedia | Periksa peran, Scope KSM, penugasan dan status data | Admin Kordik |
-| Peserta tidak ditemukan atau ganda | Cari nama, nomor atau NIM; tinjau identitas sebelum menambah data | Admin Kordik |
-| Penempatan berbenturan | Periksa periode inklusif peserta yang sama; revisi atau ajukan pengecualian lintas KSM | Admin dan Tim Kordik |
-| Pembimbing tidak bisa dipilih | Periksa akun, KSM, lisensi, kemampuan peran dan penugasan disetujui pada tanggal kegiatan | Admin dan KSM |
-| Hari presensi tidak tersedia | Pastikan jadwal sudah terbit atau selesai dan tanggal sudah berlangsung | Admin atau pembimbing |
-| Berkas tertahan | Tunggu pemeriksaan; periksa format dan ukuran. Jangan menganggap pending atau held sebagai valid | Admin atau pengelola teknis |
-| Nilai tidak terlihat peserta | Pastikan pembimbing sudah memublikasikan, bukan hanya mengesahkan | Pembimbing pengesah |
-| Survei belum lengkap | Pastikan kode masuk ke formulir asal, respons terkirim dan verifikasi diajukan | Admin Kordik |
-| Rekap tidak bisa disahkan | Lengkapi dan verifikasi seluruh tanggal pendidikan lalu buat rekap terbaru | Admin dan Ketua KSM |
-| Penyelesaian tidak tersedia | Tunggu hari setelah akhir stase dan tuntaskan seluruh indikator Belum | Admin Kordik |
-| Data berubah atau formulir usang | Muat ulang detail, baca status terbaru lalu ulangi tindakan yang masih relevan | Petugas modul |
-| Laporan kosong atau terlalu besar | Periksa cakupan dan filter; wajib satu penempatan untuk nilai/logbook; pecah periode ekspor | Admin Kordik |
-| Data terkunci setelah selesai | Ajukan pembukaan kembali dan ikuti koreksi tiap modul | Admin dan Tim Kordik |
+| Tidak bisa masuk | Periksa email dan kata sandi; gunakan Lupa kata sandi? atau minta tautan baru; pastikan akun aktif | Pengelola akun |
+| Tautan sekali pakai tidak berfungsi | Tautan berlaku 60 menit dan hanya sekali; gunakan Lupa kata sandi? | Admin Kordik |
+| Tugas tidak muncul di Beranda | Tugas hanya muncul pada orang yang berwenang di tahap itu; periksa peran, cakupan KSM, dan penugasan | Admin Kordik |
+| Tab atau tombol tidak tampil | Modul itu tidak terbuka untuk peran Anda, atau tahapnya belum sampai | Admin Kordik |
+| Peserta tidak ditemukan atau ganda | Cari nama, nomor, atau NIM di Data peserta sebelum menambah data | Admin Kordik |
+| Penerimaan rombongan ditolak | Baca nomor baris dan nama pada pesan; perbaiki baris itu lalu kirim ulang | Admin Kordik |
+| Penempatan berbenturan | Periode awal dan akhir sama-sama dihitung; ubah periode atau minta pengecualian lintas KSM | Admin dan Tim Kordik |
+| Pendidik tidak bisa dipilih | Periksa akun, KSM, lisensi, kemampuan peran, dan penugasan yang disetujui pada tanggal kegiatan | Admin dan KSM |
+| Form jadwal ditolak | Ada tanggal di luar periode, benturan jam, atau lokasi bukan milik KSM; perbaiki lalu kirim ulang | Admin atau pembimbing |
+| Tombol Hadir tidak tampil | Belum ada jadwal terbit pada tanggal itu, atau tanggalnya belum tiba | Pembimbing |
+| Berkas lama Menunggu pemeriksaan | Pemindai belum selesai atau belum tersedia; periksa format dan ukuran | Admin atau pengelola teknis |
+| Nilai tidak terlihat peserta | Pembimbing belum menekan Sahkan & publikasikan | Pembimbing pengesah |
+| Survei belum lengkap | Pastikan kode ditempel pada formulir, formulir terkirim, dan tombol kirim ditekan | Admin Kordik |
+| Rekap tidak bisa disahkan | Lengkapi dan verifikasi seluruh hari kegiatan, lalu buat ulang rekap | Admin dan Ketua KSM |
+| Penyelesaian tidak bisa diajukan | Tunggu hari setelah akhir stase dan tuntaskan semua baris Belum | Admin Kordik |
+| Muncul pesan data berubah | Muat ulang halaman, baca status terbaru, lalu ulangi tindakan yang masih relevan | Petugas terkait |
+| Laporan kosong atau terlalu besar | Periksa cakupan dan saringan; nilai dan logbook wajib satu penempatan | Admin Kordik |
+| Data terkunci setelah selesai | Ajukan pembukaan kembali | Admin dan Tim Kordik |
 
-Saat meminta bantuan, sertakan menu, nomor peserta atau referensi penempatan, waktu kejadian, status yang terlihat dan teks pesan kesalahan. Jangan mengirim kata sandi, kode pemulihan atau identitas pasien. Jika perlu tangkapan layar, tutup data sensitif yang tidak diperlukan.
+Saat meminta bantuan, sertakan nama halaman, nomor peserta, waktu kejadian, status yang terlihat, dan teks pesan kesalahan. Jangan mengirim kata sandi, tautan sekali pakai, atau identitas pasien. Jika perlu tangkapan layar, tutup data sensitif yang tidak diperlukan.
 
 <!-- page -->
 # 20 Latihan alur lengkap dan ringkasan berkas
 
 ## Contoh latihan untuk orientasi
 
-Gunakan peserta, institusi dan KSM latihan yang disiapkan pengelola. Semua nama dan periode dalam latihan harus berupa data contoh yang jelas ditandai. Latihan penutupan memerlukan periode yang sudah berakhir sesuai waktu aplikasi.
+Gunakan peserta, institusi, dan KSM latihan yang disiapkan pengelola. Semua nama dan periode harus berupa data contoh yang jelas ditandai. Bergantilah akun sesuai peran pada tiap langkah.
 
-1. Admin mencari peserta, mencatat surat, membuat penempatan dan mengajukan. Hasil yang diperiksa: menunggu_konfirmasi_ksm.
-2. Ketua KSM menerima, lalu Tim Kordik menyetujui. Admin memeriksa dokumen dan mengaktifkan akun peserta. Hasil: terverifikasi.
-3. Admin mengajukan pembimbing; Ketua KSM menyetujui. Peserta menyusun dan mengajukan jadwal; pembimbing menyetujui; peserta menerbitkan; Admin memulai stase. Hasil: sedang_stase.
-4. Peserta mengajukan presensi dan logbook; pembimbing memverifikasi atau menyetujui. Penguji atau pembimbing mengisi nilai; pembimbing pengesah mengesahkan lalu memublikasikan. Hasil: peserta dapat membaca nilai publikasi.
-5. Peserta mengirim kedua survei dengan kode, lalu mengajukan verifikasi. Admin mencocokkan respons. Setelah periode berakhir, petugas membuat rekap dan Ketua KSM mengesahkan.
-6. Admin memastikan checklist lengkap dan mengajukan penyelesaian. Tim Kordik menyetujui. Hasil: selesai, pengesahan tercatat, dan data terkunci.
+1. Admin: Terima peserta baru dengan dua peserta, periksa, Simpan & ajukan. Hasil: Menunggu KSM.
+2. Ketua KSM lalu Tim Kordik: Putuskan sekaligus dari Beranda. Hasil: Melengkapi dokumen.
+3. Admin: Aktifkan akun dan serahkan tautan. Peserta: buat kata sandi, unggah dokumen. Admin: Nyatakan valid, lalu Semua dokumen lengkap — lanjutkan. Hasil: Siap dijadwalkan.
+4. Admin: Ajukan pembimbing. Ketua KSM: Setujui. Peserta: Susun jadwal satu periode, Simpan & ajukan. Pembimbing: Setujui semua. Hasil: Terjadwal.
+5. Peserta: Hadir pada hari berjalan. Pembimbing: Verifikasi yang dicentang. Hasil: Sedang stase.
+6. Peserta: unggah logbook, Simpan & ajukan. Pembimbing: Setujui, lalu isi penilaian dan Sahkan & publikasikan. Hasil: peserta dapat membaca nilainya.
+7. Peserta: kedua survei sampai Saya sudah mengirim formulir. Admin: Ditemukan & lengkap.
+8. Setelah periode berakhir: Sekretariat Buat rekap, Ketua KSM Sahkan & kunci, Admin Ajukan penyelesaian, Tim Kordik Setujui penyelesaian. Hasil: Selesai dan terkunci.
 
-Lakukan satu putaran revisi jadwal atau logbook agar pengguna memahami bahwa menyimpan perbaikan harus diikuti pengajuan ulang. Catat petugas yang masih perlu latihan sebelum bekerja mandiri.
+Lakukan satu putaran penolakan, misalnya pembimbing meminta revisi jadwal atau menolak satu presensi, agar pengguna memahami bahwa perbaikan harus dikirim ulang. Catat petugas yang masih perlu latihan sebelum bekerja mandiri.
 
 ## Batas unggahan yang digunakan
 
@@ -534,9 +563,9 @@ Lakukan satu putaran revisi jadwal atau logbook agar pengguna memahami bahwa men
 |---|---|---|
 | Foto peserta | JPEG, PNG, WebP | 3 MB |
 | Surat pengantar | PDF | 10 MB |
-| Dokumen penempatan | PDF, JPEG, PNG | 10 MB |
+| Dokumen persyaratan | PDF, JPEG, PNG | 10 MB |
 | Logbook peserta dan lampiran pembimbing | PDF | 10 MB |
 | Penilaian institusi dan lampiran keberatan | PDF | 10 MB |
-| Impor peserta | XLSX tanpa macro, satu worksheet | 5 MB dan 500 peserta |
+| Impor data peserta | XLSX tanpa macro, satu worksheet | 5 MB dan 500 peserta |
 
-Ingat urutan kerja: simpan → periksa → ajukan → pantau keputusan → perbaiki bila perlu. Untuk jadwal, lanjutkan sampai terbit; untuk nilai, sampai publikasi; untuk stase, sampai penyelesaian disahkan Tim Kordik.
+Ingat urutan kerja: buka Beranda, kerjakan Tugas saya, baca Langkah berikutnya. Menyetujui cukup satu klik; menolak selalu disertai alasan.

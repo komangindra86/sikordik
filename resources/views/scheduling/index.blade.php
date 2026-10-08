@@ -1,8 +1,13 @@
-<x-layouts.app title="Penugasan & jadwal">
-    <div class="mb-6 flex flex-wrap items-center justify-between gap-3"><div><h1 class="text-2xl font-bold">Penugasan & jadwal</h1><p class="text-sm text-slate-500">Kelola kegiatan setelah penempatan terverifikasi.</p></div>@if($a->admin(auth()->user()))<a class="btn-secondary" href="{{ route('scheduling.licenses') }}">Lisensi pendidik</a>@endif</div>
-    <div class="grid gap-4 md:grid-cols-2">@forelse($placements as $p)<a class="card block p-5" href="{{ route('scheduling.show', $p->ulid) }}"><p class="font-semibold">{{ $p->participant_name }}</p><p class="text-sm text-slate-600">{{ json_decode($p->snapshot)->department }} · {{ \Carbon\Carbon::parse($p->start_date)->format('d-m-Y') }} – {{ \Carbon\Carbon::parse($p->end_date)->format('d-m-Y') }}</p><span class="badge-muted mt-2">{{ str_replace('_', ' ', $p->status) }}</span></a>@empty<div class="card p-6 text-slate-500">Belum ada penempatan yang siap dijadwalkan dalam akses Anda.</div>@endforelse</div>
-    <div class="mt-4">{{ $placements->links() }}</div>
+<x-layouts.app title="Kelompok & jadwal">
+    <a class="text-sm text-brand-700" href="{{ route('placements.index') }}">← Semua penempatan</a>
+    <h1 class="mt-3 text-2xl font-bold">Kelompok & jadwal</h1>
+    <p class="mb-6 mt-2 text-sm text-slate-600">Buat kelompok KSM di sini; pembimbing dan jadwal diatur dari halaman tiap penempatan.</p>
     @if($a->admin(auth()->user()) || $a->role(auth()->user(), ['sekretariat-ksm']))
-    <details class="card mt-6 p-5"><summary class="cursor-pointer font-semibold">Buat kelompok KSM</summary><form class="mt-4 grid gap-4 md:grid-cols-2" method="POST" action="{{ route('scheduling.group') }}">@csrf<label>Nama kelompok<input class="input" name="name" required maxlength="150"></label><label>KSM<select class="input" name="department_id" required>@foreach($departments as $d)<option value="{{ $d->id }}">{{ $d->name }}</option>@endforeach</select></label><button class="btn-primary">Buat kelompok</button></form><p class="mt-3 text-sm text-slate-500">Keanggotaan dan penugasan dicatat per penempatan agar histori peserta tetap utuh.</p></details>
+        <section class="card mb-6"><h2 class="mb-3 text-lg font-bold">Kelompok KSM</h2>
+            @if($groups->isNotEmpty())<p class="mb-3 text-sm">Kelompok yang ada: {{ $groups->pluck('name')->implode(', ') }}</p>@endif
+            <form class="flex flex-wrap items-end gap-3" method="POST" action="{{ route('scheduling.group') }}">@csrf<label class="min-w-48 flex-1">Nama kelompok baru<input name="name" required maxlength="150"></label><label>KSM<select name="department_id" required>@foreach($departments as $d)<option value="{{ $d->id }}">{{ $d->name }}</option>@endforeach</select></label><button class="btn-primary">Buat kelompok</button></form>
+            <p class="mt-3 text-sm text-slate-500">Peserta dimasukkan ke kelompok dari tab Pembimbing & jadwal pada penempatannya.</p>
+        </section>
     @endif
+    @include('partials.placement-cards', ['route' => 'scheduling.show', 'empty' => 'Belum ada penempatan yang siap dijadwalkan dalam akses Anda.'])
 </x-layouts.app>

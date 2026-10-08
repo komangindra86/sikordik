@@ -1,15 +1,10 @@
 <x-layouts.app title="Survei & penyelesaian">
-    <h1 class="text-2xl font-bold">Survei & penyelesaian</h1>
-    <p class="my-3 text-sm text-slate-600">Periksa kewajiban setiap penempatan sebelum persetujuan Tim Kordik.</p>
-    <div class="mb-5 flex flex-wrap gap-3">
-        <a class="btn-secondary" href="{{ route('completion.index') }}">Data aktif</a>
-        <a class="btn-secondary" href="{{ route('completion.index', ['archive' => 1]) }}">Arsip</a>
-        @if($access->admin(auth()->user()))<a class="btn-secondary" href="{{ route('completion.forms') }}">Kelola tautan survei</a>@endif
+    <a class="text-sm text-brand-700" href="{{ route('placements.index') }}">← Semua penempatan</a>
+    <h1 class="mt-3 text-2xl font-bold">{{ request()->boolean('archive') ? 'Arsip' : 'Survei & penyelesaian' }}</h1>
+    <p class="my-3 text-sm text-slate-600">{{ request()->boolean('archive') ? 'Penempatan selesai yang sudah diarsipkan. Arsip tidak menghapus data.' : 'Penempatan yang sedang berjalan atau sudah selesai.' }}</p>
+    <div class="mb-5 flex flex-wrap gap-2">
+        <a class="{{ request()->boolean('archive') ? 'btn-secondary' : 'btn-primary' }}" href="{{ route('completion.index') }}">Data aktif</a>
+        <a class="{{ request()->boolean('archive') ? 'btn-primary' : 'btn-secondary' }}" href="{{ route('completion.index', ['archive' => 1]) }}">Arsip</a>
     </div>
-    <div class="grid gap-4 md:grid-cols-2">
-        @forelse($placements as $p)
-            <a class="card block p-5" href="{{ route('completion.show', $p->ulid) }}"><p class="font-semibold">{{ $p->participant_name }}</p><p class="mt-2 text-sm">{{ json_decode($p->snapshot)->institution }} · {{ json_decode($p->snapshot)->department }}</p><p class="mt-2 text-sm">{{ $p->start_date }} – {{ $p->end_date }}</p><p class="mt-2 text-sm font-semibold">{{ str_replace('_', ' ', $p->status) }}{{ $p->archived_at ? ' · Arsip' : '' }}</p></a>
-        @empty<p class="card p-5">Belum ada penempatan dalam tampilan ini.</p>@endforelse
-    </div>
-    <div class="mt-4">{{ $placements->links() }}</div>
+    @include('partials.placement-cards', ['route' => 'completion.show'])
 </x-layouts.app>

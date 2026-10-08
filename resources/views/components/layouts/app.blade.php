@@ -9,7 +9,7 @@
     <aside class="hidden w-72 shrink-0 border-r border-slate-200 bg-white p-5 lg:block">@include('partials.navigation')</aside>
     <div class="min-w-0 flex-1"><header class="sticky top-0 z-20 border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur lg:px-8"><div class="flex items-center justify-between gap-4">
         <details class="relative lg:hidden"><summary class="btn-secondary cursor-pointer list-none">Menu</summary><div class="absolute left-0 top-12 w-72 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">@include('partials.navigation')</div></details>
-        <div class="min-w-0"><p class="text-sm text-slate-500">Selamat datang,</p><p class="truncate font-semibold text-slate-900">{{ auth()->user()->name }}</p></div>
+        <div class="hidden min-w-0 sm:block"><p class="text-sm text-slate-500">Selamat datang,</p><p class="truncate font-semibold text-slate-900">{{ auth()->user()->name }}</p></div>
         <div class="flex shrink-0 items-center gap-2"><a class="btn-secondary" href="{{ route('account.show') }}">Akun saya</a><form method="POST" action="{{ route('logout') }}">@csrf<button class="btn-secondary" type="submit">Keluar</button></form></div>
     </div></header><main class="p-4 lg:p-8">
         @if(\App\Services\MalwareScanner::bypassed())<div class="mb-5 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">Mode latihan lokal: pemeriksaan keamanan berkas dilewati. Jangan memakai mode ini untuk data nyata.</div>@endif
