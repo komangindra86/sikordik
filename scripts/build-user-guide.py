@@ -1,6 +1,6 @@
 """Build user-facing PDFs from reviewed Markdown, without reading application data.
 
-Run with the Codex bundled Python runtime (reportlab and pypdfium2).
+Run with any Python that has ReportLab installed (pip install reportlab).
 """
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -24,6 +24,8 @@ styles.add(ParagraphStyle(name='HeaderID', fontName='Helvetica-Bold', fontSize=9
 styles.add(ParagraphStyle(name='FlowID', fontName='Helvetica', fontSize=9.8, leading=13, alignment=TA_CENTER))
 
 def para(text, style='BodyID'):
+    # Links only work on screen; in print keep the words.
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
     text = escape(text).replace('→', ' &rarr; ')
     return Paragraph(text, styles[style])
 
@@ -35,13 +37,13 @@ class ProcessFlow(Flowable):
 
     def draw(self):
         rows = [
-            ('1  Admin Kordik', 'Catat surat dan peserta, buat penempatan, ajukan ke KSM'),
+            ('1  Admin Kordik', 'Terima peserta baru: surat, daftar peserta, penempatan, ajukan ke KSM'),
             ('2  Ketua KSM kemudian Tim Kordik', 'Konfirmasi kesediaan KSM, lalu putuskan penerimaan'),
-            ('3  Admin Kordik', 'Unggah dan verifikasi dokumen, aktifkan akun peserta'),
-            ('4  Admin atau Sekretariat KSM kemudian Ketua KSM', 'Ajukan penugasan pendidik, lalu putuskan penugasan'),
-            ('5  Peserta kemudian Pembimbing kemudian Peserta', 'Susun dan ajukan jadwal, setujui, lalu terbitkan'),
-            ('6  Admin memulai stase dan semua pelaksana bekerja', 'Presensi, logbook, penilaian dan kedua survei'),
-            ('7  Petugas dan Ketua KSM kemudian Admin Kordik', 'Rekap disahkan, checklist diperiksa, penyelesaian diajukan'),
+            ('3  Admin Kordik dan Peserta', 'Aktifkan akun, peserta mengunggah dokumen, Admin menyatakan valid'),
+            ('4  Admin atau Sekretariat KSM kemudian Ketua KSM', 'Ajukan pembimbing, lalu setujui'),
+            ('5  Peserta kemudian Pembimbing', 'Susun jadwal satu periode dan ajukan; disetujui langsung terbit'),
+            ('6  Peserta dan pendidik', 'Stase mulai pada presensi pertama: presensi, logbook, penilaian, kedua survei'),
+            ('7  Petugas dan Ketua KSM kemudian Admin Kordik', 'Rekap disahkan, kelengkapan diperiksa, penyelesaian diajukan'),
             ('8  Tim Kordik', 'Setujui penyelesaian, status selesai dan data dikunci'),
         ]
         for i, (actor, action) in enumerate(rows):
@@ -110,7 +112,7 @@ def footer(canvas, doc):
     canvas.saveState()
     canvas.setFont('Helvetica', 8)
     canvas.setFillColor(colors.HexColor('#52606D'))
-    canvas.drawString(60, 31, 'SIKORDIK RSBM | Panduan pengguna | Edisi 1 - September 2026')
+    canvas.drawString(60, 31, 'SIKORDIK RSBM | Panduan pengguna | Edisi 2 - Oktober 2026')
     canvas.drawRightString(A4[0]-60, 31, str(doc.page))
     canvas.restoreState()
 

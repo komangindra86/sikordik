@@ -518,15 +518,11 @@ Langkah pertama untuk semua kendala: baca kalimat Langkah berikutnya pada halama
 
 | Kendala | Pemeriksaan dan tindakan | Hubungi |
 |---|---|---|
-| Tidak bisa masuk | Periksa email dan kata sandi; gunakan Lupa kata sandi? atau minta tautan baru; pastikan akun aktif | Pengelola akun |
-| Tautan sekali pakai tidak berfungsi | Tautan berlaku 60 menit dan hanya sekali; gunakan Lupa kata sandi? | Admin Kordik |
-| Tugas tidak muncul di Beranda | Tugas hanya muncul pada orang yang berwenang di tahap itu; periksa peran, cakupan KSM, dan penugasan | Admin Kordik |
-| Tab atau tombol tidak tampil | Modul itu tidak terbuka untuk peran Anda, atau tahapnya belum sampai | Admin Kordik |
+| Tidak bisa masuk | Periksa email dan kata sandi; tautan sekali pakai hanya berlaku 60 menit; gunakan Lupa kata sandi? | Pengelola akun |
+| Tugas, tab, atau tombol tidak tampil | Hanya tampil pada orang yang berwenang di tahap itu; periksa peran, cakupan KSM, dan penugasan | Admin Kordik |
 | Peserta tidak ditemukan atau ganda | Cari nama, nomor, atau NIM di Data peserta sebelum menambah data | Admin Kordik |
-| Penerimaan rombongan ditolak | Baca nomor baris dan nama pada pesan; perbaiki baris itu lalu kirim ulang | Admin Kordik |
 | Penempatan berbenturan | Periode awal dan akhir sama-sama dihitung; ubah periode atau minta pengecualian lintas KSM | Admin dan Tim Kordik |
 | Pendidik tidak bisa dipilih | Periksa akun, KSM, lisensi, kemampuan peran, dan penugasan yang disetujui pada tanggal kegiatan | Admin dan KSM |
-| Form jadwal ditolak | Ada tanggal di luar periode, benturan jam, atau lokasi bukan milik KSM; perbaiki lalu kirim ulang | Admin atau pembimbing |
 | Tombol Hadir tidak tampil | Belum ada jadwal terbit pada tanggal itu, atau tanggalnya belum tiba | Pembimbing |
 | Berkas lama Menunggu pemeriksaan | Pemindai belum selesai atau belum tersedia; periksa format dan ukuran | Admin atau pengelola teknis |
 | Nilai tidak terlihat peserta | Pembimbing belum menekan Sahkan & publikasikan | Pembimbing pengesah |
@@ -534,7 +530,6 @@ Langkah pertama untuk semua kendala: baca kalimat Langkah berikutnya pada halama
 | Rekap tidak bisa disahkan | Lengkapi dan verifikasi seluruh hari kegiatan, lalu buat ulang rekap | Admin dan Ketua KSM |
 | Penyelesaian tidak bisa diajukan | Tunggu hari setelah akhir stase dan tuntaskan semua baris Belum | Admin Kordik |
 | Muncul pesan data berubah | Muat ulang halaman, baca status terbaru, lalu ulangi tindakan yang masih relevan | Petugas terkait |
-| Laporan kosong atau terlalu besar | Periksa cakupan dan saringan; nilai dan logbook wajib satu penempatan | Admin Kordik |
 | Data terkunci setelah selesai | Ajukan pembukaan kembali | Admin dan Tim Kordik |
 
 Saat meminta bantuan, sertakan nama halaman, nomor peserta, waktu kejadian, status yang terlihat, dan teks pesan kesalahan. Jangan mengirim kata sandi, tautan sekali pakai, atau identitas pasien. Jika perlu tangkapan layar, tutup data sensitif yang tidak diperlukan.

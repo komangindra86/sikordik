@@ -6,8 +6,9 @@ Sistem Informasi Manajemen Pendidikan Klinis RSBM, dibangun dengan Laravel 12, B
 
 - **[Panduan ringkas](docs/PANDUAN-RINGKAS.md): mulai dari sini.** Alur yang berlaku sekarang: Beranda *Tugas saya*, satu halaman per penempatan, dan tombol langsung.
 - [Penyederhanaan alur](docs/PENYEDERHANAAN-ALUR.md): apa yang berubah pada Oktober 2026, termasuk aturan yang disesuaikan dan mode latihan lokal.
-- [Buku panduan lengkap, Edisi 2](docs/PANDUAN-PENGGUNA.md) dan [diagram proses bisnis](docs/PROSES-BISNIS.md): langkah per peran, penerimaan sampai penyelesaian, kendala, dan latihan.
-- PDF di `docs/panduan/` masih Edisi 1 (nama menu lama). Buat ulang dengan `scripts/build-user-guide.py` pada Python yang memiliki ReportLab sebelum dibagikan.
+- [Buku panduan pengguna PDF, Edisi 2](docs/panduan/Buku-Panduan-SIKORDIK.pdf): langkah per peran, penerimaan sampai penyelesaian, kendala, dan latihan.
+- [Alur proses bisnis PDF](docs/panduan/Alur-Proses-Bisnis-SIKORDIK.pdf): ringkasan untuk orientasi dan pembagian tugas.
+- [Sumber panduan](docs/PANDUAN-PENGGUNA.md) dan [diagram proses bisnis](docs/PROSES-BISNIS.md). Setelah mengubah naskah, buat ulang PDF dengan `scripts/build-user-guide.py` pada Python yang memiliki ReportLab.
 
 ## Kebutuhan lokal
 

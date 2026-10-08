@@ -52,8 +52,8 @@ Tambahkan ke scheduler (sudah terdaftar di `routes/console.php`): `sikordik:star
 - Halaman daftar per modul (`/presensi`, `/logbook`, `/penilaian`, `/penjadwalan`, `/penyelesaian`) memakai kartu yang sama dengan daftar penempatan. Halaman itu dibuka dari kartu *Ringkasan angka* dan menu Pengaturan.
 
 - Buku panduan lengkap ditulis ulang menjadi Edisi 2 ([PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md)); [PROSES-BISNIS.md](PROSES-BISNIS.md) dibuat ulang dari naskah itu.
+- Kedua PDF di `docs/panduan/` dibuat ulang dari naskah Edisi 2 (21 dan 3 halaman); diagram dan catatan kaki pada `scripts/build-user-guide.py` disesuaikan.
 
 ## Belum dikerjakan
 
-- PDF buku panduan (`docs/panduan/*.pdf`) belum dibuat ulang karena ReportLab tidak terpasang di komputer pengembangan; isinya masih Edisi 1. Naskah sumbernya sudah Edisi 2.
 - UAT petugas dan syarat produksi pada [UAT-FASE-8.md](UAT-FASE-8.md) tetap berlaku dan belum dipenuhi.
