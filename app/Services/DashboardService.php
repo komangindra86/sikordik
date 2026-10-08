@@ -61,10 +61,19 @@ class DashboardService
         }
         $cards[] = ['label' => 'Nilai belum dipublikasikan', 'value' => $pendingGrades->count(), 'url' => route('assessments.index')];
         $cards[] = ['label' => 'Keberatan nilai terbuka', 'value' => DB::table('grade_appeals')->whereIn('assessment_id', $grades->select('id'))->whereIn('status', ['submitted', 'reviewing', 'accepted'])->count(), 'url' => route('assessments.index')];
-        $today = DB::table('schedules')->whereIn('placement_id', (clone $p)->select('id'))->where('date', now()->toDateString())->whereIn('status', ['published', 'completed'])->orderBy('id')->limit(20)->get(['date', 'activity', 'status']);
+        $today = DB::table('schedules')->whereIn('placement_id', (clone $p)->select('id'))->where('date', now()->toDateString())->whereIn('status', ['published', 'completed'])->orderBy('start_time')->orderBy('id')->limit(20)->get(['date', 'activity', 'status', 'start_time', 'end_time']);
         $groups = DB::table('placements')->whereIn('placements.id', (clone $p)->select('placements.id'))->join('institutions as i', 'i.id', '=', 'placements.institution_id')->join('departments as d', 'd.id', '=', 'placements.department_id')->where('placements.status', 'sedang_stase')
             ->groupBy('i.id', 'i.name', 'd.id', 'd.name')->select('i.name as institution', 'd.name as department')->selectRaw('COUNT(*) as total')->orderBy('i.name')->limit(50)->get();
 
-        return compact('cards', 'today', 'groups');
+        $staff = $a->role($u, ['admin-kordik', 'tim-kordik', 'super-admin', 'ketua-ksm', 'sekretariat-ksm']);
+        $tasks = app(TaskService::class)->for($u);
+        // People without a monitoring role get their own placements instead of system-wide counters.
+        $mine = $staff ? collect() : app(LogbookAccess::class)->placements($u)->whereNull('archived_at')->whereNotIn('status', ['dibatalkan', 'ditolak_ksm', 'ditolak_kordik'])
+            ->select('placements.*')->selectSub(DB::table('participants')->select('name')->whereColumn('participants.id', 'placements.participant_id'), 'participant_name')
+            ->orderByRaw("CASE WHEN status = 'selesai' THEN 1 ELSE 0 END")->orderByDesc('start_date')->limit(8)->get();
+
+        $mineTitle = $a->role($u, ['peserta']) ? 'Stase saya' : 'Peserta bimbingan saya';
+
+        return compact('cards', 'today', 'groups', 'tasks', 'staff', 'mine', 'mineTitle');
     }
 }

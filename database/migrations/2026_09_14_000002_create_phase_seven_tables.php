@@ -61,6 +61,8 @@ return new class extends Migration
         Schema::dropIfExists('completion_requests');
         Schema::dropIfExists('survey_responses');
         Schema::dropIfExists('survey_forms');
+        // SQLite refuses to drop a column that still has an index.
+        Schema::table('placements', fn (Blueprint $t) => $t->dropIndex(['archived_at']));
         Schema::table('placements', fn (Blueprint $t) => $t->dropColumn(['completed_at', 'archived_at']));
     }
 };
