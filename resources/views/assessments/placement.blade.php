@@ -1,7 +1,5 @@
 <x-layouts.app title="Penilaian penempatan">
-    <a class="text-brand-700" href="{{ route('assessments.index') }}">← Semua penempatan</a>
-    <h1 class="my-3 text-2xl font-bold">Penilaian penempatan</h1>
-    <p class="mb-5 text-sm">{{ json_decode($p->snapshot)->institution }} · {{ json_decode($p->snapshot)->department }}</p>
+    <x-placement-header :p="$p" active="grades" />
     @if(!$access->owner(auth()->user(), $p) && in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']) && $access->assignments(auth()->user())->where('a.placement_id', $p->id)->exists())
         <a class="btn-primary mb-5" href="{{ route('assessments.create', $p->ulid) }}">Isi penilaian</a>
     @endif

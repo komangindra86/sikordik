@@ -2,9 +2,7 @@
     @php($user = auth()->user())
     @php($open = in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']))
     @php($sealed = $service->sealed($p))
-    <a class="text-sm text-brand-700" href="{{ route('attendance.index') }}">← Daftar presensi</a>
-    <h1 class="mt-3 text-2xl font-bold">Presensi {{ $participant->name }}</h1>
-    <p class="mt-2 text-sm text-slate-600">{{ json_decode($p->snapshot)->department }} · {{ $p->start_date }} – {{ $p->end_date }} · WITA</p>
+    <x-placement-header :p="$p" active="attendance" />
     <p class="mt-2 text-sm text-slate-600">Hari pendidikan mengikuti jadwal terbit/selesai. Belum mengisi atau belum diverifikasi tidak otomatis dihitung tidak hadir.</p>
     <div class="my-6 grid gap-3 sm:grid-cols-3"><div class="card p-4">Hari pendidikan <strong class="block text-2xl">{{ count($days) }}</strong></div><div class="card p-4">Belum mengisi <strong class="block text-2xl">{{ count($snapshot['missing']) }}</strong></div><div class="card p-4">Belum terverifikasi <strong class="block text-2xl">{{ $snapshot['pending'] }}</strong></div></div>
     @if(count($snapshot['missing']))<p class="mb-4 break-words text-sm">Tanggal belum diisi: {{ implode(', ', $snapshot['missing']) }}</p>@endif

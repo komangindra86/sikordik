@@ -1,7 +1,5 @@
 <x-layouts.app title="Checklist penyelesaian">
-    <a class="text-brand-700 underline" href="{{ route('completion.index') }}">Kembali ke daftar</a>
-    <h1 class="my-4 text-2xl font-bold">Checklist penyelesaian stase</h1>
-    <p class="mb-4 text-sm">{{ json_decode($p->snapshot)->department }} · {{ $p->start_date }} – {{ $p->end_date }} · {{ str_replace('_', ' ', $p->status) }}{{ $p->archived_at ? ' · Arsip' : '' }}</p>
+    <x-placement-header :p="$p" active="completion" />
     @if($p->status === 'selesai')<p class="card mb-5 p-4">Penempatan dikunci. Data yang diizinkan tetap dapat dibaca dan diunduh melalui modul terkait. {{ $p->archived_at ? 'Arsip tidak menghapus data.' : '' }}</p>@endif
     <section class="card p-5"><h2 class="mb-3 text-lg font-semibold">Kelengkapan saat ini</h2><ul class="space-y-3">@foreach($checklist['checks'] as $c)<li class="flex items-start gap-3"><span class="shrink-0 rounded px-2 py-1 text-xs font-semibold {{ $c['ok'] ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900' }}">{{ $c['ok'] ? 'Lengkap' : 'Belum' }}</span><span>{{ $c['label'] }}</span></li>@endforeach</ul>
         <div class="mt-5 flex flex-wrap gap-3"><a class="text-brand-700 underline" href="{{ route('admissions.show', $p->ulid) }}">Dokumen</a><a class="text-brand-700 underline" href="{{ route('attendance.show', $p->ulid) }}">Presensi</a><a class="text-brand-700 underline" href="{{ route('logbooks.placement', $p->ulid) }}">Logbook</a><a class="text-brand-700 underline" href="{{ route('assessments.placement', $p->ulid) }}">Penilaian</a></div>

@@ -1,7 +1,6 @@
 <x-layouts.app title="Detail penempatan">
-    @include('admissions.nav')
+    <x-placement-header :p="$p" active="documents" />
     @php $snapshot = json_decode($p->snapshot, true); @endphp
-    <div class="card mb-5"><div class="flex flex-wrap items-start justify-between gap-3"><div><p class="text-sm text-slate-500">{{ $participant->number }} · Revisi {{ $p->revision }}</p><h1 class="mt-1 text-2xl font-bold">{{ $participant->name }}</h1></div><span class="badge-muted">{{ $p->status }}</span></div><p class="mt-3">{{ $snapshot['department'] }} · {{ $snapshot['program'] }} · {{ $snapshot['participant_type'] }}</p><p class="text-sm text-slate-500">{{ $snapshot['institution'] }} · {{ $p->start_date }} sampai {{ $p->end_date }} (inklusif)</p><p class="mt-3 text-xs">KSM: {{ $p->ksm_status }} · Kordik: {{ $p->kordik_status }} · Dokumen: {{ $p->document_status }}</p></div>
     @if($conflicts->isNotEmpty())<div class="card mb-5 border-amber-300"><h2 class="font-bold">Peringatan periode bertumpang tindih</h2>@foreach($conflicts as $c)<p class="mt-2 text-sm"><a class="text-brand-700 underline" href="{{ route('admissions.show', $c->ulid) }}">{{ $c->ulid }}</a> · {{ json_decode($c->snapshot, true)['department'] }} · {{ $c->start_date }} — {{ $c->actual_end_date ?? $c->end_date }}</p>@endforeach<p class="mt-3 text-sm">Draft belum memesan periode. Konflik dalam KSM yang sama harus diselesaikan dengan perubahan penempatan lama.</p></div>@endif
     @php
         $actions = [];

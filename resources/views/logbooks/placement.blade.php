@@ -1,7 +1,5 @@
 <x-layouts.app title="Logbook penempatan">
-    <a class="text-sm text-brand-700" href="{{ route('logbooks.index') }}">← Semua penempatan</a>
-    <h1 class="mt-3 text-2xl font-bold">Logbook penempatan</h1>
-    <p class="mt-2 text-sm text-slate-600">{{ json_decode($p->snapshot)->institution }} · {{ json_decode($p->snapshot)->department }}</p>
+    <x-placement-header :p="$p" active="logbook" />
     <div class="my-5 flex flex-wrap gap-3">
         @if(in_array($p->status, ['dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']))
             @if($access->owner(auth()->user(), $p))<a class="btn-primary" href="{{ route('logbooks.create', [$p->ulid, 'kind' => 'participant']) }}">Unggah logbook peserta</a>@endif

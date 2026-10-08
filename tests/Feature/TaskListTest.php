@@ -64,11 +64,11 @@ class TaskListTest extends TestCase
         $f = $this->schedulingFixture();
 
         $this->actingAs($f['owner'])->get('/dashboard')->assertOk()
-            ->assertSee('Presensi')->assertSee('Stase saya')
-            ->assertDontSee('Pengguna')->assertDontSee('Laporan Excel / PDF')->assertDontSee('Audit log')->assertDontSee('Ringkasan angka');
+            ->assertSee('Stase saya')
+            ->assertDontSee('Pengguna')->assertDontSee('Laporan Excel / PDF')->assertDontSee('Audit log')->assertDontSee('Ringkasan angka')->assertDontSee('Penerimaan peserta');
         $this->actingAs($f['mentor'])->get('/dashboard')->assertOk()
-            ->assertSee('Laporan Excel / PDF')->assertDontSee('Penerimaan')->assertDontSee('Pengguna');
+            ->assertSee('Peserta bimbingan')->assertSee('Laporan Excel / PDF')->assertDontSee('Penerimaan peserta')->assertDontSee('Pengguna');
         $this->actingAs($f['admin'])->get('/dashboard')->assertOk()
-            ->assertSee('1. Penerimaan &amp; dokumen', false)->assertSee('Pengguna')->assertSee('Ringkasan angka');
+            ->assertSee('Penerimaan peserta')->assertSee('Pengguna')->assertSee('Ringkasan angka');
     }
 }

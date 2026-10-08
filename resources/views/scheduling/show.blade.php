@@ -3,8 +3,8 @@
     @php($manage = $a->manage($u, $p->department_id))
     @php($edit = $manage || $a->owner($u, $p))
     @php($open = in_array($p->status, \App\Services\ScheduleService::OPEN_PLACEMENTS))
-    <a class="text-sm text-brand-700" href="{{ route('scheduling.index') }}">← Penugasan & jadwal</a>
-    <div class="my-5 flex flex-wrap items-start justify-between gap-4"><div><h1 class="text-2xl font-bold">{{ $participant->name }}</h1><p class="text-sm text-slate-600">{{ $participant->number }} · {{ json_decode($p->snapshot)->department }}</p><p class="mt-1 text-sm">{{ \Carbon\Carbon::parse($p->start_date)->format('d-m-Y') }} – {{ \Carbon\Carbon::parse($p->end_date)->format('d-m-Y') }} · {{ str_replace('_', ' ', $p->status) }}</p></div>@if($edit && $open)<a class="btn-primary" href="{{ route('scheduling.create', $p->ulid) }}">Tambah jadwal</a>@endif</div>
+    <x-placement-header :p="$p" active="schedule" />
+    @if($edit && $open)<div class="mb-5"><a class="btn-primary" href="{{ route('scheduling.create', $p->ulid) }}">Tambah jadwal</a></div>@endif
     @if($p->status === 'dijadwalkan' && $a->admin($u))<form class="mb-5" method="POST" action="{{ route('scheduling.start', $p->ulid) }}">@csrf<input type="hidden" name="revision" value="{{ $p->revision }}"><button class="btn-secondary">Mulai stase setelah syarat diperiksa</button></form>@endif
 
     <h2 class="mb-3 text-lg font-semibold">Jadwal kegiatan</h2>
