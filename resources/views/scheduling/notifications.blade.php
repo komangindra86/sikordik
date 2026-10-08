@@ -1,6 +1,7 @@
 <x-layouts.app title="Notifikasi">
     <h1 class="mb-2 text-2xl font-bold">Notifikasi</h1>
     <p class="mb-5 text-sm text-slate-600">Pemberitahuan tentang penempatan Anda. Pekerjaan yang harus dilakukan selalu ada di Beranda.</p>
+    @if($unread)<form class="mb-4" method="POST" action="{{ route('scheduling.notifications-read') }}">@csrf<button class="btn-secondary">Tandai semua dibaca ({{ $unread }})</button></form>@endif
     <div class="space-y-3">
         @forelse($notifications as $n)
             <article class="card flex flex-wrap items-center justify-between gap-3 {{ $n->read_at ? '' : 'border-amber-300' }}">

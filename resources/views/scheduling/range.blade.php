@@ -6,7 +6,7 @@
         <p class="card">Jadwal baru dapat disusun setelah pembimbing ditugaskan dan disetujui Ketua KSM.</p>
     @else
     <form class="card grid max-w-3xl gap-4 md:grid-cols-2" method="POST" action="{{ route('scheduling.range-store', $p->ulid) }}">@csrf
-        <label>Dari tanggal<input type="date" name="date_from" min="{{ $p->start_date }}" max="{{ $p->end_date }}" value="{{ old('date_from', max($p->start_date, now()->toDateString()) <= $p->end_date ? max($p->start_date, now()->toDateString()) : $p->start_date) }}" required></label>
+        <label>Dari tanggal<input type="date" name="date_from" min="{{ $p->start_date }}" max="{{ $p->end_date }}" value="{{ old('date_from', $p->start_date) }}" required></label>
         <label>Sampai tanggal<input type="date" name="date_to" min="{{ $p->start_date }}" max="{{ $p->end_date }}" value="{{ old('date_to', $p->end_date) }}" required></label>
         <fieldset class="md:col-span-2"><legend class="text-sm font-semibold text-slate-700">Hari kegiatan</legend>
             <div class="mt-2 flex flex-wrap gap-x-5 gap-y-2">@foreach([1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu', 7 => 'Minggu'] as $n => $day)<label class="flex items-center gap-2 font-normal"><input type="checkbox" name="weekdays[]" value="{{ $n }}" @checked(in_array($n, old('weekdays', [1, 2, 3, 4, 5])))>{{ $day }}</label>@endforeach</div>

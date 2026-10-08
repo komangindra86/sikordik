@@ -57,6 +57,12 @@ class QuickFlowTest extends TestCase
         $this->post($base.'/jadwal-massal', ['action' => 'release'])->assertRedirect()->assertSessionHasNoErrors();
         $this->assertSame(7, DB::table('schedules')->where('status', 'published')->where('approved_by', $f['mentor']->id)->count());
         $this->assertSame(7, DB::table('scheduling_histories')->where('event', 'schedule_publish')->where('actor_id', $f['mentor']->id)->count());
+        // Seven schedules changed, but each person gets one notice per kind of change, not seven.
+        $this->assertSame(1, DB::table('scheduling_notifications')->where('user_id', $f['owner']->id)->where('message', 'Status jadwal berubah: Diterbitkan.')->count());
+        $this->actingAs($f['owner'])->get('/penjadwalan/notifikasi')->assertOk()->assertSee('Tandai semua dibaca');
+        $this->post('/penjadwalan/notifikasi')->assertRedirect();
+        $this->assertSame(0, DB::table('scheduling_notifications')->where('user_id', $f['owner']->id)->whereNull('read_at')->count());
+        $this->assertGreaterThan(0, DB::table('scheduling_notifications')->where('user_id', $f['mentor']->id)->whereNull('read_at')->count());
         // Published before the first day: scheduled, not yet running.
         $this->assertDatabaseHas('placements', ['id' => $f['p']->id, 'status' => 'dijadwalkan']);
 

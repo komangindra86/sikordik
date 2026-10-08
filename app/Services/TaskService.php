@@ -138,7 +138,7 @@ class TaskService
             if (in_array($p->status, ScheduleService::OPEN_PLACEMENTS)) {
                 $hasMentor = DB::table('educator_assignments')->where('placement_id', $p->id)->where('role', 'mentor')->where('status', 'approved')->exists();
                 if ($hasMentor && $schedules->isEmpty()) {
-                    $this->add('Susun jadwal stase', 'Susun jadwal', 'scheduling.show', $one($p, Ui::period($p->start_date, $p->end_date)));
+                    $this->add('Susun jadwal stase', 'Susun jadwal', 'scheduling.show', $one($p));
                 }
                 foreach (['draft' => ['Ajukan jadwal ke pembimbing', 'Ajukan'], 'revision' => ['Perbaiki jadwal yang diminta revisi', 'Perbaiki'], 'approved' => ['Terbitkan jadwal yang disetujui', 'Terbitkan']] as $status => [$title, $cta]) {
                     if ($counts[$status] ?? 0) {

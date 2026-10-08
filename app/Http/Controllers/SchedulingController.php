@@ -190,7 +190,16 @@ class SchedulingController extends Controller
             ->where('n.user_id', $r->user()->id)->orderByDesc('n.id')->select('n.*', 'p.ulid as placement_ulid', 's.name as participant_name')->paginate(20);
         $open = app(PlacementHub::class)->placements($r->user())->whereIn('placements.id', $notifications->pluck('placement_id')->filter())->pluck('placements.id')->all();
 
-        return view('scheduling.notifications', compact('notifications', 'open'));
+        $unread = DB::table('scheduling_notifications')->where('user_id', $r->user()->id)->whereNull('read_at')->count();
+
+        return view('scheduling.notifications', compact('notifications', 'open', 'unread'));
+    }
+
+    public function readAllNotifications(Request $r)
+    {
+        DB::table('scheduling_notifications')->where('user_id', $r->user()->id)->whereNull('read_at')->update(['read_at' => now()]);
+
+        return back()->with('status', 'Semua notifikasi ditandai dibaca.');
     }
 
     public function readNotification(Request $r, string $ulid)

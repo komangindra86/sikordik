@@ -88,6 +88,7 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('/lisensi', 'licenses')->name('licenses');
         Route::post('/lisensi', 'license')->name('license');
         Route::get('/notifikasi', 'notifications')->name('notifications');
+        Route::post('/notifikasi', 'readAllNotifications')->name('notifications-read');
         Route::post('/notifikasi/{ulid}', 'readNotification')->name('notification-read');
         Route::post('/kelompok', 'group')->name('group');
         Route::post('/keanggotaan/{id}/akhir', 'endMembership')->whereNumber('id')->name('membership-end');

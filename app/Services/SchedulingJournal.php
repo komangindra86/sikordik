@@ -21,6 +21,10 @@ class SchedulingJournal
     public function notify(array $users, object $p, string $message): void
     {
         foreach (array_unique(array_filter($users)) as $id) {
+            // One unread notice per placement and message is enough; bulk actions would otherwise bury the inbox.
+            if (DB::table('scheduling_notifications')->where('user_id', $id)->where('placement_id', $p->id)->where('message', $message)->whereNull('read_at')->exists()) {
+                continue;
+            }
             DB::table('scheduling_notifications')->insert(['ulid' => (string) Str::ulid(), 'user_id' => $id,
                 'placement_id' => $p->id, 'message' => $message, 'created_at' => now()]);
         }
