@@ -63,7 +63,7 @@ class SurveyService
             }
             app(SchedulingJournal::class)->record($u, 'survey_responses', $id, 'survey_'.$d['action'], $r);
             $recipients = $review ? [DB::table('participants')->where('id', $p->participant_id)->value('user_id')] : app(SchedulingJournal::class)->roleUsers('admin-kordik');
-            app(SchedulingJournal::class)->notify($recipients, $p, 'Status kewajiban survei diperbarui. Periksa menu Survei & penyelesaian.');
+            app(SchedulingJournal::class)->notify($recipients, $p, 'Status survei wajib diperbarui.');
         }, 5);
     }
 }

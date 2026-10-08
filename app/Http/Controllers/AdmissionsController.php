@@ -78,9 +78,10 @@ class AdmissionsController extends Controller
 
     public function activate(Request $request, string $ulid, ParticipantService $service)
     {
-        $service->activate($request->user(), $ulid, $request->all());
+        $link = $service->activate($request->user(), $ulid, $request->all());
 
-        return back()->with('status', 'Akun peserta aktif. Peserta dapat menggunakan Lupa kata sandi untuk menetapkan password melalui email terverifikasi petugas.');
+        return back()->with('status', $link ? 'Akun peserta aktif. Berikan tautan di bawah kepada peserta untuk membuat kata sandinya.' : 'Akun peserta aktif kembali. Peserta masuk dengan kata sandi lamanya atau memakai Lupa kata sandi.')
+            ->with('setup_link', $link);
     }
 
     public function editParticipant(Request $request, string $ulid)
@@ -147,7 +148,7 @@ class AdmissionsController extends Controller
         $staff = $access->role($request->user(), ['admin-kordik', 'super-admin', 'tim-kordik', 'ketua-ksm', 'sekretariat-ksm']);
 
         return view('admissions.show', [
-            'p' => $p, 'participant' => DB::table('participants')->select('name', 'number', 'ulid')->find($p->participant_id),
+            'p' => $p, 'participant' => DB::table('participants')->select('name', 'number', 'ulid', 'user_id', 'email')->find($p->participant_id),
             'files' => $files, 'access' => $access, 'staff' => $staff,
             'documents' => DB::table('placement_documents')->where('placement_id', $p->id)->get(),
             'histories' => $staff ? DB::table('placement_histories as h')->leftJoin('users as u', 'u.id', '=', 'h.actor_id')->where('h.placement_id', $p->id)->orderByDesc('h.id')->get(['h.*', 'u.name as actor_name']) : collect(),

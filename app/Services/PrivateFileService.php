@@ -11,9 +11,16 @@ use Illuminate\Validation\ValidationException;
 
 class PrivateFileService
 {
+    public const PARTICIPANT_CATEGORIES = ['ijazah', 'bhd', 'sip', 'str', 'kompetensi', 'administrasi'];
+
     public function upload(User $actor, string $resource, string $ulid, string $category, UploadedFile $upload, bool $deidentified): object
     {
-        abort_unless(app(AdmissionsAccess::class)->role($actor, ['admin-kordik']), 403);
+        // A participant may hand in their own requirement documents; everything else stays with Admin Kordik.
+        $own = $resource === 'placement' && in_array($category, self::PARTICIPANT_CATEGORIES, true)
+            && DB::table('placements')->where('ulid', $ulid)->whereIn('status', ParticipantService::ACTIVATABLE)
+                ->whereIn('participant_id', DB::table('participants')->where('user_id', $actor->id)->select('id'))->exists()
+            && app(AdmissionsAccess::class)->role($actor, ['peserta']);
+        abort_unless($own || app(AdmissionsAccess::class)->role($actor, ['admin-kordik']), 403);
         abort_unless($deidentified, 422, 'Pernyataan bebas identitas pasien wajib.');
         $table = match ($resource) {
             'letter' => 'incoming_letters', 'placement' => 'placements', 'participant' => 'participants', default => abort(404)

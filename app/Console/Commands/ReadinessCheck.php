@@ -25,6 +25,7 @@ class ReadinessCheck extends Command
             'Queue database' => config('queue.default') === 'database',
             'Secret backup terpisah' => strlen((string) config('operations.backup_password')) >= 32,
             'Build frontend tersedia' => is_file(public_path('build/manifest.json')),
+            'Pemeriksaan berkas tidak dilewati (SIKORDIK_SCAN_BYPASS mati)' => ! config('admissions.scan_bypass'),
         ];
         try {
             $process = new Process([config('admissions.qpdf_binary'), '--version']);

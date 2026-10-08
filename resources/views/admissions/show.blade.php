@@ -8,6 +8,7 @@
         $isChief = $access->role($u, ['ketua-ksm']) && in_array((int) $p->department_id, $u->departmentScopeIds());
         $reviewable = in_array($p->status, ['menunggu_dokumen', 'terverifikasi', 'dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian']);
         $canUpload = $p->status !== 'selesai' && $isAdminKordik;
+        $ownUpload = in_array($p->status, \App\Services\ParticipantService::ACTIVATABLE) && app(\App\Services\SchedulingAccess::class)->owner($u, $p);
         // [action => label] the current user may take now; "soft" ones need a written reason.
         $go = [];
         $stop = [];
@@ -24,6 +25,12 @@
     @if($rejection)<div class="card mb-5 border-red-300"><h2 class="font-bold text-red-800">{{ \App\Support\Ui::event($rejection->action) }}</h2><p class="mt-2 whitespace-pre-wrap break-words text-sm">{{ $rejection->reason }}</p><p class="mt-1 text-xs text-slate-500">{{ $rejection->actor_name }} · {{ \App\Support\Ui::dateTime($rejection->created_at) }}</p></div>@endif
 
     @if($conflicts->isNotEmpty())<div class="card mb-5 border-amber-300"><h2 class="font-bold">Peserta ini punya penempatan lain pada periode yang sama</h2>@foreach($conflicts as $c)<p class="mt-2 text-sm"><a class="text-brand-700 underline" href="{{ route('admissions.show', $c->ulid) }}">{{ json_decode($c->snapshot, true)['department'] }}</a> · {{ \App\Support\Ui::period($c->start_date, $c->actual_end_date ?? $c->end_date) }}</p>@endforeach<p class="mt-3 text-sm">Benturan di KSM yang sama diselesaikan dengan mengubah penempatan lama. Benturan lintas KSM memerlukan pengecualian Tim Kordik (di bagian bawah halaman).</p></div>@endif
+
+    @if($isAdmin && ! $participant->user_id && in_array($p->status, \App\Services\ParticipantService::ACTIVATABLE))
+        <section class="card mb-5 border-amber-300"><h2 class="font-bold">Peserta belum punya akun</h2><p class="mb-3 mt-1 text-sm text-slate-600">Aktifkan agar peserta bisa masuk, mengunggah dokumennya sendiri, dan mengisi kegiatan stase.</p>
+            <form class="flex flex-wrap items-end gap-3" method="POST" action="{{ route('admissions.activate', $participant->ulid) }}">@csrf<label class="min-w-56 flex-1">Email peserta<input name="email" type="email" value="{{ old('email', $participant->email) }}" required></label><label class="flex items-center gap-2 font-normal"><input type="checkbox" name="ownership_confirmed" value="1" required>Email ini benar milik peserta</label><button class="btn-primary">Aktifkan akun</button></form>
+        </section>
+    @endif
 
     @if($go || $stop)
         <section class="card mb-5"><h2 class="mb-3 font-bold">Tindakan Anda</h2>
@@ -57,7 +64,7 @@
                 @empty
                     <p class="mt-2 text-sm text-slate-500">Belum ada berkas.</p>
                 @endforelse
-                @if($canUpload && $letter)
+                @if(($canUpload && $letter) || ($ownUpload && $doc->code !== 'surat'))
                     <details class="mt-3"><summary class="cursor-pointer text-sm font-semibold text-brand-700">Unggah berkas{{ $docFiles->isNotEmpty() ? ' pengganti' : '' }}</summary>
                         <form class="mt-3 space-y-3" method="POST" enctype="multipart/form-data" action="{{ $doc->code === 'surat' ? route('admissions.upload', ['letter', $letter->ulid]) : route('admissions.upload', ['placement', $p->ulid]) }}">@csrf<input type="hidden" name="category" value="{{ $category }}">
                             <label class="block">{{ $doc->code === 'surat' ? 'PDF' : 'PDF, JPG, atau PNG' }}, maksimal 10 MB<input type="file" name="file" accept="{{ $doc->code === 'surat' ? '.pdf' : '.pdf,.jpg,.jpeg,.png' }}" required></label>

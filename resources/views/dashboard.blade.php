@@ -22,7 +22,7 @@
 
 @if($mine->isNotEmpty())
 <section class="mb-8"><h2 class="mb-3 text-lg font-bold">{{ $mineTitle }}</h2>
-    <div class="grid gap-4 md:grid-cols-2">@foreach($mine as $p)<a class="card block hover:border-brand-500" href="{{ route('placements.show', $p->ulid) }}"><p class="font-semibold">{{ $p->participant_name }}</p><p class="mt-1 text-sm text-slate-600">{{ json_decode($p->snapshot)->department }} · {{ \App\Support\Ui::period($p->start_date, $p->end_date) }}</p><x-badge class="mt-3" :value="$p->status" /></a>@endforeach</div>
+    <div class="grid gap-4 md:grid-cols-2">@foreach($mine as $p)<a class="card block hover:border-brand-500" href="{{ route('placements.show', $p->ulid) }}"><p class="font-semibold">{{ $p->participant_name }}</p><p class="mt-1 text-sm text-slate-600">{{ json_decode($p->snapshot)->department }} · {{ \App\Support\Ui::period($p->start_date, $p->end_date) }}</p><x-badge class="mt-3" :value="$p->status" /><p class="mt-3 text-sm"><span class="font-semibold">Berikutnya:</span> {{ $p->next }}</p></a>@endforeach</div>
 </section>
 @endif
 

@@ -239,9 +239,10 @@ class AdmissionsTest extends TestCase
     public function test_batch_letter_not_visible_to_participant_and_checklist_activation_requires_verification(): void
     {
         $p = $this->placement();
+        // An account is only opened once Tim Kordik has accepted the participant; from then on they may hand in their own documents.
+        $this->actingAs($this->admin)->post('/penerimaan/peserta/'.DB::table('participants')->find($p->participant_id)->ulid.'/aktivasi', ['email' => 'activate@example.test', 'ownership_confirmed' => 1, 'ownership_reason' => 'Identitas telah diperiksa petugas'])->assertSessionHasErrors('email');
         $this->awaitingDocuments($p);
         $this->action($p, 'verify')->assertSessionHasErrors('placement');
-        $this->actingAs($this->admin)->post('/penerimaan/peserta/'.DB::table('participants')->find($p->participant_id)->ulid.'/aktivasi', ['email' => 'activate@example.test', 'ownership_confirmed' => 1, 'ownership_reason' => 'Identitas telah diperiksa petugas'])->assertSessionHasErrors('email');
         foreach (['surat', 'ijazah', 'bhd'] as $code) {
             $this->actingAs($this->kordik)->post('/penerimaan/penempatan/'.$p->ulid.'/dokumen', ['code' => $code, 'status' => 'exception', 'reason' => 'Pengecualian resmi berdasarkan pemeriksaan'])->assertSessionHasNoErrors();
         }

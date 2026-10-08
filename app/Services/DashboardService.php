@@ -72,6 +72,7 @@ class DashboardService
             ->select('placements.*')->selectSub(DB::table('participants')->select('name')->whereColumn('participants.id', 'placements.participant_id'), 'participant_name')
             ->orderByRaw("CASE WHEN status = 'selesai' THEN 1 ELSE 0 END")->orderByDesc('start_date')->limit(8)->get();
 
+        $mine->each(fn ($p) => $p->next = app(PlacementHub::class)->next($p));
         $mineTitle = $a->role($u, ['peserta']) ? 'Stase saya' : 'Peserta bimbingan saya';
 
         return compact('cards', 'today', 'groups', 'tasks', 'staff', 'mine', 'mineTitle');

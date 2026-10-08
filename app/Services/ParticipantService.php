@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -119,14 +120,23 @@ class ParticipantService
         return hash('sha256', json_encode([$p->name, $p->birth_date, $p->nik, $p->nim, $p->email, $p->institution_id], JSON_THROW_ON_ERROR));
     }
 
-    public function activate(User $actor, string $ulid, array $input): void
+    /** Placement stages in which the participant has been accepted and therefore needs to sign in. */
+    public const ACTIVATABLE = ['menunggu_dokumen', 'terverifikasi', 'dijadwalkan', 'sedang_stase', 'menunggu_penyelesaian'];
+
+    /**
+     * @return string|null a one-time link to set the password, only when a new account was created.
+     *                     The admin hands it to the participant, so activation does not depend on email delivery.
+     */
+    public function activate(User $actor, string $ulid, array $input): ?string
     {
         abort_unless(app(AdmissionsAccess::class)->admin($actor), 403);
-        $data = Validator::make($input, ['email' => 'required|email|max:255', 'ownership_reason' => 'required|string|min:10|max:2000', 'ownership_confirmed' => 'accepted'])->validate();
-        DB::transaction(function () use ($actor, $ulid, $data) {
+        $data = Validator::make($input, ['email' => 'required|email|max:255', 'ownership_reason' => 'nullable|string|min:10|max:2000', 'ownership_confirmed' => 'accepted'])->validate();
+        $data['ownership_reason'] ??= 'Admin menyatakan email sudah diperiksa sebagai milik peserta.';
+
+        return DB::transaction(function () use ($actor, $ulid, $data) {
             $p = DB::table('participants')->where('ulid', $ulid)->lockForUpdate()->firstOrFail();
-            if (! DB::table('placements')->where('participant_id', $p->id)->where('status', 'terverifikasi')->exists()) {
-                throw ValidationException::withMessages(['email' => 'Aktivasi memerlukan placement terverifikasi.']);
+            if (! DB::table('placements')->where('participant_id', $p->id)->whereIn('status', self::ACTIVATABLE)->exists()) {
+                throw ValidationException::withMessages(['email' => 'Akun dapat diaktifkan setelah penerimaan peserta disetujui Tim Kordik.']);
             }
             $email = mb_strtolower(trim($data['email']));
             $account = DB::table('users')->where('email', $email)->lockForUpdate()->first();
@@ -134,6 +144,7 @@ class ParticipantService
                 throw ValidationException::withMessages(['email' => 'Email sudah terpakai atau berbeda dari akun tertaut. Tidak ada penautan otomatis.']);
             }
             $userId = $p->user_id;
+            $created = ! $userId;
             if (! $userId) {
                 $userId = DB::table('users')->insertGetId(['name' => $p->name, 'email' => $email, 'password' => Hash::make(Str::random(64)), 'is_active' => true, 'created_at' => now(), 'updated_at' => now()]);
                 DB::table('user_roles')->insert(['user_id' => $userId, 'role_id' => DB::table('roles')->where('code', 'peserta')->value('id'), 'assigned_by' => $actor->id, 'assigned_at' => now()]);
@@ -142,7 +153,9 @@ class ParticipantService
                 abort_if($account->deleted_at !== null, 422, 'Akun telah diarsipkan.');
                 DB::table('users')->where('id', $userId)->update(['is_active' => true, 'updated_at' => now()]);
             }
-            app(AuditLogger::class)->log('participant.account_activated', 'participant', $p->id, reason: $data['ownership_reason'], newValues: ['user_id' => $userId, 'actor_id' => $actor->id]);
+            app(AuditLogger::class)->log('participant.account_activated', 'participant', $p->id, reason: $data['ownership_reason'], newValues: ['user_id' => $userId, 'actor_id' => $actor->id, 'setup_link_issued' => $created]);
+
+            return $created ? route('password.reset', Password::broker()->createToken(User::findOrFail($userId))) : null;
         }, 5);
     }
 }

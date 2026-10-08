@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ClinicalGroupService;
 use App\Services\EducatorAssignmentService;
 use App\Services\PlacementExtensionService;
+use App\Services\PlacementHub;
 use App\Services\ScheduleService;
 use App\Services\SchedulingAccess;
 use Illuminate\Http\Request;
@@ -185,9 +186,11 @@ class SchedulingController extends Controller
 
     public function notifications(Request $r)
     {
-        $notifications = DB::table('scheduling_notifications')->where('user_id', $r->user()->id)->orderByDesc('id')->paginate(20);
+        $notifications = DB::table('scheduling_notifications as n')->leftJoin('placements as p', 'p.id', '=', 'n.placement_id')->leftJoin('participants as s', 's.id', '=', 'p.participant_id')
+            ->where('n.user_id', $r->user()->id)->orderByDesc('n.id')->select('n.*', 'p.ulid as placement_ulid', 's.name as participant_name')->paginate(20);
+        $open = app(PlacementHub::class)->placements($r->user())->whereIn('placements.id', $notifications->pluck('placement_id')->filter())->pluck('placements.id')->all();
 
-        return view('scheduling.notifications', compact('notifications'));
+        return view('scheduling.notifications', compact('notifications', 'open'));
     }
 
     public function readNotification(Request $r, string $ulid)

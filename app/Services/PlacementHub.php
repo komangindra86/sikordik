@@ -82,7 +82,7 @@ class PlacementHub
             'draft' => 'Admin Kordik memeriksa data lalu mengajukan ke KSM.',
             'menunggu_konfirmasi_ksm' => 'Ketua KSM mengonfirmasi kesediaan menerima peserta.',
             'diterima_ksm', 'menunggu_persetujuan_kordik' => 'Tim Kordik memutuskan penerimaan.',
-            'menunggu_dokumen' => 'Admin Kordik memeriksa dokumen persyaratan ('.$count('placement_documents', [], ['valid', 'exception']).' dari '.$count('placement_documents').' lengkap).',
+            'menunggu_dokumen' => 'Peserta mengunggah dokumen persyaratan, lalu Admin Kordik memeriksanya ('.$count('placement_documents', [], ['valid', 'exception']).' dari '.$count('placement_documents').' lengkap).',
             'terverifikasi' => match (true) {
                 $count('educator_assignments', ['role' => 'mentor'], ['approved']) === 0 && $count('educator_assignments', ['role' => 'mentor'], ['pending']) > 0 => 'Ketua KSM menyetujui pembimbing yang diajukan.',
                 $count('educator_assignments', ['role' => 'mentor'], ['approved']) === 0 => 'Admin Kordik atau Sekretariat KSM mengajukan pembimbing.',

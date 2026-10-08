@@ -74,7 +74,7 @@ class AttendanceService
             $this->invalidate($u, $p, $d['reason'] ?? 'Presensi berubah');
             app(SchedulingJournal::class)->record($u, 'attendances', $id, 'attendance_'.$d['action'], $old, $d['reason'] ?? null);
             if ($status !== 'draft') {
-                app(SchedulingJournal::class)->notify([$a->educator_user_id], $p, 'Presensi harian menunggu verifikasi. Buka menu Presensi.');
+                app(SchedulingJournal::class)->notify([$a->educator_user_id], $p, 'Presensi harian menunggu verifikasi Anda.');
             }
             app(PlacementExtensionService::class)->startIfDue($u, $p);
         });
@@ -140,7 +140,7 @@ class AttendanceService
             }
             $this->invalidate($u, $p, $d['reason'] ?? 'Presensi diverifikasi');
             app(SchedulingJournal::class)->record($u, 'attendances', $a->id, 'attendance_'.$d['action'], $a, $d['reason']);
-            app(SchedulingJournal::class)->notify([DB::table('participants')->where('id', $p->participant_id)->value('user_id')], $p, 'Keputusan verifikasi presensi tersedia di menu Presensi.');
+            app(SchedulingJournal::class)->notify([DB::table('participants')->where('id', $p->participant_id)->value('user_id')], $p, 'Pembimbing sudah memutuskan presensi Anda.');
         });
     }
 

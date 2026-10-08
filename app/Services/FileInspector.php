@@ -25,6 +25,9 @@ class FileInspector
         if ($mime !== 'application/pdf') {
             return false;
         }
+        if (MalwareScanner::bypassed() && ! $this->qpdfAvailable()) {
+            return str_starts_with((string) file_get_contents($path, false, null, 0, 5), '%PDF-');
+        }
         // Decode PDF structure before looking for active objects, including compressed objects.
         $out = $path.'.inspection';
         try {
@@ -50,6 +53,19 @@ class FileInspector
             if (is_file($out)) {
                 unlink($out);
             }
+        }
+    }
+
+    private function qpdfAvailable(): bool
+    {
+        try {
+            $process = new Process([config('admissions.qpdf_binary'), '--version']);
+            $process->setTimeout(5);
+            $process->run();
+
+            return $process->isSuccessful();
+        } catch (\Throwable) {
+            return false;
         }
     }
 }

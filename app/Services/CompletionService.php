@@ -189,7 +189,7 @@ class CompletionService
                 app(SchedulingJournal::class)->record($u, 'completion_requests', $id, 'completion_'.$d['action'], null, $d['reason']);
             }
             $j = app(SchedulingJournal::class);
-            $j->notify(array_merge($j->roleUsers($decision ? 'admin-kordik' : 'tim-kordik'), [DB::table('participants')->where('id', $p->participant_id)->value('user_id')]), $p, 'Status penyelesaian diperbarui. Periksa menu Survei & penyelesaian.');
+            $j->notify(array_merge($j->roleUsers($decision ? 'admin-kordik' : 'tim-kordik'), [DB::table('participants')->where('id', $p->participant_id)->value('user_id')]), $p, 'Status penyelesaian stase diperbarui.');
         }, 5);
     }
 

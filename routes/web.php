@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdmissionsController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AttendanceController;
@@ -141,6 +142,8 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('/berkas/{ulid}', 'download')->name('download');
     });
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::get('/akun', [AccountController::class, 'show'])->name('account.show');
+    Route::put('/akun/kata-sandi', [AccountController::class, 'password'])->middleware('throttle:6,1')->name('account.password');
     Route::get('/dashboard', DashboardController::class)->middleware('permission:dashboard.view')->name('dashboard');
 
     Route::get('/pengguna', [UserController::class, 'index'])->middleware('permission:users.view')->name('users.index');

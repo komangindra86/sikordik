@@ -4,6 +4,8 @@ Sistem Informasi Manajemen Pendidikan Klinis RSBM
 
 Edisi 1 | 15 September 2026 | Cakupan fitur sampai Fase 8
 
+> **Catatan Oktober 2026.** Menu dan urutan klik telah disederhanakan. Gunakan [panduan ringkas](PANDUAN-RINGKAS.md) untuk langkah yang berlaku sekarang dan [penyederhanaan alur](PENYEDERHANAAN-ALUR.md) untuk aturan yang berubah. Buku ini tetap menjadi rujukan aturan pendidikan dan penanganan kendala.
+
 Panduan ini membantu Admin Kordik, Tim Kordik, petugas KSM, pendidik, dan peserta menjalankan pendidikan klinis dari penerimaan hingga penyelesaian. Mulailah dari petunjuk sesuai peran, lalu ikuti bab kegiatan yang sedang dikerjakan.
 
 Urutan utama adalah penerimaan, persetujuan, verifikasi dokumen, penugasan, penerbitan jadwal, pelaksanaan kegiatan, dan penyelesaian. Menyimpan data sebagai draft belum mengirimkannya kepada pemeriksa. Selalu periksa status setelah menekan tombol tindakan.

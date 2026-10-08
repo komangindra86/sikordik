@@ -86,8 +86,8 @@ class TaskService
         $this->add('Ajukan penempatan ke KSM', 'Periksa & ajukan', 'admissions.show', $this->placements(['draft'])->get(['id as placement_id']));
         $this->add('Tinjau penerimaan yang ditolak', 'Baca alasan', 'admissions.show', $this->placements(['ditolak_ksm', 'ditolak_kordik'])->get(['id as placement_id']));
         $this->add('Periksa dokumen peserta', 'Periksa dokumen', 'admissions.show', $this->placements(['menunggu_dokumen'])->get(['id as placement_id']));
-        $this->add('Aktifkan akun peserta', 'Aktifkan akun', 'admissions.participants', DB::table('placements as p')->join('participants as s', 's.id', '=', 'p.participant_id')
-            ->whereNull('s.user_id')->where('p.status', 'terverifikasi')->limit(self::LIMIT)->get(['p.id as placement_id', 's.number as query']));
+        $this->add('Aktifkan akun peserta', 'Aktifkan akun', 'admissions.show', DB::table('placements as p')->join('participants as s', 's.id', '=', 'p.participant_id')
+            ->whereNull('s.user_id')->whereNull('p.archived_at')->whereIn('p.status', ParticipantService::ACTIVATABLE)->limit(self::LIMIT)->get(['p.id as placement_id']));
         $this->add('Mulai stase', 'Mulai', 'scheduling.show', $this->placements(['dijadwalkan'])->where('start_date', '<=', $today)->where('end_date', '>=', $today)->get(['id as placement_id']));
         $this->add('Cocokkan respons survei', 'Cocokkan kode', 'completion.show', DB::table('survey_responses as r')->join('placements as p', 'p.id', '=', 'r.placement_id')
             ->where('r.status', 'submitted')->whereIn('p.status', ['sedang_stase', 'menunggu_penyelesaian'])->limit(self::LIMIT)
@@ -120,6 +120,19 @@ class TaskService
         $own = DB::table('placements')->whereNull('archived_at')->whereIn('participant_id', DB::table('participants')->where('user_id', $u->id)->select('id'))->get();
         $one = fn (object $p, ?string $detail = null, ?string $param = null) => [(object) ['placement_id' => $p->id, 'detail' => $detail, 'param' => $param]];
         foreach ($own as $p) {
+            if ($p->status === 'menunggu_dokumen') {
+                $uploaded = DB::table('private_files')->where('resource_type', 'placement')->where('resource_id', $p->id)->groupBy('category')->selectRaw('category, MAX(created_at) as latest')->pluck('latest', 'category');
+                $missing = DB::table('placement_documents')->where('placement_id', $p->id)->where('code', '!=', 'surat')->whereNotIn('status', ['valid', 'exception'])->get()
+                    ->filter(function ($doc) use ($uploaded) {
+                        $latest = $uploaded[in_array($doc->code, PrivateFileService::PARTICIPANT_CATEGORIES, true) ? $doc->code : 'administrasi'] ?? null;
+
+                        // Nothing handed in yet, or the last file was already turned down.
+                        return ! $latest || ($doc->status === 'rejected' && $latest <= $doc->updated_at);
+                    });
+                if ($missing->isNotEmpty()) {
+                    $this->add('Unggah dokumen persyaratan', 'Unggah', 'admissions.show', $one($p, $missing->pluck('label')->implode(', ')));
+                }
+            }
             $schedules = DB::table('schedules')->where('placement_id', $p->id)->pluck('status', 'date');
             $counts = DB::table('schedules')->where('placement_id', $p->id)->groupBy('status')->selectRaw('status, COUNT(*) as total')->pluck('total', 'status');
             if (in_array($p->status, ScheduleService::OPEN_PLACEMENTS)) {
