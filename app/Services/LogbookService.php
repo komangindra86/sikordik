@@ -153,7 +153,7 @@ class LogbookService
     public function transition(User $actor, string $ulid, array $input): void
     {
         $d = Validator::make($input, ['action' => 'required|in:submit,approve,revision,reject', 'revision' => 'required|integer|min:1',
-            'note' => 'required_unless:action,submit|nullable|string|min:5|max:2000', 'confirm' => 'required|accepted'])->validate();
+            'note' => 'required_if:action,revision,reject|nullable|string|min:5|max:2000', 'confirm' => 'required|accepted'])->validate();
         DB::transaction(function () use ($actor, $ulid, $d) {
             $ref = DB::table('logbooks')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $ref->placement_id)->value('ulid'));

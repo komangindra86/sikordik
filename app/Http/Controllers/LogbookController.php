@@ -8,6 +8,7 @@ use App\Services\LogbookService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class LogbookController extends Controller
 {
@@ -58,8 +59,18 @@ class LogbookController extends Controller
     public function save(Request $request, string $ulid, LogbookService $service, ?string $logbook = null)
     {
         $r = $service->save($request->user(), $ulid, $request->all(), $request->file('file'), $logbook);
+        if ($request->boolean('submit_now')) {
+            // The file check runs right after saving; a file that is still held keeps the draft for a later submit.
+            try {
+                $service->transition($request->user(), $r->ulid, ['action' => 'submit', 'revision' => $r->revision, 'confirm' => 1]);
 
-        return redirect()->route('logbooks.show', $r->ulid)->with('status', 'Versi draft tersimpan. Periksa status berkas sebelum mengajukan.');
+                return redirect()->route('logbooks.show', $r->ulid)->with('status', 'Logbook tersimpan dan diajukan untuk diperiksa.');
+            } catch (HttpException) {
+                return redirect()->route('logbooks.show', $r->ulid)->with('status', 'Tersimpan sebagai draf. Berkas masih diperiksa keamanannya; ajukan dari halaman ini setelah berstatus Aman.');
+            }
+        }
+
+        return redirect()->route('logbooks.show', $r->ulid)->with('status', 'Tersimpan sebagai draf. Ajukan bila sudah siap.');
     }
 
     public function show(Request $request, string $ulid)

@@ -81,7 +81,8 @@ class AttendanceService
 
     public function decide(User $u, string $ulid, array $input): void
     {
-        $d = Validator::make($input, ['action' => 'required|in:verify,reject', 'revision' => 'required|integer|min:1', 'reason' => 'required|string|min:10|max:2000'])->validate();
+        $d = Validator::make($input, ['action' => 'required|in:verify,reject', 'revision' => 'required|integer|min:1', 'reason' => 'required_if:action,reject|nullable|string|min:10|max:2000'])->validate();
+        $d['reason'] ??= null;
         DB::transaction(function () use ($u, $ulid, $d) {
             $a = DB::table('attendances')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $a->placement_id)->value('ulid'));
@@ -96,7 +97,7 @@ class AttendanceService
                 $verified = DB::table('attendances')->find($a->id);
                 DB::table('attendances')->where('id', $a->id)->update(['approval' => json_encode(app(VerificationService::class)->attendanceApproval($u, $verified), JSON_THROW_ON_ERROR)]);
             }
-            $this->invalidate($u, $p, $d['reason']);
+            $this->invalidate($u, $p, $d['reason'] ?? 'Presensi diverifikasi');
             app(SchedulingJournal::class)->record($u, 'attendances', $a->id, 'attendance_'.$d['action'], $a, $d['reason']);
             app(SchedulingJournal::class)->notify([DB::table('participants')->where('id', $p->participant_id)->value('user_id')], $p, 'Keputusan verifikasi presensi tersedia di menu Presensi.');
         });

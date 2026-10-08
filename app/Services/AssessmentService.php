@@ -140,7 +140,8 @@ class AssessmentService
     public function transition(User $u, string $ulid, array $input, ?UploadedFile $upload = null): void
     {
         $d = Validator::make($input, ['action' => 'required|in:approve,publish,appeal,review,accept,reject', 'revision' => 'required|integer|min:1',
-            'note' => 'required|string|min:5|max:2000', 'confirm' => 'required|accepted', 'deidentified' => 'exclude_unless:action,appeal|required|accepted'])->validate();
+            'note' => 'required_unless:action,approve,publish|nullable|string|min:5|max:2000', 'confirm' => 'required|accepted', 'deidentified' => 'exclude_unless:action,appeal|required|accepted'])->validate();
+        $d['note'] ??= null;
         $file = null;
         DB::transaction(function () use ($u, $ulid, $d, $upload, &$file) {
             $ref = DB::table('assessments')->where('ulid', $ulid)->firstOrFail();

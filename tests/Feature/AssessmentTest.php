@@ -112,9 +112,9 @@ class AssessmentTest extends TestCase
         $this->publish($r);
         $this->action($r, 'owner', 'appeal', extra: ['file' => $this->pdf('Bukti keberatan')])->assertRedirect()->assertSessionHasNoErrors();
         $this->action($r, 'owner', 'appeal')->assertUnprocessable();
-        $this->action($r, 'mentor', 'accept')->assertUnprocessable();
-        $this->action($r, 'mentor', 'review')->assertRedirect();
-        $this->action($r, 'mentor', 'accept')->assertRedirect();
+        // One click decides the appeal; the review step is still recorded before the decision.
+        $this->action($r, 'mentor', 'accept')->assertRedirect()->assertSessionHasNoErrors();
+        $this->assertSame(['review', 'accept'], DB::table('assessment_events')->whereIn('action', ['review', 'accept'])->orderBy('id')->pluck('action')->all());
         $revision = DB::table('assessments')->where('id', $r->id)->value('revision');
         $this->actingAs($this->f['mentor'])->get($this->url.'/'.$r->ulid.'/versi')->assertOk();
         $this->post($this->url.'/'.$r->ulid.'/versi', $this->payload(['revision' => $revision, 'notes' => 'KOREKSI BELUM PUBLIK', 'file' => $this->pdf('PDF KOREKSI')]))->assertRedirect()->assertSessionHasNoErrors();

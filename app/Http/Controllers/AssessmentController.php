@@ -120,9 +120,24 @@ class AssessmentController extends Controller
 
     public function transition(Request $request, string $ulid, AssessmentService $service)
     {
-        $service->transition($request->user(), $ulid, $request->all(), $request->file('file'));
+        $input = $request->all();
+        $action = $input['action'] ?? null;
+        // One click for the mentor: the two recorded steps (approve, then publish; review, then decide) still happen in order.
+        DB::transaction(function () use ($request, $ulid, $service, $input, $action) {
+            $first = match (true) {
+                $action === 'release' => 'approve',
+                in_array($action, ['accept', 'reject'], true) && DB::table('grade_appeals as g')->join('assessments as s', 's.id', '=', 'g.assessment_id')
+                    ->where('s.ulid', $ulid)->whereColumn('g.version', 's.published_version')->where('g.status', 'submitted')->exists() => 'review',
+                default => null,
+            };
+            if ($first) {
+                $service->transition($request->user(), $ulid, ['action' => $first] + $input);
+                $input['revision'] = (int) ($input['revision'] ?? 0) + 1;
+            }
+            $service->transition($request->user(), $ulid, ['action' => $action === 'release' ? 'publish' : $action] + $input, $request->file('file'));
+        });
 
-        return back()->with('status', 'Keputusan penilaian tersimpan.');
+        return back()->with('status', $action === 'release' ? 'Nilai disahkan dan dipublikasikan kepada peserta.' : 'Keputusan penilaian tersimpan.');
     }
 
     public function download(Request $request, string $ulid)

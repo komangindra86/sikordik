@@ -36,7 +36,8 @@ class PlacementExtensionService
 
     public function decide(User $u, string $ulid, array $input): void
     {
-        $d = Validator::make($input, ['action' => 'required|in:approve,reject,withdraw', 'revision' => 'required|integer|min:1', 'reason' => 'required|string|min:10|max:2000', 'approve_overlap' => 'sometimes|accepted'])->validate();
+        $d = Validator::make($input, ['action' => 'required|in:approve,reject,withdraw', 'revision' => 'required|integer|min:1', 'reason' => 'required_unless:action,approve|nullable|string|min:10|max:2000', 'approve_overlap' => 'sometimes|accepted'])->validate();
+        $d['reason'] ??= 'Disetujui';
         DB::transaction(function () use ($u, $ulid, $d) {
             $e = DB::table('placement_extensions')->where('ulid', $ulid)->firstOrFail();
             $service = app(PlacementService::class);

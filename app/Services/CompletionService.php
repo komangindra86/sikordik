@@ -100,8 +100,10 @@ class CompletionService
 
     public function act(User $u, string $ulid, array $input): void
     {
-        $d = Validator::make($input, ['action' => 'required|in:submit,approve,reject,withdraw,reopen_request,reopen_execute,archive', 'revision' => 'required|integer|min:1', 'request_id' => 'nullable|integer', 'request_revision' => 'nullable|integer|min:1', 'reason' => 'required|string|min:10|max:2000', 'confirm' => 'required|accepted'])->validate();
-        abort_unless(mb_strlen(trim($d['reason'])) >= 10, 422, 'Alasan minimal 10 karakter.');
+        $d = Validator::make($input, ['action' => 'required|in:submit,approve,reject,withdraw,reopen_request,reopen_execute,archive', 'revision' => 'required|integer|min:1', 'request_id' => 'nullable|integer', 'request_revision' => 'nullable|integer|min:1', 'reason' => 'required_unless:action,submit,approve|nullable|string|min:10|max:2000', 'confirm' => 'required|accepted'])->validate();
+        // Submitting a complete checklist and approving it speak for themselves; everything else must be justified.
+        $d['reason'] ??= $d['action'] === 'submit' ? 'Checklist penyelesaian lengkap' : 'Disetujui';
+        abort_unless(mb_strlen(trim($d['reason'])) >= 10 || in_array($d['action'], ['submit', 'approve']), 422, 'Alasan minimal 10 karakter.');
         DB::transaction(function () use ($u, $ulid, $d) {
             $service = app(PlacementService::class);
             $p = $service->locked($ulid);

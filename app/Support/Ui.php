@@ -113,6 +113,28 @@ class Ui
         ],
     ];
 
+    /** History wording for placement_histories.action and scheduling_histories.event. */
+    public const EVENTS = [
+        'created' => 'Penempatan dibuat', 'submit' => 'Diajukan ke KSM', 'ksm_accept' => 'KSM menerima', 'ksm_reject' => 'KSM menolak',
+        'forward_to_kordik' => 'Diteruskan ke Tim Kordik', 'kordik_accept' => 'Tim Kordik menyetujui penerimaan', 'kordik_reject' => 'Tim Kordik menolak penerimaan',
+        'verify' => 'Dokumen dinyatakan lengkap', 'revise' => 'Dikembalikan ke draf', 'cancel' => 'Penempatan dibatalkan', 'period_revised' => 'Periode / KSM direvisi',
+        'exception_requested' => 'Pengecualian periode paralel diajukan', 'exception_approved' => 'Pengecualian periode paralel disetujui', 'exception_rejected' => 'Pengecualian periode paralel ditolak',
+        'document_valid' => 'Dokumen dinyatakan valid', 'document_rejected' => 'Dokumen ditolak', 'document_exception' => 'Dokumen dikecualikan',
+        'schedule_published' => 'Jadwal pertama terbit', 'activity_started' => 'Stase dimulai', 'period_extended' => 'Stase diperpanjang',
+        'completion_submit' => 'Penyelesaian diajukan', 'completion_approve' => 'Permohonan disetujui', 'completion_reject' => 'Permohonan ditolak', 'completion_withdraw' => 'Permohonan ditarik',
+        'completion_reopen_request' => 'Pembukaan kembali diajukan', 'completion_reopen_execute' => 'Penempatan dibuka kembali', 'completion_archive' => 'Diarsipkan',
+        'attendance_draft' => 'Presensi disimpan sebagai draf', 'attendance_submit' => 'Presensi diajukan', 'attendance_correct' => 'Presensi dikoreksi Admin', 'attendance_verify' => 'Presensi diverifikasi',
+        'attendance_reject' => 'Presensi ditolak', 'attendance_verifier_replaced' => 'Verifikator diganti', 'attendance_summary_generated' => 'Rekap dibuat',
+        'attendance_summary_sealed' => 'Rekap disahkan Ketua KSM', 'attendance_summary_superseded' => 'Rekap lama tidak berlaku',
+    ];
+
+    public static function event(string $code): string
+    {
+        [$base, $detail] = array_pad(explode(':', $code, 2), 2, null);
+
+        return (self::EVENTS[$base] ?? ucfirst(str_replace('_', ' ', $base))).($detail ? ' ('.$detail.')' : '');
+    }
+
     public static function label(string $kind, ?string $code): string
     {
         return self::STATUS[$kind][$code ?? ''][0] ?? ucfirst(str_replace('_', ' ', (string) $code));

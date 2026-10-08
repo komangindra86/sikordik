@@ -1,7 +1,7 @@
 <x-layouts.app title="Simpan versi logbook">
     <a class="text-sm text-brand-700" href="{{ route('logbooks.placement', $p->ulid) }}">← Logbook penempatan</a>
     <h1 class="mt-3 text-2xl font-bold">{{ $r ? 'Tambahkan versi logbook' : ($kind === 'participant' ? 'Unggah logbook peserta' : 'Catat kegiatan pembimbing') }}</h1>
-    <p class="mb-6 mt-2 text-sm text-slate-600">Simpan sebagai draft, lalu ajukan setelah diperiksa. Versi lama tetap tersimpan. Jangan masukkan nama pasien, NIK, nomor rekam medis, diagnosis, atau informasi medis sensitif.</p>
+    <p class="mb-6 mt-2 text-sm text-slate-600">Versi lama tetap tersimpan. Jangan masukkan nama pasien, NIK, nomor rekam medis, diagnosis, atau informasi medis sensitif.</p>
     <form class="card max-w-3xl space-y-5 p-5" method="POST" enctype="multipart/form-data" action="{{ $r ? route('logbooks.update', [$p->ulid, $r->ulid]) : route('logbooks.store', $p->ulid) }}">
         @csrf
         <input type="hidden" name="kind" value="{{ $kind }}"><input type="hidden" name="revision" value="{{ $r->revision ?? 0 }}">
@@ -16,6 +16,6 @@
         <div><label class="label" for="file">{{ $kind === 'participant' ? 'PDF logbook (wajib)' : 'Lampiran PDF (opsional)' }}</label><input class="input" id="file" type="file" name="file" accept="application/pdf,.pdf" @required($kind === 'participant')><p class="mt-1 text-xs text-slate-500">Maksimal 10 MB. Setiap versi memakai berkas baru; lampiran versi sebelumnya tetap ada dalam riwayat. Pengajuan menunggu pemeriksaan keamanan berkas.</p></div>
         <div><label class="label" for="notes">Catatan</label><textarea class="input" id="notes" name="notes" rows="3" maxlength="2000">{{ old('notes', $s['notes'] ?? '') }}</textarea></div>
         <label class="flex items-start gap-3 text-sm"><input class="mt-1" type="checkbox" name="deidentified" value="1" required @checked(old('deidentified'))><span>Saya telah memeriksa bahwa catatan dan berkas tidak memuat identitas atau informasi medis sensitif pasien.</span></label>
-        <button class="btn-primary">Simpan versi draft</button>
+        <div class="flex flex-wrap gap-3"><button class="btn-primary" name="submit_now" value="1">Simpan & ajukan</button><button class="btn-secondary">Simpan sebagai draf</button></div>
     </form>
 </x-layouts.app>

@@ -55,7 +55,9 @@ class EducatorAssignmentService
     {
         $data = Validator::make($input, ['educator_id' => 'required|integer|exists:educators,id', 'role' => 'required|in:mentor,examiner,supervisor',
             'start_date' => 'required|date_format:Y-m-d', 'end_date' => 'required|date_format:Y-m-d|after_or_equal:start_date',
-            'replaces_id' => 'nullable|integer', 'clinical_group_id' => 'nullable|integer', 'reason' => 'required|string|min:10|max:2000'])->validate();
+            'replaces_id' => 'nullable|integer', 'clinical_group_id' => 'nullable|integer', 'reason' => 'required_with:replaces_id|nullable|string|min:10|max:2000'])->validate();
+        // Only a replacement has to be justified; a first assignment is recorded as such.
+        $data['reason'] ??= 'Penugasan '.['mentor' => 'pembimbing', 'examiner' => 'penguji', 'supervisor' => 'supervisor'][$data['role']];
 
         return DB::transaction(function () use ($actor, $ulid, $data) {
             $p = app(PlacementService::class)->locked($ulid);
@@ -98,7 +100,8 @@ class EducatorAssignmentService
 
     public function decide(User $actor, string $ulid, array $input): void
     {
-        $d = Validator::make($input, ['revision' => 'required|integer|min:1', 'action' => 'required|in:approve,reject', 'reason' => 'required|string|min:10|max:2000'])->validate();
+        $d = Validator::make($input, ['revision' => 'required|integer|min:1', 'action' => 'required|in:approve,reject', 'reason' => 'required_if:action,reject|nullable|string|min:10|max:2000'])->validate();
+        $d['reason'] ??= 'Disetujui';
         DB::transaction(function () use ($actor, $ulid, $d) {
             $a = DB::table('educator_assignments')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $a->placement_id)->value('ulid'));

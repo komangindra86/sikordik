@@ -258,7 +258,8 @@ class PlacementService
 
     public function reviewDocument(User $actor, string $ulid, array $input): void
     {
-        $data = Validator::make($input, ['code' => 'required|string', 'file_ulid' => 'nullable|string', 'status' => 'required|in:valid,rejected,exception', 'valid_until' => 'nullable|date_format:Y-m-d', 'reason' => 'required|string|min:10|max:2000'])->validate();
+        $data = Validator::make($input, ['code' => 'required|string', 'file_ulid' => 'nullable|string', 'status' => 'required|in:valid,rejected,exception', 'valid_until' => 'nullable|date_format:Y-m-d', 'reason' => 'required_unless:status,valid|nullable|string|min:10|max:2000'])->validate();
+        $data['reason'] ??= 'Dokumen sesuai';
         $access = app(AdmissionsAccess::class);
         abort_unless($data['status'] === 'exception' ? $access->role($actor, ['tim-kordik']) : $access->role($actor, ['admin-kordik']), 403);
         DB::transaction(function () use ($actor, $ulid, $data) {
