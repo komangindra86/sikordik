@@ -77,6 +77,8 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('/penempatan/{ulid}', 'show')->name('show');
         Route::post('/penempatan/{ulid}', 'save')->name('save');
         Route::post('/penempatan/{ulid}/rekap', 'summary')->name('summary');
+        Route::post('/penempatan/{ulid}/cepat', 'quick')->name('quick');
+        Route::post('/penempatan/{ulid}/verifikasi-massal', 'verifyMany')->name('verify-many');
         Route::post('/{ulid}/verifikasi', 'decide')->name('decide');
         Route::post('/{ulid}/pengganti', 'replaceVerifier')->name('replace');
     });
@@ -96,6 +98,10 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('/penempatan/{ulid}/kelompok', 'join')->name('join');
         Route::post('/penempatan/{ulid}/perpanjangan', 'extension')->name('extension');
         Route::post('/penempatan/{ulid}/mulai', 'start')->name('start');
+        Route::get('/penempatan/{ulid}/jadwal/rentang', 'range')->name('range');
+        Route::post('/penempatan/{ulid}/jadwal/rentang', 'saveRange')->name('range-store');
+        Route::post('/penempatan/{ulid}/jadwal-massal', 'bulk')->name('bulk');
+        Route::post('/jadwal/{ulid}/setujui', 'release')->name('release');
         Route::get('/penempatan/{ulid}/jadwal/tambah', 'form')->name('create');
         Route::post('/penempatan/{ulid}/jadwal', 'save')->name('store');
         Route::get('/penempatan/{ulid}/jadwal/{schedule}', 'form')->name('edit');

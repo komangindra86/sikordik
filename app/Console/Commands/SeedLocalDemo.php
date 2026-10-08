@@ -156,7 +156,10 @@ class SeedLocalDemo extends Command
                                 }
                             } else {
                                 $current = DB::table('placements')->find($p->id);
-                                app(PlacementExtensionService::class)->start($admin, $p->ulid, $current->revision);
+                                // The first attendance already starts a due placement; only the untouched one still needs the Admin.
+                                if ($current->status === 'dijadwalkan') {
+                                    app(PlacementExtensionService::class)->start($admin, $p->ulid, $current->revision);
+                                }
                             }
                         }
                     }

@@ -76,6 +76,47 @@ class AttendanceService
             if ($status !== 'draft') {
                 app(SchedulingJournal::class)->notify([$a->educator_user_id], $p, 'Presensi harian menunggu verifikasi. Buka menu Presensi.');
             }
+            app(PlacementExtensionService::class)->startIfDue($u, $p);
+        });
+    }
+
+    /** What the published schedule already says about a day, used to prefill and for the one-tap entry. */
+    public function defaults(object $p, string $date): ?array
+    {
+        $s = DB::table('schedules')->where('placement_id', $p->id)->where('date', $date)->whereIn('status', ['published', 'completed'])->orderBy('start_time')->orderBy('id')->first();
+
+        return $s ? ['clinical_location_id' => $s->clinical_location_id, 'mentor_assignment_id' => $s->mentor_assignment_id, 'activity' => $s->activity] : null;
+    }
+
+    /** One tap: "hadir" on a scheduled day, with place, mentor and activity taken from that day's schedule. */
+    public function quick(User $u, string $placement, array $input): void
+    {
+        $d = Validator::make($input, ['date' => 'required|date_format:Y-m-d'])->validate();
+        $p = app(SchedulingAccess::class)->placement($u, $placement);
+        $defaults = $this->defaults($p, $d['date']);
+        abort_unless($defaults, 422, 'Tanggal ini tidak memiliki jadwal terbit.');
+        $this->save($u, $placement, $d + $defaults + ['attendance_status' => 'hadir', 'revision' => 0, 'action' => 'submit']);
+    }
+
+    /**
+     * Verify several days at once. Each day is still verified, sealed and journaled individually.
+     *
+     * @return int number of days verified
+     */
+    public function verifyMany(User $u, string $placement, array $input): int
+    {
+        $d = Validator::make($input, ['ids' => 'required|array|min:1|max:200', 'ids.*' => 'string'])->validate();
+
+        return DB::transaction(function () use ($u, $placement, $d) {
+            $p = app(AttendanceAccess::class)->placement($u, $placement);
+            $rows = DB::table('attendances')->where('placement_id', $p->id)->whereIn('ulid', $d['ids'])->whereIn('status', ['waiting', 'corrected'])->orderBy('date')->get()
+                ->filter(fn ($row) => app(SchedulingAccess::class)->mentor($u, $row));
+            foreach ($rows as $row) {
+                $this->decide($u, $row->ulid, ['action' => 'verify', 'revision' => $row->revision]);
+            }
+            abort_unless($rows->count(), 422, 'Tidak ada presensi yang menunggu verifikasi pada pilihan Anda.');
+
+            return $rows->count();
         });
     }
 

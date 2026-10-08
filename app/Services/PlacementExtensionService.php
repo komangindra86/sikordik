@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PlacementExtensionService
 {
@@ -93,10 +95,29 @@ class PlacementExtensionService
         }, 5);
     }
 
-    public function start(User $u, string $ulid, int $revision): void
+    /**
+     * Start the placement without waiting for an Admin click once its own conditions are met.
+     * Any unmet condition simply leaves it scheduled, where the manual button and its message remain.
+     */
+    public function startIfDue(User $actor, object $p): bool
     {
-        abort_unless(app(SchedulingAccess::class)->admin($u), 403);
-        DB::transaction(function () use ($u, $ulid, $revision) {
+        $today = now()->toDateString();
+        if ($p->status !== 'dijadwalkan' || $p->start_date > $today || $p->end_date < $today) {
+            return false;
+        }
+        try {
+            $this->start($actor, $p->ulid, (int) $p->revision, true);
+        } catch (HttpException|ValidationException) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function start(User $u, string $ulid, int $revision, bool $automatic = false): void
+    {
+        abort_unless($automatic || app(SchedulingAccess::class)->admin($u), 403);
+        DB::transaction(function () use ($u, $ulid, $revision, $automatic) {
             $service = app(PlacementService::class);
             $p = $service->locked($ulid);
             abort_unless($p->status === 'dijadwalkan' && $p->revision == $revision && $p->start_date <= now()->toDateString() && $p->end_date >= now()->toDateString(), 422, 'Stase belum dapat dimulai.');
@@ -108,7 +129,7 @@ class PlacementExtensionService
                 app(ScheduleService::class)->validate($p, $s);
             }
             DB::table('placements')->where('id', $p->id)->update(['status' => 'sedang_stase', 'activity_status' => 'active', 'updated_at' => now()]);
-            $service->history($u, DB::table('placements')->find($p->id), $p->status, 'activity_started', null);
+            $service->history($u, DB::table('placements')->find($p->id), $p->status, 'activity_started', $automatic ? 'Dimulai otomatis pada tanggal mulai karena jadwal sudah terbit dan dokumen lengkap.' : null);
         }, 5);
     }
 

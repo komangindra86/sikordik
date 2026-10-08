@@ -94,7 +94,7 @@ class PlacementHub
             'dijadwalkan' => match (true) {
                 $p->start_date > $today => 'Stase dimulai pada '.Ui::date($p->start_date).'.',
                 $p->end_date < $today => 'Periode sudah berakhir tetapi stase belum dimulai di sistem. Admin Kordik menindaklanjuti.',
-                default => 'Admin Kordik memulai stase.',
+                default => 'Stase siap berjalan: peserta mengisi presensi pertamanya.',
             },
             'sedang_stase' => $p->end_date >= $today ? 'Stase berjalan: isi presensi harian, logbook, penilaian, dan kedua survei.'
                 : 'Periode berakhir. Lengkapi daftar kelengkapan, lalu Admin Kordik mengajukan penyelesaian.',

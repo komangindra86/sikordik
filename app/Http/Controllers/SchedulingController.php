@@ -68,6 +68,40 @@ class SchedulingController extends Controller
         return redirect()->route('scheduling.show', $ulid)->with('status', 'Draft jadwal tersimpan. Ajukan untuk persetujuan pembimbing.');
     }
 
+    public function range(Request $r, string $ulid, SchedulingAccess $a)
+    {
+        $p = $a->placement($r->user(), $ulid);
+        abort_unless($a->owner($r->user(), $p) || $a->manage($r->user(), $p->department_id), 403);
+        $assignments = DB::table('educator_assignments as a')->join('educators as e', 'e.id', '=', 'a.educator_id')->where('a.placement_id', $p->id)->where('a.role', 'mentor')->where('a.status', 'approved')->select('a.*', 'e.name')->get();
+        $locations = DB::table('clinical_locations')->where('is_active', true)->where('department_id', $p->department_id)->orderBy('name')->get();
+        $owner = $a->owner($r->user(), $p);
+
+        return view('scheduling.range', compact('p', 'assignments', 'locations', 'owner'));
+    }
+
+    public function saveRange(Request $r, string $ulid, ScheduleService $s)
+    {
+        $result = $s->saveRange($r->user(), $ulid, $r->all());
+        $message = $result['created'].' jadwal '.($r->boolean('submit') ? 'dibuat dan diajukan ke pembimbing.' : 'disimpan sebagai draf.');
+
+        return redirect()->route('scheduling.show', $ulid)->with('status', $message.($result['skipped'] ? ' '.$result['skipped'].' tanggal dilewati karena sudah punya jadwal.' : ''));
+    }
+
+    public function bulk(Request $r, string $ulid, ScheduleService $s)
+    {
+        $action = $r->validate(['action' => 'required|in:submit,release'])['action'];
+        $count = $s->bulk($r->user(), $ulid, $action);
+
+        return back()->with('status', $count.' jadwal '.($action === 'submit' ? 'diajukan ke pembimbing.' : 'disetujui dan langsung terbit.'));
+    }
+
+    public function release(Request $r, string $ulid, ScheduleService $s)
+    {
+        $s->release($r->user(), $ulid, (int) $r->validate(['revision' => 'required|integer|min:1'])['revision']);
+
+        return back()->with('status', 'Jadwal disetujui dan langsung terbit.');
+    }
+
     public function transition(Request $r, string $ulid, ScheduleService $s)
     {
         $s->transition($r->user(), $ulid, $r->all());

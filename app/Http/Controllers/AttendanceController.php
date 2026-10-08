@@ -27,12 +27,15 @@ class AttendanceController extends Controller
         $locations = DB::table('clinical_locations')->where('department_id', $p->department_id)->where('is_active', true)->get();
         $assignments = DB::table('educator_assignments as a')->join('educators as e', 'e.id', '=', 'a.educator_id')->where('a.placement_id', $p->id)->where('a.role', 'mentor')->where('a.status', 'approved')->select('a.*', 'e.name')->get();
         $participant = DB::table('participants')->find($p->participant_id);
-        $histories = DB::table('scheduling_histories')->where(function ($q) use ($rows, $summaries) {
-            $q->where(fn ($q) => $q->where('resource_type', 'attendances')->whereIn('resource_id', $rows->pluck('id')))
-                ->orWhere(fn ($q) => $q->where('resource_type', 'attendance_summaries')->whereIn('resource_id', $summaries->pluck('id')));
-        })->orderByDesc('id')->paginate(30, ['*'], 'history_page');
+        $histories = DB::table('scheduling_histories as h')->leftJoin('users as u', 'u.id', '=', 'h.actor_id')->where(function ($q) use ($rows, $summaries) {
+            $q->where(fn ($q) => $q->where('h.resource_type', 'attendances')->whereIn('h.resource_id', $rows->pluck('id')))
+                ->orWhere(fn ($q) => $q->where('h.resource_type', 'attendance_summaries')->whereIn('h.resource_id', $summaries->pluck('id')));
+        })->orderByDesc('h.id')->select('h.*', 'u.name as actor_name')->paginate(30, ['*'], 'history_page');
+        $schedule = DB::table('schedules')->where('placement_id', $p->id)->whereIn('status', ['published', 'completed'])->orderBy('start_time')->get()->groupBy('date');
+        $names = ['locations' => DB::table('clinical_locations')->whereIn('id', $rows->pluck('clinical_location_id'))->pluck('name', 'id'),
+            'mentors' => DB::table('educator_assignments as a')->join('educators as e', 'e.id', '=', 'a.educator_id')->where('a.placement_id', $p->id)->pluck('e.name', 'a.id')];
 
-        return view('attendance.show', compact('p', 'rows', 'summaries', 'days', 'snapshot', 'locations', 'assignments', 'participant', 'histories', 'access', 'service'));
+        return view('attendance.show', compact('p', 'rows', 'summaries', 'days', 'snapshot', 'locations', 'assignments', 'participant', 'histories', 'access', 'service', 'schedule', 'names'));
     }
 
     public function save(Request $request, string $ulid, AttendanceService $service)
@@ -40,6 +43,18 @@ class AttendanceController extends Controller
         $service->save($request->user(), $ulid, $request->all());
 
         return back()->with('status', 'Presensi tersimpan.');
+    }
+
+    public function quick(Request $request, string $ulid, AttendanceService $service)
+    {
+        $service->quick($request->user(), $ulid, $request->all());
+
+        return back()->with('status', 'Presensi hadir tercatat dan dikirim ke pembimbing.');
+    }
+
+    public function verifyMany(Request $request, string $ulid, AttendanceService $service)
+    {
+        return back()->with('status', $service->verifyMany($request->user(), $ulid, $request->all()).' presensi diverifikasi.');
     }
 
     public function decide(Request $request, string $ulid, AttendanceService $service)

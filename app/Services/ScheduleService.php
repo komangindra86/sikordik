@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -72,6 +73,81 @@ class ScheduleService
         }, 5);
     }
 
+    /**
+     * Create the same activity on every chosen weekday of a date range. Days that already have an
+     * active schedule in this placement are left alone, so the form can be repeated safely.
+     *
+     * @return array{created: int, skipped: int}
+     */
+    public function saveRange(User $u, string $placement, array $input): array
+    {
+        $d = Validator::make($input, ['date_from' => 'required|date_format:Y-m-d', 'date_to' => 'required|date_format:Y-m-d|after_or_equal:date_from',
+            'weekdays' => 'required|array|min:1', 'weekdays.*' => 'integer|between:1,7', 'submit' => 'nullable|boolean'])->validate();
+        $days = [];
+        for ($date = Carbon::parse($d['date_from']); $date->toDateString() <= $d['date_to']; $date = $date->addDay()) {
+            abort_if(count($days) >= 124, 422, 'Rentang terlalu panjang. Susun paling banyak 124 hari kegiatan sekaligus.');
+            if (in_array($date->dayOfWeekIso, array_map('intval', $d['weekdays']), true)) {
+                $days[] = $date->toDateString();
+            }
+        }
+        abort_unless($days, 422, 'Tidak ada tanggal pada rentang dan hari yang dipilih.');
+
+        return DB::transaction(function () use ($u, $placement, $input, $d, $days) {
+            $p = app(PlacementService::class)->locked($placement);
+            $taken = DB::table('schedules')->where('placement_id', $p->id)->whereIn('status', ['draft', 'revision', 'submitted', 'approved', 'published', 'completed'])->pluck('date')->all();
+            $created = 0;
+            foreach (array_diff($days, $taken) as $date) {
+                $s = $this->save($u, $placement, ['date' => $date, 'revision' => 0, 'change_kind' => 'schedule', 'replaces_id' => null] + $input);
+                if ($d['submit'] ?? false) {
+                    $this->transition($u, $s->ulid, ['action' => 'submit', 'revision' => $s->revision]);
+                }
+                $created++;
+            }
+
+            return ['created' => $created, 'skipped' => count($days) - $created];
+        }, 5);
+    }
+
+    /** Mentor approval that publishes at once: both steps are recorded, the participant has nothing left to click. */
+    public function release(User $u, string $ulid, int $revision): void
+    {
+        DB::transaction(function () use ($u, $ulid, $revision) {
+            $this->transition($u, $ulid, ['action' => 'approve', 'revision' => $revision]);
+            $this->transition($u, $ulid, ['action' => 'publish', 'revision' => $revision + 1], true);
+            $p = DB::table('placements')->find(DB::table('schedules')->where('ulid', $ulid)->value('placement_id'));
+            app(PlacementExtensionService::class)->startIfDue($u, $p);
+        }, 5);
+    }
+
+    /**
+     * Apply one step to every schedule of the placement that is waiting for this user.
+     *
+     * @return int number of schedules changed
+     */
+    public function bulk(User $u, string $placement, string $action): int
+    {
+        abort_unless(in_array($action, ['submit', 'release'], true), 422);
+
+        return DB::transaction(function () use ($u, $placement, $action) {
+            $p = app(SchedulingAccess::class)->placement($u, $placement);
+            $rows = DB::table('schedules')->where('placement_id', $p->id)->where('status', $action === 'submit' ? 'draft' : 'submitted')->orderBy('date')->orderBy('id')->get();
+            $done = 0;
+            foreach ($rows as $s) {
+                if ($action === 'submit') {
+                    $this->transition($u, $s->ulid, ['action' => 'submit', 'revision' => $s->revision]);
+                } elseif (app(SchedulingAccess::class)->mentor($u, $s)) {
+                    $this->release($u, $s->ulid, $s->revision);
+                } else {
+                    continue;
+                }
+                $done++;
+            }
+            abort_unless($done, 422, 'Tidak ada jadwal yang menunggu tindakan Anda.');
+
+            return $done;
+        }, 5);
+    }
+
     public function validate(object $p, object $s, bool $conflicts = true): void
     {
         abort_if($s->date < $p->start_date || $s->date > $p->end_date, 422, 'Jadwal berada di luar periode penempatan.');
@@ -101,10 +177,10 @@ class ScheduleService
         }
     }
 
-    public function transition(User $u, string $ulid, array $input): void
+    public function transition(User $u, string $ulid, array $input, bool $afterApproval = false): void
     {
         $d = Validator::make($input, ['action' => 'required|in:submit,approve,revise,publish,withdraw,complete', 'revision' => 'required|integer|min:1', 'reason' => 'nullable|string|min:10|max:2000'])->validate();
-        DB::transaction(function () use ($u, $ulid, $d) {
+        DB::transaction(function () use ($u, $ulid, $d, $afterApproval) {
             $s = DB::table('schedules')->where('ulid', $ulid)->firstOrFail();
             $p = app(PlacementService::class)->locked(DB::table('placements')->where('id', $s->placement_id)->value('ulid'));
             app(AttendanceService::class)->assertCalendarMutable($p);
@@ -123,7 +199,8 @@ class ScheduleService
             if (in_array($action, ['approve', 'revise', 'complete'])) {
                 abort_unless($a->mentor($u, $s), 403);
                 abort_if(($u->id == $s->created_by || $u->id == $s->submitted_by || $a->owner($u, $p)) && $action === 'approve', 403, 'Tidak boleh menyetujui pengajuan sendiri.');
-            } else {
+            } elseif (! ($afterApproval && $action === 'publish' && (int) $s->approved_by === (int) $u->id)) {
+                // Publishing right after one's own approval is the mentor's single click; everything else stays with the editor.
                 $this->editor($u, $p);
             }
             if (in_array($action, ['revise', 'withdraw'])) {

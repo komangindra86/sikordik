@@ -1,4 +1,4 @@
-<details class="card mt-6 p-5"><summary class="cursor-pointer text-lg font-semibold">Riwayat perubahan (100 terbaru)</summary>
+<details class="card mt-6 p-5"><summary class="cursor-pointer text-lg font-semibold">Riwayat perubahan</summary>
     @php($events = ['assignment_requested'=>'Penugasan diajukan','assignment_approve'=>'Penugasan disetujui','assignment_reject'=>'Penugasan ditolak','assignment_replaced'=>'Pendidik diganti','schedule_saved'=>'Draft jadwal disimpan','schedule_submit'=>'Jadwal diajukan','schedule_approve'=>'Jadwal disetujui','schedule_revise'=>'Revisi diminta','schedule_publish'=>'Keputusan jadwal diterbitkan','schedule_withdraw'=>'Pengajuan ditarik','schedule_complete'=>'Kegiatan selesai','schedule_replaced'=>'Jadwal lama digantikan / dibatalkan','extension_requested'=>'Perpanjangan diajukan','extension_approve'=>'Perpanjangan disetujui','extension_reject'=>'Perpanjangan ditolak','extension_withdraw'=>'Perpanjangan ditarik','group_joined'=>'Keanggotaan ditambahkan','group_ended'=>'Keanggotaan diakhiri'])
     <ol class="mt-4 space-y-4">@forelse($histories as $h)
         <li class="border-l-2 border-brand-100 pl-4"><p class="text-sm font-semibold">{{ $events[$h->event] ?? 'Data diperbarui' }}</p><p class="text-xs text-slate-500">{{ $h->actor_name }} · {{ \Carbon\Carbon::parse($h->created_at)->format('d-m-Y H:i') }} WITA</p><p class="mt-1 break-words text-sm">{{ $h->reason }}</p>
@@ -14,5 +14,5 @@
                 @endforeach</div>
             </details>
         </li>
-    @empty<li class="text-sm text-slate-500">Belum ada riwayat fase 3.</li>@endforelse</ol>
+    @empty<li class="text-sm text-slate-500">Belum ada riwayat.</li>@endforelse</ol>
 </details>
